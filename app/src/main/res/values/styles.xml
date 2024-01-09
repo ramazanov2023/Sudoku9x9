@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="selectedItemNavBarStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:color">@color/blue</item>
+        <item name="itemRippleColor">@color/blue</item>
+        <item name="indicatorColor">@color/blue</item>
+    </style>
+
+    <style name="TextNavBarStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white_2</item>
+        <item name="android:layout_marginBottom">14dp</item>
+    </style>
+
+</resources>
