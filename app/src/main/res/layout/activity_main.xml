@@ -14,13 +14,25 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/navigation" />
 
-    <fragment
+    <!--<fragment
         android:id="@+id/bottomNavBar"
         android:name="com.example.sudoku9x9.BottomNavigationBarFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout="@layout/fragment_bottom_navigation_bar" />
+        tools:layout="@layout/fragment_bottom_navigation_bar" />-->
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_bar"
+        style="@style/NavViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_2"
+        app:itemIconTint="@drawable/bottom_nav_item_color"
+        app:itemTextColor="@drawable/bottom_nav_item_color"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/menu_nav_bar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

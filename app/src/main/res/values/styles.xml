@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="selectedItemNavBarStyle" parent="Widget.Material3.BottomNavigationView">
-        <item name="android:color">@color/blue</item>
-        <item name="itemRippleColor">@color/blue</item>
-        <item name="indicatorColor">@color/blue</item>
+    <style name="NavViewStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="enforceTextAppearance" >true</item>
+        <item name="itemTextAppearanceActive">@style/TextNavBarStyle</item>
+        <item name="itemTextAppearanceInactive">@style/TextNavBarStyle</item>
+    </style>
+    <style name="TextNavBarStyle" parent="@style/TextAppearance.AppCompat.Small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
-    <style name="TextNavBarStyle">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/white_2</item>
-        <item name="android:layout_marginBottom">14dp</item>
+
+
+
+    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/TabTextStyle</item>
+    </style>
+    <style name="TabTextStyle" parent="@style/TextAppearance.AppCompat.Small">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
 </resources>

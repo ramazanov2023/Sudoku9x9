@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/navigation">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/gameFragment">
 
+    <fragment
+        android:id="@+id/gameFragment"
+        tools:layout="@layout/fragment_game"
+        android:name="com.example.sudoku9x9.ui.GameFragment"
+        android:label="Game" />
+    <fragment
+        android:id="@+id/statisticsFragment"
+        tools:layout="@layout/fragment_statistics"
+        android:name="com.example.sudoku9x9.ui.StatisticsFragment"
+        android:label="Statistics" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        tools:layout="@layout/fragment_settings"
+        android:name="com.example.sudoku9x9.ui.SettingsFragment"
+        android:label="Settings" />
+    <fragment
+        android:id="@+id/playersFragment"
+        tools:layout="@layout/fragment_players"
+        android:name="com.example.sudoku9x9.ui.PlayersFragment"
+        android:label="Players" />
+    <fragment
+        android:id="@+id/profileFragment"
+        tools:layout="@layout/fragment_profile"
+        android:name="com.example.sudoku9x9.ui.ProfileFragment"
+        android:label="Profile" />
+    <fragment
+        android:id="@+id/classicGameFragment"
+        tools:layout="@layout/fragment_classic_game"
+        android:name="com.example.sudoku9x9.ui.classic.ClassicGameFragment"
+        android:label="ClassicGameFragment" >
+        <action
+            android:id="@+id/action_classicGameFragment_to_classicFinishFragment"
+            app:destination="@id/classicFinishFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/classicFinishFragment"
+        tools:layout="@layout/fragment_classic_finish"
+        android:name="com.example.sudoku9x9.ui.classic.ClassicFinishFragment"
+        android:label="ClassicFinishFragment" />
+    <fragment
+        android:id="@+id/classicStartFragment"
+        tools:layout="@layout/fragment_classic_start"
+        android:name="com.example.sudoku9x9.ui.classic.ClassicStartFragment"
+        android:label="ClassicStartFragment" >
+        <action
+            android:id="@+id/action_classicStartFragment_to_classicGameFragment"
+            app:destination="@id/classicGameFragment" />
+    </fragment>
 </navigation>
