@@ -6,12 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/gray_1"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Sudoku 9x9">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/avatar"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="end"
+            app:cardCornerRadius="14dp">
+
+            <ImageView
+                android:id="@+id/user_avatar"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/black_0234" />
+        </androidx.cardview.widget.CardView>
+    </androidx.appcompat.widget.Toolbar>
+
     <fragment
         android:id="@+id/myNavHostFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:navGraph="@navigation/navigation" />
 
     <!--<fragment
@@ -25,6 +54,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_bar"
         style="@style/NavViewStyle"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/gray_2"

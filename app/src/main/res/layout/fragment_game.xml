@@ -19,18 +19,6 @@
             android:visibility="gone" />-->
 
 
-        <!--            <com.google.android.material.tabs.TabItem-->
-        <!--                android:text="Classic"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"/>-->
-        <!--            <com.google.android.material.tabs.TabItem-->
-        <!--                android:text="Battle"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"/>-->
-        <!--            <com.google.android.material.tabs.TabItem-->
-        <!--                android:text="Tourney"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"/>-->
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/game_viewPager2"
@@ -51,6 +39,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Classic" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Battle" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tourney" />
         </com.google.android.material.tabs.TabLayout>
 
 

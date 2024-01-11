@@ -9,22 +9,38 @@
         android:id="@+id/gameFragment"
         tools:layout="@layout/fragment_game"
         android:name="com.example.sudoku9x9.ui.GameFragment"
-        android:label="Game" />
+        android:label="Game" >
+        <action
+            android:id="@+id/action_gameFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/statisticsFragment"
         tools:layout="@layout/fragment_statistics"
         android:name="com.example.sudoku9x9.ui.StatisticsFragment"
-        android:label="Statistics" />
+        android:label="Statistics" >
+        <action
+            android:id="@+id/action_statisticsFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         tools:layout="@layout/fragment_settings"
         android:name="com.example.sudoku9x9.ui.SettingsFragment"
-        android:label="Settings" />
+        android:label="Settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/playersFragment"
         tools:layout="@layout/fragment_players"
         android:name="com.example.sudoku9x9.ui.PlayersFragment"
-        android:label="Players" />
+        android:label="Players" >
+        <action
+            android:id="@+id/action_playersFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         tools:layout="@layout/fragment_profile"
