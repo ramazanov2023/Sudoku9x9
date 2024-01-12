@@ -29,4 +29,12 @@
     </style>
 
 
+
+    <style name="textSmall">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/white_2</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
 </resources>

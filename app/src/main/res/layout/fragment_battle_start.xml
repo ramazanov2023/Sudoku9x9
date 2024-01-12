@@ -12,14 +12,12 @@
         android:background="@color/gray_1"
         android:layout_height="match_parent">
 
-        <TextView
-            android:text="Battle Start"
-            android:textSize="40dp"
-            android:gravity="center"
-            android:textColor="@color/blue"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:scaleType="centerCrop"
+            android:src="@drawable/battle_start_01"
+            android:visibility="visible" />
 
 
 

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/jhjggjjj_00000"
+            android:visibility="gone" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_classic"
+
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="20dp"
+            app:cardBackgroundColor="@color/gray_2"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/blue"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/fot_11" />
+
+                    <GridLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:columnCount="6">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_1" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_14" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_8" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_5" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_16" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_17" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_10" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_15" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_2" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_12" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/blue"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fot_13" />
+                    </GridLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/card_classic_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:elevation="@dimen/elevation_text"
+            android:fontFamily="sans-serif-black"
+            android:text="Fast"
+            android:textColor="@color/white_1"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="@id/card_classic"
+            app:layout_constraintTop_toTopOf="@id/card_classic" />
+
+        <TextView
+            android:id="@+id/card_classic_level"
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-6dp"
+            android:elevation="@dimen/elevation_text"
+            android:text="Level of\ncomplexity"
+            app:layout_constraintStart_toStartOf="@id/card_classic_title"
+            app:layout_constraintTop_toBottomOf="@id/card_classic_title" />
+
+        <Button
+            android:id="@+id/card_classic_best_record"
+            android:layout_width="76dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/gray_4"
+            android:clickable="false"
+            android:elevation="10dp"
+            android:fontFamily="sans-serif"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_marginBottom="-4dp"
+            android:shadowRadius="0"
+            android:stateListAnimator="@null"
+            android:text="45:64"
+            android:textAllCaps="false"
+            android:textColor="@color/white_2"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_statistics"
+            app:iconPadding="2dp"
+            app:iconSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/card_classic_games"
+            app:layout_constraintStart_toStartOf="@id/card_classic_title" />
+
+
+        <TextView
+            android:id="@+id/card_classic_records"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="124dp"
+            android:layout_marginTop="24dp"
+            android:elevation="@dimen/elevation_text"
+            android:fontFamily="sans-serif-medium"
+            android:text="Your records"
+            android:textColor="@color/white_1"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/card_classic"
+            app:layout_constraintTop_toTopOf="@id/card_classic" />
+
+        <TextView
+            android:id="@+id/card_classic_mean_time"
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_text"
+            android:text="Mean time"
+            app:layout_constraintBottom_toBottomOf="@id/card_classic_level"
+            app:layout_constraintStart_toStartOf="@id/card_classic_records" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dp"
+            android:elevation="@dimen/elevation_text"
+            android:fontFamily="sans-serif-light"
+            android:text="51:63"
+            android:textColor="@color/white_2"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/card_classic_mean_time"
+            app:layout_constraintStart_toStartOf="@id/card_classic_records" />
+
+        <TextView
+            android:id="@+id/card_classic_best_time"
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_text"
+            android:text="Best time"
+            app:layout_constraintBottom_toBottomOf="@id/card_classic_games"
+            app:layout_constraintStart_toStartOf="@id/card_classic_records" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dp"
+            android:elevation="@dimen/elevation_text"
+            android:fontFamily="sans-serif-light"
+            android:text="37:48"
+            android:textColor="@color/white_2"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/card_classic_best_time"
+            app:layout_constraintStart_toStartOf="@id/card_classic_records" />
+
+        <TextView
+            android:id="@+id/card_classic_games"
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="52dp"
+            android:elevation="@dimen/elevation_text"
+            android:text="Games"
+            app:layout_constraintStart_toStartOf="@id/card_classic_best_time"
+            app:layout_constraintTop_toTopOf="@id/card_classic_mean_time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dp"
+            android:elevation="@dimen/elevation_text"
+            android:fontFamily="sans-serif-light"
+            android:text="183"
+            android:textColor="@color/white_2"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/card_classic_games"
+            app:layout_constraintStart_toStartOf="@id/card_classic_games" />
+
+        <TextView
+            android:id="@+id/card_classic_rate"
+            android:layout_width="70dp"
+            android:layout_height="118dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_1"
+            android:elevation="10dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="3547"
+            android:textColor="@color/white_1"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@id/card_classic_games"
+            app:layout_constraintEnd_toEndOf="@id/card_classic" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
