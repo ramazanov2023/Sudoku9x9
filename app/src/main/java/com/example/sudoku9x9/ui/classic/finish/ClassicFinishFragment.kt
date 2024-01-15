@@ -1,4 +1,4 @@
-package com.example.sudoku9x9.ui.classic
+package com.example.sudoku9x9.ui.classic.finish
 
 import android.os.Bundle
 import android.view.LayoutInflater

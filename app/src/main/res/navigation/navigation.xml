@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_gameFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_gameFragment_to_classicGameFragment"
+            app:destination="@id/classicGameFragment" />
     </fragment>
     <fragment
         android:id="@+id/statisticsFragment"
@@ -49,7 +52,7 @@
     <fragment
         android:id="@+id/classicGameFragment"
         tools:layout="@layout/fragment_classic_game"
-        android:name="com.example.sudoku9x9.ui.classic.ClassicGameFragment"
+        android:name="com.example.sudoku9x9.ui.classic.game.ClassicGameFragment"
         android:label="ClassicGameFragment" >
         <action
             android:id="@+id/action_classicGameFragment_to_classicFinishFragment"
@@ -58,15 +61,11 @@
     <fragment
         android:id="@+id/classicFinishFragment"
         tools:layout="@layout/fragment_classic_finish"
-        android:name="com.example.sudoku9x9.ui.classic.ClassicFinishFragment"
+        android:name="com.example.sudoku9x9.ui.classic.finish.ClassicFinishFragment"
         android:label="ClassicFinishFragment" />
     <fragment
         android:id="@+id/classicStartFragment"
         tools:layout="@layout/fragment_classic_start"
-        android:name="com.example.sudoku9x9.ui.classic.ClassicStartFragment"
-        android:label="ClassicStartFragment" >
-        <action
-            android:id="@+id/action_classicStartFragment_to_classicGameFragment"
-            app:destination="@id/classicGameFragment" />
-    </fragment>
+        android:name="com.example.sudoku9x9.ui.classic.start.ClassicStartFragment"
+        android:label="ClassicStartFragment" />
 </navigation>
