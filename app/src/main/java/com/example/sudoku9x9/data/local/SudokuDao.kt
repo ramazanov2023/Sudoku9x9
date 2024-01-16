@@ -15,10 +15,11 @@ interface SudokuDao {
     @Query("SELECT * FROM classic_card_table")
     fun getClassicCardsData():LiveData<List<ClassicCard>>
 
+    @Query("SELECT * FROM classic_card_table WHERE id == :gameLevelId")
+    fun getClassicGameUserData(gameLevelId:Int):LiveData<ClassicCard>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertClassicCardsData(vararg card:ClassicCard)
-
-
 
 
 

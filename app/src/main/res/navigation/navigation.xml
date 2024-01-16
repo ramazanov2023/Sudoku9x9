@@ -57,6 +57,9 @@
         <action
             android:id="@+id/action_classicGameFragment_to_classicFinishFragment"
             app:destination="@id/classicFinishFragment" />
+        <argument
+            android:name="gameLevelId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/classicFinishFragment"

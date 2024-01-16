@@ -31,7 +31,10 @@ class DefaultSudokuRepository(
                 localSudokuResource.sudokuDao.insertClassicCardsData(*getCardsList().toTypedArray())
             }
         }
+    }
 
+    override fun getClassicGameUserData(gameLevelId:Int): LiveData<ClassicCard> {
+        return localSudokuResource.sudokuDao.getClassicGameUserData(gameLevelId)
     }
 
     private fun getCardsList(): List<ClassicCard> {
@@ -59,7 +62,7 @@ class DefaultSudokuRepository(
             ),
             ClassicCard(
                 id = 2,
-                level = "Hard",
+                level = "Light",
                 rating = "2476",
                 meanTime = "1:12:23",
                 bestTime = "59:89",
@@ -77,6 +80,48 @@ class DefaultSudokuRepository(
                 user10 = R.drawable.fot_16,
                 user11 = R.drawable.fot_14,
                 user12 = R.drawable.fot_8,
+            ),
+            ClassicCard(
+                id = 3,
+                level = "Hard",
+                rating = "1814",
+                meanTime = "3:17:51",
+                bestTime = "59:89",
+                games = "87",
+                record = "52:54",
+                user1 = R.drawable.fot_12,
+                user2 = R.drawable.fot_13,
+                user3 = R.drawable.fot_15,
+                user4 = R.drawable.fot_17,
+                user5 = R.drawable.fot_1,
+                user6 = R.drawable.fot_14,
+                user7 = R.drawable.fot_5,
+                user8 = R.drawable.fot_11,
+                user9 = R.drawable.fot_8,
+                user10 = R.drawable.fot_16,
+                user11 = R.drawable.fot_18,
+                user12 = R.drawable.fot_10,
+            ),
+            ClassicCard(
+                id = 4,
+                level = "Master",
+                rating = "5932",
+                meanTime = "5:48:23",
+                bestTime = "4:49",
+                games = "312",
+                record = "52:54",
+                user1 = R.drawable.fot_1,
+                user2 = R.drawable.fot_5,
+                user3 = R.drawable.fot_19,
+                user4 = R.drawable.fot_11,
+                user5 = R.drawable.fot_2,
+                user6 = R.drawable.fot_12,
+                user7 = R.drawable.fot_15,
+                user8 = R.drawable.fot_13,
+                user9 = R.drawable.fot_8,
+                user10 = R.drawable.fot_16,
+                user11 = R.drawable.fot_14,
+                user12 = R.drawable.fot_18,
             )
         )
         Log.e("eeee","1 - list.size - ${list.size}")

@@ -1,19 +1,314 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.example.sudoku9x9.ui.classic.game.ClassicGameViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray_1">
 
         <ImageView
-            android:src="@drawable/fggffgg_00000"
-            android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/fggffgg_00000"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/classic_game_record"
+            android:layout_width="76dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/gray_4"
+            android:clickable="false"
+            android:elevation="10dp"
+            android:fontFamily="sans-serif"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:shadowRadius="0"
+            android:stateListAnimator="@null"
+            android:text="@{viewModel.userRecords.record}"
+            android:textAllCaps="false"
+            android:textColor="@color/white_3"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_statistics"
+            app:iconPadding="2dp"
+            app:iconSize="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="45:64" />
+
+        <TextView
+            android:id="@+id/classic_game_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Pro"
+            android:textColor="@color/blue"
+            app:layout_constraintBottom_toBottomOf="@id/classic_game_record"
+            app:layout_constraintStart_toEndOf="@id/classic_game_record"
+            app:layout_constraintTop_toTopOf="@id/classic_game_record" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Mode"
+            android:textColor="@color/white_3"
+            app:layout_constraintBottom_toBottomOf="@id/classic_game_mode"
+            app:layout_constraintStart_toEndOf="@id/classic_game_mode" />
+
+        <TextView
+            android:id="@+id/classic_game_current_time"
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="28dp"
+            android:elevation="@dimen/elevation_text"
+            android:text="Current time"
+            app:layout_constraintEnd_toStartOf="@id/classic_game_mistakes"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/classic_game_record" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dp"
+            android:elevation="@dimen/elevation_text"
+            android:fontFamily="sans-serif-light"
+            android:text="39:54"
+            android:textColor="@color/white_3"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/classic_game_current_time"
+            app:layout_constraintStart_toStartOf="@id/classic_game_current_time"
+            tools:text="39:54" />
+
+        <TextView
+            android:id="@+id/classic_game_mistakes"
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_text"
+            android:text="Mistakes"
+            app:layout_constraintBottom_toBottomOf="@id/classic_game_current_time"
+            app:layout_constraintEnd_toStartOf="@id/classic_game_mean_time"
+            app:layout_constraintStart_toEndOf="@id/classic_game_current_time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dp"
+            android:elevation="@dimen/elevation_text"
+            android:fontFamily="sans-serif-light"
+            android:text="X--"
+            android:textColor="@color/white_3"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/classic_game_mistakes"
+            app:layout_constraintStart_toStartOf="@id/classic_game_mistakes"
+            tools:text="X--" />
+
+        <TextView
+            android:id="@+id/classic_game_mean_time"
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/elevation_text"
+            android:text="Mean time"
+            app:layout_constraintBottom_toBottomOf="@id/classic_game_current_time"
+            app:layout_constraintEnd_toStartOf="@id/classic_game_best_time"
+            app:layout_constraintStart_toEndOf="@id/classic_game_mistakes" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dp"
+            android:elevation="@dimen/elevation_text"
+            android:fontFamily="sans-serif-light"
+            android:text="@{viewModel.userRecords.meanTime}"
+            android:textColor="@color/white_3"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/classic_game_mean_time"
+            app:layout_constraintStart_toStartOf="@id/classic_game_mean_time"
+            tools:text="51:63" />
+
+        <TextView
+            android:id="@+id/classic_game_best_time"
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:elevation="@dimen/elevation_text"
+            android:text="Best time"
+            app:layout_constraintBottom_toBottomOf="@id/classic_game_current_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/classic_game_mean_time" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dp"
+            android:elevation="@dimen/elevation_text"
+            android:fontFamily="sans-serif-light"
+            android:text="@{viewModel.userRecords.bestTime}"
+            android:textColor="@color/white_3"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/classic_game_best_time"
+            app:layout_constraintStart_toStartOf="@id/classic_game_best_time"
+            tools:text="37:48" />
+
+
+        <com.example.sudoku9x9.ui.board.SudokuBoardView
+            android:id="@+id/classic_game_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/classic_game_current_time" />
+
+        <ImageView
+            android:id="@+id/classic_game_undo_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_undo"
+            app:layout_constraintEnd_toStartOf="@id/classic_game_clear_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/classic_game_board"
+            app:tint="@color/white_3" />
+
+        <TextView
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-14dp"
+            android:text="Undo"
+            app:layout_constraintEnd_toEndOf="@id/classic_game_undo_btn"
+            app:layout_constraintStart_toStartOf="@id/classic_game_undo_btn"
+            app:layout_constraintTop_toBottomOf="@id/classic_game_undo_btn"
+            tools:text="Undo" />
+
+        <ImageView
+            android:id="@+id/classic_game_clear_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_eraser"
+            app:layout_constraintBottom_toBottomOf="@id/classic_game_undo_btn"
+            app:layout_constraintEnd_toStartOf="@id/classic_game_speed_btn"
+            app:layout_constraintStart_toEndOf="@id/classic_game_undo_btn"
+            app:tint="@color/white_3" />
+
+        <TextView
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-14dp"
+            android:text="Clear"
+            app:layout_constraintEnd_toEndOf="@id/classic_game_clear_btn"
+            app:layout_constraintStart_toStartOf="@id/classic_game_clear_btn"
+            app:layout_constraintTop_toBottomOf="@id/classic_game_clear_btn"
+            tools:text="Clear" />
+
+        <ImageView
+            android:id="@+id/classic_game_speed_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_speed"
+            app:layout_constraintBottom_toBottomOf="@id/classic_game_undo_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/classic_game_clear_btn"
+            app:tint="@color/white_3" />
+
+        <TextView
+            style="@style/textSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-14dp"
+            android:text="Speed"
+            app:layout_constraintEnd_toEndOf="@id/classic_game_speed_btn"
+            app:layout_constraintStart_toStartOf="@id/classic_game_speed_btn"
+            app:layout_constraintTop_toBottomOf="@id/classic_game_speed_btn"
+            tools:text="Speed" />
+
+        <GridLayout
+            android:id="@+id/numbers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/classic_game_board">
+
+            <TextView
+                android:id="@+id/num_1"
+                style="@style/InputNumberStyle"
+                android:onClick="@{() -> viewModel.insertNumber(1)}"
+                android:text="1" />
+
+            <TextView
+                android:id="@+id/num_2"
+                style="@style/InputNumberStyle"
+                android:onClick="@{() -> viewModel.insertNumber(2)}"
+                android:text="2" />
+
+            <TextView
+                android:id="@+id/num_3"
+                style="@style/InputNumberStyle"
+                android:onClick="@{() -> viewModel.insertNumber(3)}"
+                android:text="3" />
+
+            <TextView
+                android:id="@+id/num_4"
+                style="@style/InputNumberStyle"
+                android:onClick="@{() -> viewModel.insertNumber(4)}"
+                android:text="4" />
+
+            <TextView
+                android:id="@+id/num_5"
+                style="@style/InputNumberStyle"
+                android:onClick="@{() -> viewModel.insertNumber(5)}"
+                android:text="5" />
+
+            <TextView
+                android:id="@+id/num_6"
+                style="@style/InputNumberStyle"
+                android:onClick="@{() -> viewModel.insertNumber(6)}"
+                android:text="6" />
+
+            <TextView
+                android:id="@+id/num_7"
+                style="@style/InputNumberStyle"
+                android:onClick="@{() -> viewModel.insertNumber(7)}"
+                android:text="7" />
+
+            <TextView
+                android:id="@+id/num_8"
+                style="@style/InputNumberStyle"
+                android:onClick="@{() -> viewModel.insertNumber(8)}"
+                android:text="8" />
+
+            <TextView
+                android:id="@+id/num_9"
+                style="@style/InputNumberStyle"
+                android:onClick="@{() -> viewModel.insertNumber(9)}"
+                android:text="9" />
+
+
+        </GridLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

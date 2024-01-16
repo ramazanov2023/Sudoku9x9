@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -37,7 +38,7 @@ class ClassicStartFragment: Fragment() {
             Log.e("wwww","2")
             it?.let {
                 Log.e("wwww","3")
-                findNavController().navigate(GameFragmentDirections.actionGameFragmentToClassicGameFragment())
+                findNavController().navigate(GameFragmentDirections.actionGameFragmentToClassicGameFragment(1))
                 viewModel.removeStart()
             }
         })

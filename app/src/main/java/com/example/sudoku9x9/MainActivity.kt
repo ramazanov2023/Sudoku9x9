@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.myNavHostFragment)
 
         setSupportActionBar(toolbar)
-//        var ava = toolbar.findViewById<ImageView>(R.id.user_avatar)
         var ava = toolbar.findViewById<CardView>(R.id.avatar)
 
         /*val appBarConfiguration = AppBarConfiguration.Builder(R.id.tasks_fragment_dest, R.id.statistics_fragment_dest)
@@ -38,10 +37,8 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavBar.setupWithNavController(navController)
 
-//        bottomNavBar.visibility = INVISIBLE
 
         ava.setOnClickListener {
-//            Navigation.findNavController(it).navigate(R.id.profileFragment)
             navController.navigate(R.id.profileFragment)
         }
 
@@ -54,11 +51,31 @@ class MainActivity : AppCompatActivity() {
                         setDisplayHomeAsUpEnabled(true)
                     }
                 }
+                R.id.statisticsFragment -> {
+                    bottomNavBar.visibility = VISIBLE
+                    supportActionBar?.apply {
+                        title = "Statistics"
+                        setDisplayHomeAsUpEnabled(false)
+                    }
+                }
+                R.id.settingsFragment -> {
+                    bottomNavBar.visibility = VISIBLE
+                    supportActionBar?.apply {
+                        title = "Settings"
+                        setDisplayHomeAsUpEnabled(false)
+                    }
+                }
+                R.id.playersFragment -> {
+                    bottomNavBar.visibility = VISIBLE
+                    supportActionBar?.apply {
+                        title = "Players"
+                        setDisplayHomeAsUpEnabled(false)
+                    }
+                }
 
                 else -> {
                     bottomNavBar.visibility = VISIBLE
                     supportActionBar?.apply {
-                        title = "Profile"
                         setDisplayHomeAsUpEnabled(false)
                     }
                 }

@@ -9,4 +9,6 @@ interface SudokuRepository {
 
     fun updateClassicCardsData()
 
+    fun getClassicGameUserData(gameLevelId:Int): LiveData<ClassicCard>
+
 }

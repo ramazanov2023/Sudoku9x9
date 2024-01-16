@@ -16,7 +16,7 @@ class PlayersFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentPlayersBinding.inflate(inflater)
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "Players"
+//        (activity as? AppCompatActivity)?.supportActionBar?.title = "Players"
 
 
         return binding.root

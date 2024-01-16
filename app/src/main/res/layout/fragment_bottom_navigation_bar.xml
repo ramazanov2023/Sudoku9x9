@@ -41,7 +41,7 @@
             app:layout_constraintEnd_toStartOf="@id/button_settings"
             app:layout_constraintStart_toEndOf="@id/button_game"
             app:layout_constraintTop_toTopOf="@id/frame_nav_bar"
-            app:tint="@color/white_2" />
+            app:tint="@color/white_3" />
 
         <ImageView
             android:id="@+id/button_settings"
@@ -53,7 +53,7 @@
             app:layout_constraintEnd_toStartOf="@id/button_players"
             app:layout_constraintStart_toEndOf="@id/button_statistics"
             app:layout_constraintTop_toTopOf="@id/frame_nav_bar"
-            app:tint="@color/white_2" />
+            app:tint="@color/white_3" />
 
         <ImageView
             android:id="@+id/button_players"
@@ -66,7 +66,7 @@
             app:layout_constraintEnd_toEndOf="@id/frame_nav_bar"
             app:layout_constraintStart_toEndOf="@id/button_settings"
             app:layout_constraintTop_toTopOf="@id/frame_nav_bar"
-            app:tint="@color/white_2" />
+            app:tint="@color/white_3" />
 
         <TextView
             style="@style/TextNavBarStyle"

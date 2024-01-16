@@ -16,7 +16,7 @@ class SettingsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentSettingsBinding.inflate(inflater)
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "Settings"
+//        (activity as? AppCompatActivity)?.supportActionBar?.title = "Settings"
 
 
         return binding.root

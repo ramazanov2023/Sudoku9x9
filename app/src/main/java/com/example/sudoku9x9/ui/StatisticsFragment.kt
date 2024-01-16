@@ -17,7 +17,7 @@ class StatisticsFragment: Fragment() {
     ): View {
         val binding = FragmentStatisticsBinding.inflate(inflater)
 
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "Statistics"
+//        (activity as? AppCompatActivity)?.supportActionBar?.title = "Statistics"
 
         return binding.root
     }
