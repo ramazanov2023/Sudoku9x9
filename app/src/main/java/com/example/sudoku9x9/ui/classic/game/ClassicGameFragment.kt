@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.example.sudoku9x9.SudokuApplication
@@ -26,6 +27,11 @@ class ClassicGameFragment: Fragment() {
         val args:ClassicGameFragmentArgs by navArgs()
         val factory = ClassicGameViewModelFactory((requireActivity().application as SudokuApplication).repository,args.gameLevelId)
         val viewModel = ViewModelProviders.of(this,factory).get(ClassicGameViewModel::class.java)
+
+        viewModel.sudokuNumbers.numbersLiveData.observe(viewLifecycleOwner, Observer {
+            binding.classicGameBoard.insertSudokuNumbers(it)
+        })
+
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

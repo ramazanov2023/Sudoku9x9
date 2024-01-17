@@ -3,15 +3,24 @@ package com.example.sudoku9x9.ui.board
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Rect
 import android.util.AttributeSet
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import com.example.sudoku9x9.R
 
+
 class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
+    private var indexSelectedCell: Int = 0
+    private var cellVertical: Int = -1
+    private var cellHorizontal: Int = -1
     private val boardWidth = 9
     private val cellGroupWidth = 3
     private var cellSize = 0F
+    private var sudokuNumbers: List<Cell>? = null
+
 
     private val boardField = Paint().apply {
         color = resources.getColor(R.color.white_2)
@@ -27,12 +36,29 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         style = Paint.Style.STROKE
         strokeWidth = 2F
     }
+    private val boardSelectCell = Paint().apply {
+        color = resources.getColor(R.color.blue_2)
+        style = Paint.Style.FILL
+    }
+    private val boardLinkedCells = Paint().apply {
+        color = resources.getColor(R.color.blue_3)
+        style = Paint.Style.FILL
+    }
+    private val boardNumbers = Paint().apply {
+        color = resources.getColor(R.color.gray_3)
+        style = Paint.Style.FILL
+        textSize = 82F
+    }
+    private val boardWrongNumber = Paint().apply {
+        color = resources.getColor(R.color.gray_3)
+        style = Paint.Style.FILL
+        textSize = 72F
+    }
 
 
-
-
-
-
+    fun insertSudokuNumbers(numbers: List<Cell>) {
+        sudokuNumbers = numbers
+    }
 
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -45,34 +71,76 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         cellSize = (width / boardWidth).toFloat()
 
         drawField(canvas)
+        drawSelectCell(canvas)
         drawGrid(canvas)
+        drawNumbers(canvas)
 
-
-        /*cellSize = (width / amountCellsInRow).toFloat()
-
-        fillCell2(canvas)
-        drawLines(canvas)
-        drawText(canvas)
-        if(numErrors>2){
-            Log.e("dfgg","1")
-            finishListener?.onFinish(openedCells,numErrors,false)
-            reset()
-        }
-        if(openedCells == HIDE_CELLS){
-            Log.e("dfgg","2")
-            finishListener?.onFinish(openedCells,numErrors,true)
-            reset()
-        }*/
     }
 
 
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+        return if (event?.action == MotionEvent.ACTION_DOWN) {
+            cellVertical = (event.y / cellSize).toInt()
+            cellHorizontal = (event.x / cellSize).toInt()
+            Log.e("rrr", "1 - cellVertical-$cellVertical  cellHorizontal-$cellHorizontal")
+            indexSelectedCell = ((cellVertical + 1) * 9) - (9 - cellHorizontal)
+            Log.e("rrr", "2 - indexSelectedCell-$indexSelectedCell")
+            invalidate()
+            true
+        } else false
+    }
 
 
+    private fun drawNumbers(canvas: Canvas?) {
+        sudokuNumbers?.forEach {
+            if (!it.hide) {
+                var num = Paint()
+                val textBounds = Rect()
+                val valueCell = it.value.toString()
+                num = boardNumbers
+                num.getTextBounds(valueCell, 0, valueCell.length, textBounds)
+                val numberWidth = num.measureText(valueCell)
+                val numberHeight = textBounds.height()
 
+                canvas?.drawText(
+                    it.value.toString(),
+                    it.hor * cellSize + cellSize / 2 - numberWidth / 2,
+                    it.ver * cellSize + cellSize / 2 + numberHeight / 2,
+                    num
+                )
+            }
+        }
+    }
 
+    private fun drawSelectCell(canvas: Canvas?) {
+        if (cellHorizontal == -1) return
 
+        sudokuNumbers?.let { numbers ->
+            val cell = numbers[indexSelectedCell]
+            numbers.forEach {
+                if (it.id == indexSelectedCell) {
+                    drawCell(canvas, it, boardSelectCell)
+                } else if (it.value == cell.value && !it.hide && !cell.hide) {
+                    drawCell(canvas, it, boardSelectCell)
+                } else if (it.ver == cellVertical || it.hor == cellHorizontal) {
+                    drawCell(canvas, it, boardLinkedCells)
+                } else if (cellVertical / 3 == it.ver / 3 && cellHorizontal / 3 == it.hor / 3) {
+                    drawCell(canvas, it, boardLinkedCells)
+                }
+            }
+        }
+    }
 
-
+    private fun drawCell(canvas: Canvas?, it: Cell, paint: Paint) {
+        canvas?.drawRect(
+            it.hor * cellSize,
+            it.ver * cellSize,
+            (it.hor + 1) * cellSize,
+            (it.ver + 1) * cellSize,
+            paint
+        )
+    }
 
 
     private fun drawField(canvas: Canvas?) {
@@ -83,23 +151,27 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
     private fun drawGrid(canvas: Canvas?) {
-        // Рисуем вертикальные линии
+
         for (i in 0..boardWidth) {
             // Если остаток после деления равен 0(в нашем случае это будет происходить каждый третий раз)
-            if (i % cellGroupWidth == 0) {
-                canvas?.drawLine(cellSize * i, 0F, cellSize * i, height.toFloat(), boardBoldLine)
-            } else {
+            if (i % cellGroupWidth != 0) {
+                // Рисуем вертикальные линии
                 canvas?.drawLine(cellSize * i, 0F, cellSize * i, height.toFloat(), boardThinLine)
-            }
-        }
-        // Рисуем горизонтальные линии
-        for (i in 0..boardWidth) {
-            if (i % cellGroupWidth == 0) {
-                canvas?.drawLine(0F, cellSize * i, width.toFloat(), cellSize * i, boardBoldLine)
-            } else {
+                // Рисуем горизонтальные линии
                 canvas?.drawLine(0F, cellSize * i, width.toFloat(), cellSize * i, boardThinLine)
             }
         }
+
+        for (i in 0..boardWidth) {
+            // Если остаток после деления равен 0(в нашем случае это будет происходить каждый третий раз)
+            if (i % cellGroupWidth == 0) {
+                // Рисуем вертикальные линии
+                canvas?.drawLine(cellSize * i, 0F, cellSize * i, height.toFloat(), boardBoldLine)
+                // Рисуем горизонтальные линии
+                canvas?.drawLine(0F, cellSize * i, width.toFloat(), cellSize * i, boardBoldLine)
+            }
+        }
     }
+
 
 }
