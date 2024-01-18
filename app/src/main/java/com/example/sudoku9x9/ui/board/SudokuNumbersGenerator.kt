@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.util.*
 
-const val HIDE_CELLS:Int = 40
+const val HIDE_CELLS:Int = 20
 
 class SudokuNumbersGenerator {
 

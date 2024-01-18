@@ -88,12 +88,25 @@
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
             android:fontFamily="sans-serif-light"
-            android:text="39:54"
+            android:text="@{viewModel.timer}"
             android:textColor="@color/white_3"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/classic_game_current_time"
             app:layout_constraintStart_toStartOf="@id/classic_game_current_time"
             tools:text="39:54" />
+
+        <!--<Chronometer
+            android:id="@+id/classic_game_timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-4dp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/white_3"
+            android:textSize="20sp"
+            android:format=""
+            app:layout_constraintBottom_toTopOf="@id/classic_game_current_time"
+            app:layout_constraintStart_toStartOf="@id/classic_game_current_time"
+            tools:text="39:54" />-->
 
         <TextView
             android:id="@+id/classic_game_mistakes"
@@ -107,12 +120,13 @@
             app:layout_constraintStart_toEndOf="@id/classic_game_current_time" />
 
         <TextView
+            android:id="@+id/classic_game_user_mistakes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
             android:fontFamily="sans-serif-light"
-            android:text="X--"
+            android:text="---"
             android:textColor="@color/white_3"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/classic_game_mistakes"
@@ -255,66 +269,66 @@
 
             <TextView
                 android:id="@+id/num_1"
-                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(1)}"
-                android:text="1" />
+                android:text="1"
+                app:inactiveNumber="@{viewModel.inactiveNumber}" />
 
             <TextView
                 android:id="@+id/num_2"
-                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(2)}"
-                android:text="2" />
+                android:text="2"
+                app:inactiveNumber="@{viewModel.inactiveNumber}" />
 
             <TextView
                 android:id="@+id/num_3"
-                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(3)}"
-                android:text="3" />
+                android:text="3"
+                app:inactiveNumber="@{viewModel.inactiveNumber}" />
 
             <TextView
                 android:id="@+id/num_4"
-                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(4)}"
-                android:text="4" />
+                android:text="4"
+                app:inactiveNumber="@{viewModel.inactiveNumber}" />
 
             <TextView
                 android:id="@+id/num_5"
-                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(5)}"
-                android:text="5" />
+                android:text="5"
+                app:inactiveNumber="@{viewModel.inactiveNumber}" />
 
             <TextView
                 android:id="@+id/num_6"
-                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(6)}"
-                android:text="6" />
+                android:text="6"
+                app:inactiveNumber="@{viewModel.inactiveNumber}" />
 
             <TextView
                 android:id="@+id/num_7"
-                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(7)}"
-                android:text="7" />
+                android:text="7"
+                app:inactiveNumber="@{viewModel.inactiveNumber}" />
 
             <TextView
                 android:id="@+id/num_8"
-                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(8)}"
-                android:text="8" />
+                android:text="8"
+                app:inactiveNumber="@{viewModel.inactiveNumber}" />
 
             <TextView
                 android:id="@+id/num_9"
-                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(9)}"
-                android:text="9" />
+                android:text="9"
+                app:inactiveNumber="@{viewModel.inactiveNumber}" />
 
 
         </GridLayout>

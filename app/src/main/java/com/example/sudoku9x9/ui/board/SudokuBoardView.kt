@@ -11,6 +11,8 @@ import android.view.View
 import com.example.sudoku9x9.R
 
 const val INACTIVE_NUMBER = 1
+const val USER_MISTAKES = 2
+const val GAME_END = 3
 
 class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
@@ -22,6 +24,8 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     private var cellSize = 0F
     private var sudokuNumbers: List<Cell>? = null
     private var listener:SudokuListener? = null
+    private var userMistakes = 0
+    private var userOpenedNumbers = 0
 
 
     private val boardField = Paint().apply {
@@ -86,12 +90,19 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         if (cell.value == number) {
             sudokuNumbers!![indexSelectedCell].wrong = false
             makeNumberInactive(number)
+            userOpenedNumbers++
         } else {
+            addUserMistake()
             sudokuNumbers!![indexSelectedCell].wrong = true
             sudokuNumbers!![indexSelectedCell].wrong_number = number
         }
         sudokuNumbers!![indexSelectedCell].hide = false
         invalidate()
+    }
+
+    private fun addUserMistake() {
+        userMistakes++
+        listener?.action(USER_MISTAKES,userMistakes)
     }
 
     private fun makeNumberInactive(number: Int) {
@@ -124,6 +135,12 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         drawGrid(canvas)
         drawNumbers(canvas)
 
+        if(userMistakes>2){
+            listener?.action(GAME_END,userMistakes)
+        }
+        if(userOpenedNumbers== HIDE_CELLS){
+            listener?.action(GAME_END,userMistakes)
+        }
     }
 
 
