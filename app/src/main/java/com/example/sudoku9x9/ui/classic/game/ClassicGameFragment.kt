@@ -11,11 +11,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.example.sudoku9x9.SudokuApplication
 import com.example.sudoku9x9.databinding.FragmentClassicGameBinding
+import com.example.sudoku9x9.ui.board.INACTIVE_NUMBER
+import com.example.sudoku9x9.ui.board.SudokuBoardView
 
-class ClassicGameFragment: Fragment() {
-    /*private val viewModel by viewModels<ClassicGameViewModel> {
-        ClassicGameViewModelFactory((requireActivity().application as SudokuApplication).repository)
-    }*/
+class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
+    private lateinit var viewModel: ClassicGameViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,7 +26,9 @@ class ClassicGameFragment: Fragment() {
 
         val args:ClassicGameFragmentArgs by navArgs()
         val factory = ClassicGameViewModelFactory((requireActivity().application as SudokuApplication).repository,args.gameLevelId)
-        val viewModel = ViewModelProviders.of(this,factory).get(ClassicGameViewModel::class.java)
+        viewModel = ViewModelProviders.of(this,factory).get(ClassicGameViewModel::class.java)
+
+        binding.classicGameBoard.setListener(this)
 
         viewModel.sudokuNumbers.numbersLiveData.observe(viewLifecycleOwner, Observer {
             binding.classicGameBoard.insertSudokuNumbers(it)
@@ -37,10 +39,17 @@ class ClassicGameFragment: Fragment() {
         })
 
 
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
 
         return binding.root
+    }
+
+    override fun action(id: Int, value: Int) {
+        when(id){
+            INACTIVE_NUMBER -> viewModel.addInactiveNumber(value)
+        }
     }
 }

@@ -1,12 +1,9 @@
 package com.example.sudoku9x9.ui.classic.game
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.sudoku9x9.R
 import com.example.sudoku9x9.data.SudokuRepository
-import com.example.sudoku9x9.data.local.ClassicCard
 import com.example.sudoku9x9.ui.board.SudokuNumbersGenerator
 
 class ClassicGameViewModel(private val repository: SudokuRepository,private val gameLevelId: Int) : ViewModel() {
@@ -17,6 +14,9 @@ class ClassicGameViewModel(private val repository: SudokuRepository,private val 
     val number: LiveData<Int>
         get() = _number
 
+    private val _inactiveNumber = MutableLiveData<Int?>()
+    val inactiveNumber: LiveData<Int?>
+        get() = _inactiveNumber
 
 
 
@@ -32,6 +32,10 @@ class ClassicGameViewModel(private val repository: SudokuRepository,private val 
 
     fun insertNumber(num:Int){
         _number.value = num
+    }
+
+    fun addInactiveNumber(num:Int){
+        _inactiveNumber.value = num
     }
 
 }

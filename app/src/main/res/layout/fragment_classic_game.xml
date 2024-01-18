@@ -255,54 +255,63 @@
 
             <TextView
                 android:id="@+id/num_1"
+                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(1)}"
                 android:text="1" />
 
             <TextView
                 android:id="@+id/num_2"
+                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(2)}"
                 android:text="2" />
 
             <TextView
                 android:id="@+id/num_3"
+                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(3)}"
                 android:text="3" />
 
             <TextView
                 android:id="@+id/num_4"
+                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(4)}"
                 android:text="4" />
 
             <TextView
                 android:id="@+id/num_5"
+                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(5)}"
                 android:text="5" />
 
             <TextView
                 android:id="@+id/num_6"
+                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(6)}"
                 android:text="6" />
 
             <TextView
                 android:id="@+id/num_7"
+                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(7)}"
                 android:text="7" />
 
             <TextView
                 android:id="@+id/num_8"
+                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(8)}"
                 android:text="8" />
 
             <TextView
                 android:id="@+id/num_9"
+                app:inactiveNumber="@{viewModel.inactiveNumber}"
                 style="@style/InputNumberStyle"
                 android:onClick="@{() -> viewModel.insertNumber(9)}"
                 android:text="9" />

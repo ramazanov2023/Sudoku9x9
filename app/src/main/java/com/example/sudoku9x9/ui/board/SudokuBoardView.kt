@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import com.example.sudoku9x9.R
 
+const val INACTIVE_NUMBER = 1
 
 class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
@@ -20,6 +21,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     private val cellGroupWidth = 3
     private var cellSize = 0F
     private var sudokuNumbers: List<Cell>? = null
+    private var listener:SudokuListener? = null
 
 
     private val boardField = Paint().apply {
@@ -56,6 +58,11 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
 
+    fun setListener(listener: SudokuListener){
+        this.listener = listener
+    }
+
+
     fun insertSudokuNumbers(numbers: List<Cell>) {
         sudokuNumbers = numbers
     }
@@ -78,12 +85,28 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     private fun insertNumber(cell: Cell, number: Int) {
         if (cell.value == number) {
             sudokuNumbers!![indexSelectedCell].wrong = false
+            makeNumberInactive(number)
         } else {
             sudokuNumbers!![indexSelectedCell].wrong = true
             sudokuNumbers!![indexSelectedCell].wrong_number = number
         }
         sudokuNumbers!![indexSelectedCell].hide = false
         invalidate()
+    }
+
+    private fun makeNumberInactive(number: Int) {
+        var count = 1
+        sudokuNumbers?.forEach {
+            if(it.value == number && !it.hide){
+                count++
+            }
+        }
+        if(count==9){
+            // вызывает слушатель и передаем ему номер цифры, которую нужно сделать неактивной
+            listener?.let {
+                it.action(INACTIVE_NUMBER,number)
+            }
+        }
     }
 
 
@@ -102,6 +125,8 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         drawNumbers(canvas)
 
     }
+
+
 
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -205,5 +230,8 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         }
     }
 
+    interface SudokuListener {
+        fun action(id:Int,value:Int)
+    }
 
 }
