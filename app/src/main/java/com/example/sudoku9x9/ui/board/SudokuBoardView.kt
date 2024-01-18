@@ -50,14 +50,40 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         textSize = 82F
     }
     private val boardWrongNumber = Paint().apply {
-        color = resources.getColor(R.color.gray_3)
+        color = resources.getColor(R.color.red_1)
         style = Paint.Style.FILL
-        textSize = 72F
+        textSize = 82F
     }
 
 
     fun insertSudokuNumbers(numbers: List<Cell>) {
         sudokuNumbers = numbers
+    }
+
+    fun checkInputNumber(number: Int?) {
+        number?.let {
+            val cell = sudokuNumbers!![indexSelectedCell]
+            if (cell.wrong) {
+                insertNumber(cell, number)
+            } else {
+                if (cell.hide) {
+                    insertNumber(cell, number)
+                } else {
+
+                }
+            }
+        }
+    }
+
+    private fun insertNumber(cell: Cell, number: Int) {
+        if (cell.value == number) {
+            sudokuNumbers!![indexSelectedCell].wrong = false
+        } else {
+            sudokuNumbers!![indexSelectedCell].wrong = true
+            sudokuNumbers!![indexSelectedCell].wrong_number = number
+        }
+        sudokuNumbers!![indexSelectedCell].hide = false
+        invalidate()
     }
 
 
@@ -83,9 +109,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         return if (event?.action == MotionEvent.ACTION_DOWN) {
             cellVertical = (event.y / cellSize).toInt()
             cellHorizontal = (event.x / cellSize).toInt()
-            Log.e("rrr", "1 - cellVertical-$cellVertical  cellHorizontal-$cellHorizontal")
             indexSelectedCell = ((cellVertical + 1) * 9) - (9 - cellHorizontal)
-            Log.e("rrr", "2 - indexSelectedCell-$indexSelectedCell")
             invalidate()
             true
         } else false
@@ -95,22 +119,30 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     private fun drawNumbers(canvas: Canvas?) {
         sudokuNumbers?.forEach {
             if (!it.hide) {
-                var num = Paint()
                 val textBounds = Rect()
-                val valueCell = it.value.toString()
-                num = boardNumbers
+                var valueCell: String?
+                var num: Paint?
+
+                if (it.wrong) {
+                    valueCell = it.wrong_number.toString()
+                    num = boardWrongNumber
+                } else {
+                    valueCell = it.value.toString()
+                    num = boardNumbers
+                }
                 num.getTextBounds(valueCell, 0, valueCell.length, textBounds)
                 val numberWidth = num.measureText(valueCell)
                 val numberHeight = textBounds.height()
 
                 canvas?.drawText(
-                    it.value.toString(),
+                    valueCell,
                     it.hor * cellSize + cellSize / 2 - numberWidth / 2,
                     it.ver * cellSize + cellSize / 2 + numberHeight / 2,
                     num
                 )
             }
         }
+
     }
 
     private fun drawSelectCell(canvas: Canvas?) {
@@ -153,7 +185,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     private fun drawGrid(canvas: Canvas?) {
 
         for (i in 0..boardWidth) {
-            // Если остаток после деления равен 0(в нашем случае это будет происходить каждый третий раз)
+            // Если остаток после деления не равен 0
             if (i % cellGroupWidth != 0) {
                 // Рисуем вертикальные линии
                 canvas?.drawLine(cellSize * i, 0F, cellSize * i, height.toFloat(), boardThinLine)

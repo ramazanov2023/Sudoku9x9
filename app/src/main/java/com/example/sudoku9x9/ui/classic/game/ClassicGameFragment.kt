@@ -32,6 +32,10 @@ class ClassicGameFragment: Fragment() {
             binding.classicGameBoard.insertSudokuNumbers(it)
         })
 
+        viewModel.number.observe(viewLifecycleOwner, Observer {
+            binding.classicGameBoard.checkInputNumber(it)
+        })
+
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

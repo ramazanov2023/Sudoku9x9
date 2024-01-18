@@ -13,9 +13,9 @@ class ClassicGameViewModel(private val repository: SudokuRepository,private val 
     val userRecords = repository.getClassicGameUserData(gameLevelId)
     val sudokuNumbers = SudokuNumbersGenerator()
 
-    private val _start = MutableLiveData<Boolean?>()
-    val start: LiveData<Boolean?>
-        get() = _start
+    private val _number = MutableLiveData<Int>()
+    val number: LiveData<Int>
+        get() = _number
 
 
 
@@ -30,16 +30,8 @@ class ClassicGameViewModel(private val repository: SudokuRepository,private val 
 
 
 
-    fun startGame() {
-        _start.value = true
-    }
-
-    fun removeStart() {
-        _start.value = null
-    }
-
     fun insertNumber(num:Int){
-
+        _number.value = num
     }
 
 }
