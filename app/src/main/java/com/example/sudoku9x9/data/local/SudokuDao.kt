@@ -18,6 +18,24 @@ interface SudokuDao {
     @Query("SELECT * FROM classic_card_table WHERE id == :gameLevelId")
     fun getClassicGameUserData(gameLevelId:Int):LiveData<ClassicCard>
 
+    @Insert
+    fun insertUserProfile(profile: Profile)
+
+    @Query("SELECT * FROM profile_table WHERE id == :id")
+    fun getUserProfile(id:Int):LiveData<Profile>
+
+    @Query("SELECT firstLaunch FROM profile_table WHERE id == :id")
+    fun checkFirstLaunch(id:Int):Boolean
+
+    @Query("UPDATE classic_card_table SET meanTime = :meanTime,bestTime = :bestTime,games = :games WHERE id == :gameLevelId")
+    fun updateClassicCardData(games:Long, meanTime:Long, bestTime:Long, gameLevelId:Int)
+
+    @Query("UPDATE profile_table SET userName = :userName,userEmail = :userEmail,userAvatar = :userAvatar WHERE id == :id")
+    fun updateUserProfile(userName:String, userEmail:String, userAvatar:String, id:Int)
+
+    @Query("UPDATE profile_table SET firstLaunch = :firstLaunch WHERE id == :id")
+    fun setFirstLaunch(firstLaunch:Boolean, id:Int)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertClassicCardsData(vararg card:ClassicCard)
 

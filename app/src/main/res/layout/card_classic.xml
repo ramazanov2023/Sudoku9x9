@@ -12,9 +12,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:layout_height="wrap_content">
+        android:paddingEnd="24dp">
 
 
         <androidx.cardview.widget.CardView
@@ -155,17 +155,17 @@
             android:text="@{card.level}"
             android:textColor="@color/white_1"
             android:textSize="26sp"
-            app:layout_constraintStart_toStartOf="@id/card_classic_level"
             app:layout_constraintBottom_toTopOf="@id/card_classic_level"
+            app:layout_constraintStart_toStartOf="@id/card_classic_level"
             tools:text="Fast" />
 
         <TextView
             android:id="@+id/card_classic_level"
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="60dp"
             android:elevation="@dimen/elevation_text"
             android:text="Level of\ncomplexity"
             app:layout_constraintStart_toStartOf="@id/card_classic"
@@ -213,7 +213,7 @@
 
         <TextView
             android:id="@+id/card_classic_mean_time"
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="@dimen/elevation_text"
@@ -222,21 +222,19 @@
             app:layout_constraintStart_toStartOf="@id/card_classic_user_records" />
 
         <TextView
+            style="@style/TextScoreThin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
-            android:fontFamily="sans-serif-light"
-            android:text="@{card.meanTime}"
-            android:textColor="@color/white_3"
-            android:textSize="20sp"
+            app:setTime="@{card.meanTime}"
             app:layout_constraintBottom_toTopOf="@id/card_classic_mean_time"
             app:layout_constraintStart_toStartOf="@id/card_classic_user_records"
             tools:text="51:63" />
 
         <TextView
             android:id="@+id/card_classic_best_time"
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="@dimen/elevation_text"
@@ -245,21 +243,19 @@
             app:layout_constraintStart_toStartOf="@id/card_classic_user_records" />
 
         <TextView
+            style="@style/TextScoreThin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
-            android:fontFamily="sans-serif-light"
-            android:text="@{card.bestTime}"
-            android:textColor="@color/white_3"
-            android:textSize="20sp"
+            app:setTime="@{card.bestTime}"
             app:layout_constraintBottom_toTopOf="@id/card_classic_best_time"
             app:layout_constraintStart_toStartOf="@id/card_classic_user_records"
             tools:text="37:48" />
 
         <TextView
             android:id="@+id/card_classic_games"
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="72dp"
@@ -270,14 +266,12 @@
             app:layout_constraintTop_toTopOf="@id/card_classic_mean_time" />
 
         <TextView
+            style="@style/TextScoreThin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
-            android:fontFamily="sans-serif-light"
-            android:text="@{card.games}"
-            android:textColor="@color/white_3"
-            android:textSize="20sp"
+            app:setGames="@{card.games}"
             app:layout_constraintBottom_toTopOf="@id/card_classic_games"
             app:layout_constraintStart_toStartOf="@id/card_classic_games"
             tools:text="183" />

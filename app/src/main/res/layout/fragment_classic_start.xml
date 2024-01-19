@@ -27,12 +27,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:fontFamily="sans-serif-black"
             android:text="Regular"
-            android:textColor="@color/white_1"
-            android:textSize="44sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/TextLargeBlack" />
 
         <TextView
             android:id="@+id/classic_start_mode_last_name"
@@ -40,15 +38,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="-10dp"
-            android:fontFamily="sans-serif-thin"
             android:text="Mode"
-            android:textColor="@color/white_1"
-            android:textSize="44sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/classic_start_mode_first_name" />
+            app:layout_constraintTop_toBottomOf="@id/classic_start_mode_first_name"
+            style="@style/TextLargeThin" />
 
         <TextView
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -79,7 +75,7 @@
             app:tint="@color/blue" />
 
         <TextView
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_mode"

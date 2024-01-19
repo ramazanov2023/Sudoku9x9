@@ -18,12 +18,14 @@ fun setInactiveNumber(number: TextView, hideNumber: Int?) {
     }
 }
 
-fun Int.convertToX():String{
-    return when(this){
+fun Int.convertToX(): String {
+    return when (this) {
         1 -> "X--"
         2 -> "XX-"
         3 -> "XXX"
         else -> "---"
     }
 }
+
+
 

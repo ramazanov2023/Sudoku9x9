@@ -29,3 +29,30 @@ fun setClassicDataList(textView: TextView,data:ClassicCard?){
 
     }
 }
+@BindingAdapter("setTime")
+fun convertLongToTime(textView: TextView,time:Long?){
+    time?.let {
+        var sec = it / 1000
+        var min = 0L
+        var newTime = ""
+        if(sec<60){
+            newTime = "$sec"
+        }else{
+            min = sec/60
+//          sec = sec%60
+            sec %= 60
+            newTime = when(sec){
+                in 0..9 -> "$min:0$sec"
+                else -> "$min:$sec"
+            }
+        }
+        textView.text = newTime
+    }
+}
+
+@BindingAdapter("setGames")
+fun convertLongToGames(textView: TextView,games:Long?){
+    games?.let {
+        textView.text = it.toString()
+    }
+}

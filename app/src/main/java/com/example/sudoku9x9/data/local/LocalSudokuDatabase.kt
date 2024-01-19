@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [ClassicCard::class], version = 1, exportSchema = false)
+@Database(entities = [ClassicCard::class,Profile::class], version = 1, exportSchema = false)
 abstract class LocalSudokuDatabase:RoomDatabase() {
     abstract val sudokuDao:SudokuDao
 

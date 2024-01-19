@@ -10,9 +10,9 @@ data class ClassicCard(
     val id:Int,
     val level:String,
     val rating:String,
-    val meanTime:String,
-    val bestTime:String,
-    val games:String,
+    val meanTime:Long,
+    val bestTime:Long,
+    val games:Long,
     val record:String,
     val user1:Int,
     val user2:Int,
@@ -26,4 +26,14 @@ data class ClassicCard(
     val user10:Int,
     val user11:Int,
     val user12:Int,
+)
+
+@Entity(tableName = "profile_table")
+data class Profile(
+    @PrimaryKey
+    val id:Int,
+    val userName:String = "",
+    val userEmail:String = "",
+    val userAvatar:String = "",
+    val firstLaunch:Boolean = false
 )

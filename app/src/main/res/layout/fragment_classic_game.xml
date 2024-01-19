@@ -70,7 +70,7 @@
 
         <TextView
             android:id="@+id/classic_game_current_time"
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -87,10 +87,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
-            android:fontFamily="sans-serif-light"
             android:text="@{viewModel.timer}"
-            android:textColor="@color/white_3"
-            android:textSize="20sp"
+            style="@style/TextScoreThin"
             app:layout_constraintBottom_toTopOf="@id/classic_game_current_time"
             app:layout_constraintStart_toStartOf="@id/classic_game_current_time"
             tools:text="39:54" />
@@ -110,7 +108,7 @@
 
         <TextView
             android:id="@+id/classic_game_mistakes"
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="@dimen/elevation_text"
@@ -125,17 +123,15 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
-            android:fontFamily="sans-serif-light"
+            style="@style/TextScoreThin"
             android:text="---"
-            android:textColor="@color/white_3"
-            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@id/classic_game_mistakes"
             app:layout_constraintStart_toStartOf="@id/classic_game_mistakes"
             tools:text="X--" />
 
         <TextView
             android:id="@+id/classic_game_mean_time"
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="@dimen/elevation_text"
@@ -149,17 +145,15 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
-            android:fontFamily="sans-serif-light"
-            android:text="@{viewModel.userRecords.meanTime}"
-            android:textColor="@color/white_3"
-            android:textSize="20sp"
+            style="@style/TextScoreThin"
+            android:text="51:63"
             app:layout_constraintBottom_toTopOf="@id/classic_game_mean_time"
             app:layout_constraintStart_toStartOf="@id/classic_game_mean_time"
             tools:text="51:63" />
 
         <TextView
             android:id="@+id/classic_game_best_time"
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
@@ -174,10 +168,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
-            android:fontFamily="sans-serif-light"
-            android:text="@{viewModel.userRecords.bestTime}"
-            android:textColor="@color/white_3"
-            android:textSize="20sp"
+            android:text="37:48"
+            style="@style/TextScoreThin"
             app:layout_constraintBottom_toTopOf="@id/classic_game_best_time"
             app:layout_constraintStart_toStartOf="@id/classic_game_best_time"
             tools:text="37:48" />
@@ -204,7 +196,7 @@
             app:tint="@color/white_3" />
 
         <TextView
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-14dp"
@@ -226,7 +218,7 @@
             app:tint="@color/white_3" />
 
         <TextView
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-14dp"
@@ -248,7 +240,7 @@
             app:tint="@color/white_3" />
 
         <TextView
-            style="@style/textSmall"
+            style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-14dp"

@@ -11,4 +11,11 @@ interface SudokuRepository {
 
     fun getClassicGameUserData(gameLevelId:Int): LiveData<ClassicCard>
 
+    fun getLastTenGameTime():Array<Long>
+
+    fun insertClassicCardsData(data:ClassicCard)
+
+    fun updateClassicCardData(games:Long, meanTime:Long, bestTime:Long, gameLevelId:Int)
+
+
 }

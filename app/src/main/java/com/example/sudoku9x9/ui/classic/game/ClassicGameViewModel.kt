@@ -1,17 +1,18 @@
 package com.example.sudoku9x9.ui.classic.game
 
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sudoku9x9.R
 import com.example.sudoku9x9.data.SudokuRepository
+import com.example.sudoku9x9.data.local.ClassicCard
 import com.example.sudoku9x9.ui.board.SudokuNumbersGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.sql.Time
-import java.util.*
 
 class ClassicGameViewModel(private val repository: SudokuRepository,private val gameLevelId: Int) : ViewModel() {
     private lateinit var downTimer: CountDownTimer
@@ -44,7 +45,9 @@ class ClassicGameViewModel(private val repository: SudokuRepository,private val 
             var min = 0
             var sec = 0
             var mls = 0
+            var mlsLong:Long = 0
             override fun onTick(millisUntilFinished: Long) {
+                mlsLong+=100L
                 mls++
                 if(mls==10){
                     sec++
@@ -63,7 +66,30 @@ class ClassicGameViewModel(private val repository: SudokuRepository,private val 
             }
 
             override fun onFinish() {
-
+                Log.e("pppp","1 - onFinish")
+                viewModelScope.launch {
+                    Log.e("pppp","2 - launch")
+                    var lastMeanTime:Long = 0
+                    withContext(Dispatchers.IO){
+                        Log.e("pppp","3 - withContext")
+                        repository.getLastTenGameTime().forEach {
+                            lastMeanTime+=it
+                        }
+                        lastMeanTime+=mlsLong
+                        lastMeanTime/=10
+                        Log.e("pppp","4 - lastMeanTime-$lastMeanTime")
+                        val games = userRecords.value?.games
+                        games?.let {
+                            repository.updateClassicCardData(
+                                games = it + 1,
+                                meanTime = lastMeanTime,
+                                bestTime = mlsLong,
+                                gameLevelId = 1
+                            )
+                        }
+                        Log.e("pppp","6 - lastMeanTime = $lastMeanTime, mlsLong = $mlsLong")
+                    }
+                }
             }
         }
         downTimer.start()
