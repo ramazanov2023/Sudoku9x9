@@ -146,7 +146,7 @@
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
             style="@style/TextScoreThin"
-            android:text="51:63"
+            app:setTime="@{viewModel.userRecords.lastMeanTime}"
             app:layout_constraintBottom_toTopOf="@id/classic_game_mean_time"
             app:layout_constraintStart_toStartOf="@id/classic_game_mean_time"
             tools:text="51:63" />
@@ -168,7 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
-            android:text="37:48"
+            app:setTime="@{viewModel.userRecords.bestTime}"
             style="@style/TextScoreThin"
             app:layout_constraintBottom_toTopOf="@id/classic_game_best_time"
             app:layout_constraintStart_toStartOf="@id/classic_game_best_time"

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.sudoku9x9.R
 import com.example.sudoku9x9.data.local.ClassicCard
+import com.example.sudoku9x9.data.local.ClassicGame
 import com.example.sudoku9x9.data.local.LocalSudokuResource
 import com.example.sudoku9x9.data.local.Profile
 import com.example.sudoku9x9.data.remote.RemoteSudokuResource
@@ -42,11 +43,21 @@ class DefaultSudokuRepository(
 
     override fun updateClassicCardData(
         games: Long,
+        lastMeanTime: Long,
         meanTime: Long,
+        lastTime: Long,
+        pastBesTime: Long,
         bestTime: Long,
         gameLevelId: Int
     ) {
-        localSudokuResource.sudokuDao.updateClassicCardData(games = games,meanTime = meanTime,bestTime = bestTime,gameLevelId = gameLevelId)
+        localSudokuResource.sudokuDao.updateClassicCardData(
+            games = games,
+            lastMeanTime = lastMeanTime,
+            meanTime = meanTime,
+            bestTime = bestTime,
+            pastBesTime = pastBesTime,
+            lastTime = lastTime,
+            gameLevelId = gameLevelId)
     }
 
     override fun insertClassicCardsData(data: ClassicCard) {
@@ -58,7 +69,12 @@ class DefaultSudokuRepository(
     }
 
     override fun getLastTenGameTime(): Array<Long> {
-        return arrayOf(36700,40510,32590,47120,31568,36700,40510,32590,47120)
+        return localSudokuResource.sudokuDao.getLastTenClassicGames()
+//        return arrayOf(36700,40510,32590,47120,31568,36700,40510,32590,47120)
+    }
+
+    override fun saveClassicGame(classicGame: ClassicGame) {
+        localSudokuResource.sudokuDao.insertClassicGame(classicGame)
     }
 
     private fun getCardsList(): List<ClassicCard> {
@@ -67,8 +83,11 @@ class DefaultSudokuRepository(
                 id = 1,
                 level = "Fast",
                 rating = "3289",
-                meanTime = 58360,
-                bestTime = 56470,
+                lastMeanTime = 0,
+                meanTime = 0,
+                lastTime = 0,
+                pastBesTime = 132125,
+                bestTime = 132125,
                 games = 0,
                 record = "48:57",
                 user1 = R.drawable.fot_11,
@@ -88,8 +107,11 @@ class DefaultSudokuRepository(
                 id = 2,
                 level = "Light",
                 rating = "2476",
-                meanTime = 163360,
-                bestTime = 158470,
+                lastMeanTime = 0,
+                meanTime = 0,
+                lastTime = 0,
+                pastBesTime = 0,
+                bestTime = 0,
                 games = 0,
                 record = "52:54",
                 user1 = R.drawable.fot_5,
@@ -109,8 +131,11 @@ class DefaultSudokuRepository(
                 id = 3,
                 level = "Hard",
                 rating = "1814",
-                meanTime = 317360,
-                bestTime = 304470,
+                lastMeanTime = 0,
+                meanTime = 0,
+                lastTime = 0,
+                pastBesTime = 0,
+                bestTime = 0,
                 games = 0,
                 record = "52:54",
                 user1 = R.drawable.fot_12,
@@ -130,8 +155,11 @@ class DefaultSudokuRepository(
                 id = 4,
                 level = "Master",
                 rating = "5932",
-                meanTime = 58360,
-                bestTime = 56470,
+                lastMeanTime = 0,
+                meanTime = 0,
+                lastTime = 0,
+                pastBesTime = 0,
+                bestTime = 0,
                 games = 0,
                 record = "52:54",
                 user1 = R.drawable.fot_1,

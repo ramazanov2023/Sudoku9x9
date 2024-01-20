@@ -1,5 +1,6 @@
 package com.example.sudoku9x9.ui.classic
 
+import android.graphics.Color
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,21 +33,7 @@ fun setClassicDataList(textView: TextView,data:ClassicCard?){
 @BindingAdapter("setTime")
 fun convertLongToTime(textView: TextView,time:Long?){
     time?.let {
-        var sec = it / 1000
-        var min = 0L
-        var newTime = ""
-        if(sec<60){
-            newTime = "$sec"
-        }else{
-            min = sec/60
-//          sec = sec%60
-            sec %= 60
-            newTime = when(sec){
-                in 0..9 -> "$min:0$sec"
-                else -> "$min:$sec"
-            }
-        }
-        textView.text = newTime
+        textView.text = toTime(it)
     }
 }
 
@@ -55,4 +42,54 @@ fun convertLongToGames(textView: TextView,games:Long?){
     games?.let {
         textView.text = it.toString()
     }
+}
+
+@BindingAdapter("setMeanTimeProgress")
+fun setClassicProgressMeanTime(textView: TextView,progress: ClassicCard?){
+    progress?.let {
+        val lastMeanTime = it.lastMeanTime
+        val meanTime = it.meanTime
+        if(lastMeanTime<meanTime){
+            textView.text = toTime(meanTime-lastMeanTime)
+            textView.setTextColor(Color.parseColor("#28B5FE"))
+        }else{
+            textView.text = toTime(lastMeanTime-meanTime)
+            textView.setTextColor(Color.parseColor("#F02D63"))
+        }
+    }
+}
+
+@BindingAdapter("setBestTimeProgress")
+fun setClassicProgressBestTime(textView: TextView,progress: ClassicCard?){
+    progress?.let {
+        val lastTime = it.lastTime
+        val pastBesTime = it.pastBesTime
+        if(lastTime<pastBesTime){
+            textView.text = toTime(pastBesTime-lastTime)
+            textView.setTextColor(Color.parseColor("#28B5FE"))
+        }else{
+            textView.text = toTime(lastTime-pastBesTime)
+            textView.setTextColor(Color.parseColor("#F02D63"))
+        }
+    }
+}
+
+
+
+private fun toTime(it: Long): String {
+    var sec = it / 1000
+    var min = 0L
+    var newTime = ""
+    if (sec < 60) {
+        newTime = "$sec"
+    } else {
+        min = sec / 60
+//          sec = sec%60
+        sec %= 60
+        newTime = when (sec) {
+            in 0..9 -> "$min:0$sec"
+            else -> "$min:$sec"
+        }
+    }
+    return newTime
 }

@@ -2,6 +2,7 @@ package com.example.sudoku9x9.data
 
 import androidx.lifecycle.LiveData
 import com.example.sudoku9x9.data.local.ClassicCard
+import com.example.sudoku9x9.data.local.ClassicGame
 
 interface SudokuRepository {
 
@@ -15,7 +16,15 @@ interface SudokuRepository {
 
     fun insertClassicCardsData(data:ClassicCard)
 
-    fun updateClassicCardData(games:Long, meanTime:Long, bestTime:Long, gameLevelId:Int)
+    fun updateClassicCardData(games: Long,
+                              lastMeanTime: Long,
+                              meanTime: Long,
+                              lastTime: Long,
+                              pastBesTime: Long,
+                              bestTime: Long,
+                              gameLevelId: Int)
+
+    fun saveClassicGame(classicGame: ClassicGame)
 
 
 }

@@ -227,7 +227,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
             android:elevation="@dimen/elevation_text"
-            app:setTime="@{card.meanTime}"
+            app:setTime="@{card.lastMeanTime}"
             app:layout_constraintBottom_toTopOf="@id/card_classic_mean_time"
             app:layout_constraintStart_toStartOf="@id/card_classic_user_records"
             tools:text="51:63" />

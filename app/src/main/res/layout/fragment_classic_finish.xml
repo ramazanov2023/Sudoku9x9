@@ -185,7 +185,7 @@
                     style="@style/TextScoreThin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:setTime="@{viewModel.cardsData.meanTime}"
+                    app:setTime="@{viewModel.cardsData.lastMeanTime}"
                     tools:text="56:37" />
 
                 <TextView
@@ -207,7 +207,7 @@
                     style="@style/TextScoreThin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:setTime="@{viewModel.cardsData.meanTime}"
+                    app:setMeanTimeProgress="@{viewModel.cardsData}"
                     tools:text="1:24" />
 
                 <TextView
@@ -266,7 +266,7 @@
                     style="@style/TextScoreThin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:setTime="@{viewModel.cardsData.bestTime}"
+                    app:setTime="@{viewModel.cardsData.lastTime}"
                     tools:text="38:74" />
 
                 <TextView
@@ -288,7 +288,7 @@
                     style="@style/TextScoreThin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:setTime="@{viewModel.cardsData.bestTime}"
+                    app:setBestTimeProgress="@{viewModel.cardsData}"
                     tools:text="2:52" />
 
                 <TextView
@@ -310,7 +310,7 @@
                     style="@style/TextScoreThin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:setTime="@{viewModel.cardsData.bestTime}"
+                    app:setTime="@{viewModel.cardsData.pastBesTime}"
                     tools:text="41:26" />
 
                 <TextView

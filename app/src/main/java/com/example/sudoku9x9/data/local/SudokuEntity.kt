@@ -11,7 +11,10 @@ data class ClassicCard(
     val level:String,
     val rating:String,
     val meanTime:Long,
+    val lastMeanTime:Long,
+    val pastBesTime:Long,
     val bestTime:Long,
+    val lastTime:Long,
     val games:Long,
     val record:String,
     val user1:Int,
@@ -32,8 +35,16 @@ data class ClassicCard(
 data class Profile(
     @PrimaryKey
     val id:Int,
-    val userName:String = "",
-    val userEmail:String = "",
-    val userAvatar:String = "",
-    val firstLaunch:Boolean = false
+    var userName:String = "",
+    var userEmail:String = "",
+    var userAvatar:String = "",
+    var firstLaunch:Boolean = false
+)
+
+@Entity(tableName = "classic_games_history_table")
+data class ClassicGame(
+    @PrimaryKey(autoGenerate = true)
+    var id:Int = 0,
+    val time:Long,
+    val date:Long
 )
