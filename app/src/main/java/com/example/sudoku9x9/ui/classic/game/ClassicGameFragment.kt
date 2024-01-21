@@ -1,6 +1,8 @@
 package com.example.sudoku9x9.ui.classic.game
 
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +21,18 @@ import com.example.sudoku9x9.ui.board.*
 class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
     private lateinit var viewModel: ClassicGameViewModel
     private lateinit var binding: FragmentClassicGameBinding
+    private lateinit var titleSpan:SpannableString
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentClassicGameBinding.inflate(inflater)
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "Fast Classic"
+        val toolbarTitle = "Fast Classic"
+        titleSpan = SpannableString(toolbarTitle).apply {
+            setSpan(TextAppearanceSpan(context, R.style.TextToolbarBold),0,4,0)
+            setSpan(TextAppearanceSpan(context, R.style.TextToolbarThin),5,toolbarTitle.length,0)
+        }
 
         val args:ClassicGameFragmentArgs by navArgs()
         val factory = ClassicGameViewModelFactory((requireActivity().application as SudokuApplication).repository,args.gameLevelId)
@@ -63,5 +70,10 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
             }
 //            GAME_END -> findNavController().navigate(R.id.classicFinishFragment)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as? AppCompatActivity)?.supportActionBar?.title = titleSpan
     }
 }

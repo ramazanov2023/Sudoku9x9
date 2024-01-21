@@ -49,53 +49,15 @@
             app:layout_constraintTop_toBottomOf="@id/classic_finish_announcement" />
 
         <TextView
-            android:id="@+id/classic_finish_first_part"
-            style="@style/TextLargeThin"
+            android:id="@+id/classic_finish_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="50dp"
             android:text="Your"
+            android:textColor="@color/white_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            style="@style/TextLargeBlack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="mean time"
-            app:layout_constraintBottom_toBottomOf="@id/classic_finish_first_part"
-            app:layout_constraintStart_toEndOf="@id/classic_finish_first_part" />
-
-        <TextView
-            android:id="@+id/classic_finish_decreased_part"
-            style="@style/TextLargeBlack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-8dp"
-            android:text="decreased"
-            app:layout_constraintStart_toStartOf="@id/classic_finish_first_part"
-            app:layout_constraintTop_toBottomOf="@id/classic_finish_first_part" />
-
-        <TextView
-            android:id="@+id/classic_finish_by_part"
-            style="@style/TextLargeThin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-8dp"
-            android:text="by"
-            app:layout_constraintStart_toStartOf="@id/classic_finish_first_part"
-            app:layout_constraintTop_toBottomOf="@id/classic_finish_decreased_part" />
-
-        <TextView
-            style="@style/TextLargeBlack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="5s"
-            app:layout_constraintBottom_toBottomOf="@id/classic_finish_by_part"
-            app:layout_constraintStart_toEndOf="@id/classic_finish_by_part" />
 
         <TextView
             android:id="@+id/classic_finish_name_level"
@@ -103,8 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fast"
-            app:layout_constraintStart_toStartOf="@id/classic_finish_first_part"
-            app:layout_constraintTop_toBottomOf="@id/classic_finish_by_part" />
+            app:layout_constraintStart_toStartOf="@id/classic_finish_message"
+            app:layout_constraintTop_toBottomOf="@id/classic_finish_message" />
 
         <TextView
             style="@style/TextSmallLight"
@@ -122,7 +84,7 @@
             android:layout_height="70dp"
             android:layout_marginTop="48dp"
             app:cardCornerRadius="10dp"
-            app:layout_constraintStart_toStartOf="@id/classic_finish_first_part"
+            app:layout_constraintStart_toStartOf="@id/classic_finish_message"
             app:layout_constraintTop_toBottomOf="@id/classic_finish_name_level">
 
             <ImageView

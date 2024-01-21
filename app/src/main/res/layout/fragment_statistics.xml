@@ -9,20 +9,19 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/gray_1"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray_1">
 
         <TextView
-            android:text="Statistics"
-            android:textSize="40dp"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
-            android:textColor="@color/blue"
+            android:id="@+id/main_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:gravity="start|center_vertical"
+            android:paddingStart="24dp"
+            android:text="Statistics"
 
-
+            android:textColor="@color/white_1"
+            android:textSize="44sp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

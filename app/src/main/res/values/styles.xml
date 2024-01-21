@@ -45,7 +45,8 @@
     </style>
 
     <style name="TextLargeBlack">
-        <item name="android:fontFamily">sans-serif-black</item>
+<!--        <item name="android:fontFamily">sans-serif-black</item>-->
+        <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/white_1</item>
         <item name="android:textSize">44sp</item>
     </style>
@@ -65,6 +66,18 @@
     <style name="TextScoreThin">
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textColor">@color/white_3</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextToolbarBold">
+        <item name="android:fontFamily">sans-serif-medium</item>
+<!--        <item name="android:textStyle">bold</item>-->
+        <item name="android:textColor">@color/white_1</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="TextToolbarThin">
+        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:textColor">@color/white_1</item>
         <item name="android:textSize">20sp</item>
     </style>
 
