@@ -3,6 +3,7 @@ package com.example.sudoku9x9.ui.classic.game
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.TextAppearanceSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,8 +49,13 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
             binding.classicGameBoard.checkInputNumber(it)
         })
 
-//        binding.classicGameTimer.start()
-//        binding.classicGameTimer.format
+        viewModel.finishGame.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                findNavController().navigate(ClassicGameFragmentDirections.actionClassicGameFragmentToClassicFinishFragment(it.first,it.second))
+            }
+
+        })
+
 
 
 
@@ -65,8 +71,8 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
             INACTIVE_NUMBER -> viewModel.addInactiveNumber(value)
             USER_MISTAKES -> binding.classicGameUserMistakes.text = value.convertToX()
             GAME_END -> {
+                Log.e("nnnn","1  value-$value")
                 viewModel.insertUserGameData(value)
-                findNavController().navigate(ClassicGameFragmentDirections.actionClassicGameFragmentToClassicFinishFragment())
             }
 //            GAME_END -> findNavController().navigate(R.id.classicFinishFragment)
         }

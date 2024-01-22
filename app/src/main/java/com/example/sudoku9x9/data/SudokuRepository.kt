@@ -17,11 +17,14 @@ interface SudokuRepository {
     fun insertClassicCardsData(data:ClassicCard)
 
     fun updateClassicCardData(games: Long,
+                              mistakes: Int,
                               lastMeanTime: Long,
                               meanTime: Long,
                               lastTime: Long,
                               pastBesTime: Long,
                               bestTime: Long,
+                              progress:Boolean,
+                              progressValue:Long,
                               gameLevelId: Int)
 
     fun saveClassicGame(classicGame: ClassicGame)

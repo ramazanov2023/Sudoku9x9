@@ -38,6 +38,18 @@ fun convertLongToTime(textView: TextView, time: Long?) {
     }
 }
 
+@BindingAdapter("setMistakes")
+fun setGameMistakes(textView: TextView, mistakes: Int?) {
+    mistakes?.let {
+        textView.text =when(mistakes){
+            1 -> "1(+2s)"
+            2 -> "2(+4s)"
+            3 -> "3(Loss)"
+            else -> "No mistakes"
+        }
+    }
+}
+
 @BindingAdapter("setGames")
 fun convertLongToGames(textView: TextView, games: Long?) {
     games?.let {
@@ -52,13 +64,12 @@ fun convertLongToGames(textView: TextView, games: Long?) {
 @BindingAdapter("setMeanTimeProgress")
 fun setClassicProgressMeanTime(textView: TextView, progress: ClassicCard?) {
     progress?.let {
-        val lastMeanTime = it.lastMeanTime
-        val meanTime = it.meanTime
-        if (lastMeanTime < meanTime) {
-            textView.text = toTime(meanTime - lastMeanTime)
+        textView.text = toTime(it.progressValue)
+        Log.e("nnnn","9  progress-${it.progress}  progressValue-${it.progressValue}")
+        Log.e("nnnn","10  toTime-${toTime(it.progressValue)}")
+        if (it.progress) {
             textView.setTextColor(Color.parseColor("#28B5FE"))
         } else {
-            textView.text = toTime(lastMeanTime - meanTime)
             textView.setTextColor(Color.parseColor("#F02D63"))
         }
     }
@@ -80,7 +91,7 @@ fun setClassicProgressBestTime(textView: TextView, progress: ClassicCard?) {
 }
 
 
-private fun toTime(it: Long): String {
+private fun toTime2(it: Long): String {
 
     var sec = it / 1000
     var min = 0L
@@ -93,6 +104,57 @@ private fun toTime(it: Long): String {
     } else {
         min = sec / 60
 //          sec = sec%60
+        sec %= 60
+        newTime = when (sec) {
+            in 0..9 -> "$min:0$sec"
+            else -> "$min:$sec"
+        }
+    }
+    return newTime
+}
+
+private fun toTime(it: Long): String {
+
+    var mls = (it % 1000) / 10
+    var sec = it / 1000
+    var min = 0L
+    var newTime = ""
+
+    if (it == 0L) return "--"
+
+    if (sec < 60) {
+        newTime = if (mls < 10) {
+            "$sec:0$mls"
+        } else {
+            "$sec:$mls"
+        }
+    } else {
+        min = sec / 60
+        sec %= 60
+        newTime = when (sec) {
+            in 0..9 -> "$min:0$sec"
+            else -> "$min:$sec"
+        }
+    }
+    return newTime
+}
+
+fun Long.convertToTime():String{
+    var mls = (this % 1000) / 10
+    var sec = this / 1000
+    var min = 0L
+    var newTime = ""
+
+    if (this == 0L) return "--"
+
+    if (sec < 60) {
+        newTime = if (mls < 10) {
+            "$sec:0$mls"
+        } else {
+            "$sec:$mls"
+        }
+    } else {
+        min = sec / 60
         sec %= 60
         newTime = when (sec) {
             in 0..9 -> "$min:0$sec"

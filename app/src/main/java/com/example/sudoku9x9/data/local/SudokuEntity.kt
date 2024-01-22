@@ -3,6 +3,8 @@ package com.example.sudoku9x9.data.local
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+const val FAST_LEVEL = 1
+
 @Entity(tableName = "classic_card_table")
 data class ClassicCard(
 
@@ -14,8 +16,11 @@ data class ClassicCard(
     val lastMeanTime:Long,
     val pastBesTime:Long,
     val bestTime:Long,
+    val progress:Boolean,
+    val progressValue:Long,
     val lastTime:Long,
     val games:Long,
+    val mistakes:Int,
     val record:String,
     val user1:Int,
     val user2:Int,
@@ -46,5 +51,6 @@ data class ClassicGame(
     @PrimaryKey(autoGenerate = true)
     var id:Int = 0,
     val time:Long,
+    val win:Boolean,
     val date:Long
 )

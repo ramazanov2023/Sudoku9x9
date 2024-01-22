@@ -111,7 +111,7 @@
             style="@style/TextScoreThin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2(+4s)"
+            app:setMistakes="@{viewModel.cardsData.mistakes}"
             app:layout_constraintStart_toStartOf="@id/classic_finish_nickname"
             app:layout_constraintTop_toBottomOf="@id/classic_finish_nickname"
             tools:text="2(+4s)" />
@@ -286,7 +286,7 @@
 
         <Button
             android:id="@+id/classic_finish_record"
-            android:layout_width="76dp"
+            android:layout_width="78dp"
             android:layout_height="46dp"
             android:layout_marginEnd="24dp"
             android:backgroundTint="@color/gray_4"

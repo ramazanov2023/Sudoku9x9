@@ -173,7 +173,7 @@
 
         <Button
             android:id="@+id/classic_game_record"
-            android:layout_width="76dp"
+            android:layout_width="78dp"
             android:layout_height="46dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="-4dp"

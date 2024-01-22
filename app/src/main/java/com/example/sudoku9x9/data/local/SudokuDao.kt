@@ -27,8 +27,18 @@ interface SudokuDao {
     @Query("SELECT firstLaunch FROM profile_table WHERE id == :id")
     fun checkFirstLaunch(id:Int):Boolean
 
-    @Query("UPDATE classic_card_table SET lastMeanTime = :lastMeanTime,meanTime = :meanTime,lastTime = :lastTime,pastBesTime = :pastBesTime, bestTime = :bestTime,games = :games WHERE id == :gameLevelId")
-    fun updateClassicCardData(games:Long, lastMeanTime:Long,meanTime:Long,pastBesTime:Long, bestTime:Long,lastTime:Long, gameLevelId:Int)
+    @Query("UPDATE classic_card_table SET lastMeanTime = :lastMeanTime,meanTime = :meanTime,lastTime = :lastTime,pastBesTime = :pastBesTime, bestTime = :bestTime,progress = :progress,progressValue = :progressValue,games = :games, mistakes = :mistakes WHERE id == :gameLevelId")
+    fun updateClassicCardData(
+        games:Long,
+        mistakes: Int,
+        lastMeanTime:Long,
+        meanTime:Long,
+        pastBesTime:Long,
+        bestTime:Long,
+        progress:Boolean,
+        progressValue:Long,
+        lastTime:Long,
+        gameLevelId:Int)
 
     @Query("UPDATE profile_table SET userName = :userName,userEmail = :userEmail,userAvatar = :userAvatar WHERE id == :id")
     fun updateUserProfile(userName:String, userEmail:String, userAvatar:String, id:Int)

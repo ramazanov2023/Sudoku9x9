@@ -43,20 +43,26 @@ class DefaultSudokuRepository(
 
     override fun updateClassicCardData(
         games: Long,
+        mistakes: Int,
         lastMeanTime: Long,
         meanTime: Long,
         lastTime: Long,
         pastBesTime: Long,
         bestTime: Long,
+        progress:Boolean,
+        progressValue:Long,
         gameLevelId: Int
     ) {
         localSudokuResource.sudokuDao.updateClassicCardData(
             games = games,
+            mistakes = mistakes,
             lastMeanTime = lastMeanTime,
             meanTime = meanTime,
             bestTime = bestTime,
             pastBesTime = pastBesTime,
             lastTime = lastTime,
+            progress = progress,
+            progressValue = progressValue,
             gameLevelId = gameLevelId)
     }
 
@@ -78,9 +84,10 @@ class DefaultSudokuRepository(
     }
 
     private fun getCardsList(): List<ClassicCard> {
-        val list = listOf(
+        return listOf(
             ClassicCard(
                 id = 1,
+                mistakes = 0,
                 level = "Fast",
                 rating = "3289",
                 lastMeanTime = 0,
@@ -88,6 +95,8 @@ class DefaultSudokuRepository(
                 lastTime = 0,
                 pastBesTime = 132125,
                 bestTime = 132125,
+                progress = false,
+                progressValue = 0,
                 games = 0,
                 record = "48:57",
                 user1 = R.drawable.fot_11,
@@ -105,6 +114,7 @@ class DefaultSudokuRepository(
             ),
             ClassicCard(
                 id = 2,
+                mistakes = 0,
                 level = "Light",
                 rating = "2476",
                 lastMeanTime = 0,
@@ -112,6 +122,8 @@ class DefaultSudokuRepository(
                 lastTime = 0,
                 pastBesTime = 0,
                 bestTime = 0,
+                progress = false,
+                progressValue = 0,
                 games = 0,
                 record = "52:54",
                 user1 = R.drawable.fot_5,
@@ -129,6 +141,7 @@ class DefaultSudokuRepository(
             ),
             ClassicCard(
                 id = 3,
+                mistakes = 0,
                 level = "Hard",
                 rating = "1814",
                 lastMeanTime = 0,
@@ -136,6 +149,8 @@ class DefaultSudokuRepository(
                 lastTime = 0,
                 pastBesTime = 0,
                 bestTime = 0,
+                progress = false,
+                progressValue = 0,
                 games = 0,
                 record = "52:54",
                 user1 = R.drawable.fot_12,
@@ -153,6 +168,7 @@ class DefaultSudokuRepository(
             ),
             ClassicCard(
                 id = 4,
+                mistakes = 0,
                 level = "Master",
                 rating = "5932",
                 lastMeanTime = 0,
@@ -160,6 +176,8 @@ class DefaultSudokuRepository(
                 lastTime = 0,
                 pastBesTime = 0,
                 bestTime = 0,
+                progress = false,
+                progressValue = 0,
                 games = 0,
                 record = "52:54",
                 user1 = R.drawable.fot_1,
@@ -176,8 +194,6 @@ class DefaultSudokuRepository(
                 user12 = R.drawable.fot_18,
             )
         )
-        Log.e("eeee", "1 - list.size - ${list.size}")
-        return list
     }
 
 
