@@ -132,8 +132,8 @@ private fun toTime(it: Long): String {
         min = sec / 60
         sec %= 60
         newTime = when (sec) {
-            in 0..9 -> "$min:0$sec"
-            else -> "$min:$sec"
+            in 0..9 -> "$min:0$sec:$mls"
+            else -> "$min:$sec:$mls"
         }
     }
     return newTime

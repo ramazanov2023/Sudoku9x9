@@ -4,10 +4,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.util.*
+import kotlin.collections.HashMap
 
-const val HIDE_CELLS:Int = 20
+const val HIDE_CELLS: Int = 20
 
 class SudokuNumbersGenerator {
+
+    private val _remainNumbersLiveData = MutableLiveData<List<Int>?>()
+    val remainNumbersLiveData: LiveData<List<Int>?>
+        get() = _remainNumbersLiveData
 
     private val _numbersLiveData = MutableLiveData<List<Cell>>()
     val numbersLiveData: LiveData<List<Cell>>
@@ -38,19 +43,19 @@ class SudokuNumbersGenerator {
         return firstArray
     }
 
-    private fun changeOrientation(array: Array<Array<Array<Int>>>): Array<Array<Array<Int>>>{
+    private fun changeOrientation(array: Array<Array<Array<Int>>>): Array<Array<Array<Int>>> {
         val changedArray = getFalseArray()
 
         var d = 0
         var e = 0
         var g = 0
 
-        for (a in array){
-            for (b in a){
-                for (c in b){
+        for (a in array) {
+            for (b in a) {
+                for (c in b) {
                     changedArray[d][e][g] = c
                     e++
-                    if(e>2){
+                    if (e > 2) {
                         e = 0
                         d++
                     }
@@ -66,8 +71,8 @@ class SudokuNumbersGenerator {
 
     }
 
-    fun getShuffleNumbersList(){
-        firstArray ?: synchronized(this){
+    fun getShuffleNumbersList() {
+        firstArray ?: synchronized(this) {
             firstArray = createStartNumbersList()
         }
 
@@ -76,19 +81,19 @@ class SudokuNumbersGenerator {
         var phase3 = mixMainArray(phase2)
 
         var phase4 = getNumbers(phase3)
-        _numbersLiveData.value = hideRandomNumbers(phase4)
-        Log.e("asas","2  getShuffleNumbersList")
+        hideRandomNumbers(phase4)
+        Log.e("asas", "2  getShuffleNumbersList")
     }
 
-    private fun getNumbers(array: Array<Array<Array<Int>>>):List<Cell>{
+    private fun getNumbers(array: Array<Array<Array<Int>>>): List<Cell> {
         val list = arrayListOf<Cell>()
 
         var cellId = 0
         var ver = 0
-        for (i in array){
-            for (a in i){
-                for (hor in 0..8){
-                    list.add(Cell(hor = hor, ver =  ver, value = a[hor], id = cellId))
+        for (i in array) {
+            for (a in i) {
+                for (hor in 0..8) {
+                    list.add(Cell(hor = hor, ver = ver, value = a[hor], id = cellId))
                     cellId++
                 }
                 ver++
@@ -98,26 +103,67 @@ class SudokuNumbersGenerator {
         return list
     }
 
-    private fun hideRandomNumbers(list:List<Cell>):List<Cell>{
-        val numbers:List<Cell> = list
+    private fun hideRandomNumbers(list: List<Cell>) {
+        val numbers: List<Cell> = list
+        var remainNumbers = mutableListOf<Int>(0,0,0,0,0,0,0,0,0)
         var r = Random()
         var repeat = 0
         var counter = 0
-        /*for (i in 0..repeat){
-            val cell = r.nextInt(80)
-            if(numbers[cell].hide){
-                repeat++
-                return
-            }*/
 
-        while (repeat < HIDE_CELLS){
+        while (repeat < HIDE_CELLS) {
             val cell = r.nextInt(80)
-            if(numbers[cell].hide == false){
+            if (!numbers[cell].hide) {
+
                 numbers[cell].hide = true
                 repeat++
-            }else{
+            } else {
             }
-            Log.e("asas","$counter  -  $repeat")
+            Log.e("asas", "$counter  -  $repeat")
+            counter++
+
+        }
+
+        _numbersLiveData.value = numbers
+
+        numbers.forEach {
+            if(it.hide) {
+                val numValue = it.value - 1
+                Log.e("cccc", "numValue - $numValue")
+                var num = remainNumbers[numValue]
+                Log.e("cccc", "num - $num")
+//            remainNumbers.add(numValue,++num)
+                remainNumbers[numValue] = ++num
+                Log.e("cccc", "remainNumbers[numValue] - ${remainNumbers[numValue]}")
+            }
+        }
+
+        _remainNumbersLiveData.value = remainNumbers
+
+    }
+
+    fun decreasedRemainNumbers(number:Int){
+        _remainNumbersLiveData.value?.let {
+            val list = it.toMutableList()
+            val newValue = list[number]-1
+            list[number] = newValue
+            _remainNumbersLiveData.value = list
+        }
+    }
+
+    private fun hideRandomNumbers2(list: List<Cell>): List<Cell> {
+        val numbers: List<Cell> = list
+        var r = Random()
+        var repeat = 0
+        var counter = 0
+
+        while (repeat < HIDE_CELLS) {
+            val cell = r.nextInt(80)
+            if (numbers[cell].hide == false) {
+                numbers[cell].hide = true
+                repeat++
+            } else {
+            }
+            Log.e("asas", "$counter  -  $repeat")
             counter++
 
         }
@@ -126,10 +172,10 @@ class SudokuNumbersGenerator {
 
     }
 
-    private fun printMainArray(array: Array<Array<Array<Int>>>){
-        for (i in array){
-            for (a in i){
-                for (b in a){
+    private fun printMainArray(array: Array<Array<Array<Int>>>) {
+        for (i in array) {
+            for (a in i) {
+                for (b in a) {
                     print("$b ")
                 }
                 println()
@@ -138,36 +184,34 @@ class SudokuNumbersGenerator {
         println()
     }
 
-    private fun mixMainArray(array: Array<Array<Array<Int>>>): Array<Array<Array<Int>>>{
-            array.shuffle()
-            for (i in array) {
-                i.shuffle()
-            }
-            return array
+    private fun mixMainArray(array: Array<Array<Array<Int>>>): Array<Array<Array<Int>>> {
+        array.shuffle()
+        for (i in array) {
+            i.shuffle()
+        }
+        return array
     }
 
-    private fun getFalseArray(): Array<Array<Array<Int>>>{
-        var thirdArray1 = arrayOf(0,0,0,0,0,0,0,0,0)
-        var thirdArray2 = arrayOf(0,0,0,0,0,0,0,0,0)
-        var thirdArray3 = arrayOf(0,0,0,0,0,0,0,0,0)
+    private fun getFalseArray(): Array<Array<Array<Int>>> {
+        var thirdArray1 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+        var thirdArray2 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+        var thirdArray3 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-        var thirdArray4 = arrayOf(0,0,0,0,0,0,0,0,0)
-        var thirdArray5 = arrayOf(0,0,0,0,0,0,0,0,0)
-        var thirdArray6 = arrayOf(0,0,0,0,0,0,0,0,0)
+        var thirdArray4 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+        var thirdArray5 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+        var thirdArray6 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-        var thirdArray7 = arrayOf(0,0,0,0,0,0,0,0,0)
-        var thirdArray8 = arrayOf(0,0,0,0,0,0,0,0,0)
-        var thirdArray9 = arrayOf(0,0,0,0,0,0,0,0,0)
-
-
-
-        var secondArray1 = arrayOf(thirdArray1,thirdArray2,thirdArray3)
-        var secondArray2 = arrayOf(thirdArray4,thirdArray5,thirdArray6)
-        var secondArray3 = arrayOf(thirdArray7,thirdArray8,thirdArray9)
+        var thirdArray7 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+        var thirdArray8 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+        var thirdArray9 = arrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
 
 
+        var secondArray1 = arrayOf(thirdArray1, thirdArray2, thirdArray3)
+        var secondArray2 = arrayOf(thirdArray4, thirdArray5, thirdArray6)
+        var secondArray3 = arrayOf(thirdArray7, thirdArray8, thirdArray9)
 
-        var firstArray = arrayOf(secondArray1,secondArray2,secondArray3)
+
+        var firstArray = arrayOf(secondArray1, secondArray2, secondArray3)
 
         return firstArray
     }

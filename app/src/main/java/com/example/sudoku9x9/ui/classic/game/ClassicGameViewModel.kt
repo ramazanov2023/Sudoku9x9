@@ -30,10 +30,6 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
     val number: LiveData<Int>
         get() = _number
 
-    private val _inactiveNumber = MutableLiveData<Int?>()
-    val inactiveNumber: LiveData<Int?>
-        get() = _inactiveNumber
-
     private val _timer = MutableLiveData<String?>()
     val timer: LiveData<String?>
         get() = _timer
@@ -159,14 +155,15 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
         _number.value = num
     }
 
-    fun addInactiveNumber(num: Int) {
-        _inactiveNumber.value = num
-    }
 
     fun insertUserGameData(mistakes: Int) {
         Log.e("nnnn","2  mistakes-$mistakes")
         this.mistakes = mistakes
         downTimer.onFinish()
+    }
+
+    fun decreasedRemainNumbers(number:Int){
+        sudokuNumbers.decreasedRemainNumbers(number)
     }
 
 }

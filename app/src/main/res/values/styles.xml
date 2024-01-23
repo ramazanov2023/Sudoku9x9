@@ -38,6 +38,13 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
+    <style name="RemainNumbersStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">40dp</item>
+        <item name="android:textColor">@color/gray_5</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
     <style name="TextLargeThin">
         <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:textColor">@color/white_1</item>
@@ -80,6 +87,8 @@
         <item name="android:textColor">@color/white_1</item>
         <item name="android:textSize">20sp</item>
     </style>
+
+
 
 
 </resources>

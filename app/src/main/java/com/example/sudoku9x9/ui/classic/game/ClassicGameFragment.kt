@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -63,16 +65,20 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
         binding.lifecycleOwner = this
 
 
+
         return binding.root
     }
 
     override fun action(id: Int, value: Int) {
         when(id){
-            INACTIVE_NUMBER -> viewModel.addInactiveNumber(value)
             USER_MISTAKES -> binding.classicGameUserMistakes.text = value.convertToX()
             GAME_END -> {
                 Log.e("nnnn","1  value-$value")
                 viewModel.insertUserGameData(value)
+            }
+            REMAIN_NUMBERS -> {
+                Log.e("bbbb","1  value-$value")
+                viewModel.decreasedRemainNumbers(value)
             }
 //            GAME_END -> findNavController().navigate(R.id.classicFinishFragment)
         }

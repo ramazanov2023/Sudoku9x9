@@ -12,6 +12,7 @@ import com.example.sudoku9x9.R
 
 const val INACTIVE_NUMBER = 1
 const val USER_MISTAKES = 2
+const val REMAIN_NUMBERS = 4
 const val GAME_END = 3
 
 class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, attrs) {
@@ -23,7 +24,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     private val cellGroupWidth = 3
     private var cellSize = 0F
     private var sudokuNumbers: List<Cell>? = null
-    private var listener:SudokuListener? = null
+    private var listener: SudokuListener? = null
     private var userMistakes = 0
     private var userOpenedNumbers = 0
 
@@ -35,7 +36,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     private val boardBoldLine = Paint().apply {
         color = resources.getColor(R.color.gray_1)
         style = Paint.Style.STROKE
-        strokeWidth = 4F
+        strokeWidth = 6F
     }
     private val boardThinLine = Paint().apply {
         color = resources.getColor(R.color.gray_5)
@@ -62,7 +63,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
 
-    fun setListener(listener: SudokuListener){
+    fun setListener(listener: SudokuListener) {
         this.listener = listener
     }
 
@@ -73,12 +74,12 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
 
     fun checkInputNumber(number: Int?) {
         number?.let {
-            val cell = sudokuNumbers!![indexSelectedCell]
-            if (cell.wrong) {
-                insertNumber(cell, number)
+            val selectedCell = sudokuNumbers!![indexSelectedCell]
+            if (selectedCell.wrong) {
+                insertNumber(selectedCell, number)
             } else {
-                if (cell.hide) {
-                    insertNumber(cell, number)
+                if (selectedCell.hide) {
+                    insertNumber(selectedCell, number)
                 } else {
 
                 }
@@ -86,8 +87,9 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         }
     }
 
-    private fun insertNumber(cell: Cell, number: Int) {
-        if (cell.value == number) {
+    private fun insertNumber(selectedCell: Cell, number: Int) {
+        sudokuNumbers!![indexSelectedCell].hide = false
+        if (selectedCell.value == number) {
             sudokuNumbers!![indexSelectedCell].wrong = false
             makeNumberInactive(number)
             userOpenedNumbers++
@@ -96,28 +98,30 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
             sudokuNumbers!![indexSelectedCell].wrong = true
             sudokuNumbers!![indexSelectedCell].wrong_number = number
         }
-        sudokuNumbers!![indexSelectedCell].hide = false
+//        sudokuNumbers!![indexSelectedCell].hide = false
         invalidate()
     }
 
     private fun addUserMistake() {
         userMistakes++
-        listener?.action(USER_MISTAKES,userMistakes)
+        listener?.action(USER_MISTAKES, userMistakes)
     }
 
     private fun makeNumberInactive(number: Int) {
-        var count = 1
+        var count = 0
         sudokuNumbers?.forEach {
-            if(it.value == number && !it.hide){
+            if (it.value == number && !it.hide) {
+                Log.e("yyyy", "2 count-$count")
                 count++
             }
         }
-        if(count==9){
-            // вызывает слушатель и передаем ему номер цифры, которую нужно сделать неактивной
-            listener?.let {
-                it.action(INACTIVE_NUMBER,number)
-            }
+        Log.e("yyyy", "1 count-$count")
+
+        // 9 - count и передаем значение слушателю
+        listener?.let {
+            it.action(REMAIN_NUMBERS, number - 1)
         }
+
     }
 
 
@@ -135,15 +139,13 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         drawGrid(canvas)
         drawNumbers(canvas)
 
-        if(userMistakes>2){
-            listener?.action(GAME_END,userMistakes)
+        if (userMistakes > 2) {
+            listener?.action(GAME_END, userMistakes)
         }
-        if(userOpenedNumbers== HIDE_CELLS){
-            listener?.action(GAME_END,userMistakes)
+        if (userOpenedNumbers == HIDE_CELLS) {
+            listener?.action(GAME_END, userMistakes)
         }
     }
-
-
 
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -195,7 +197,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
             numbers.forEach {
                 if (it.id == indexSelectedCell) {
                     drawCell(canvas, it, boardSelectCell)
-                } else if (it.value == cell.value && !it.hide && !cell.hide) {
+                } else if (it.value == cell.value && !it.hide && !cell.hide && !cell.wrong && !it.wrong) {
                     drawCell(canvas, it, boardSelectCell)
                 } else if (it.ver == cellVertical || it.hor == cellHorizontal) {
                     drawCell(canvas, it, boardLinkedCells)
@@ -248,7 +250,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
     interface SudokuListener {
-        fun action(id:Int,value:Int)
+        fun action(id: Int, value: Int)
     }
 
 }
