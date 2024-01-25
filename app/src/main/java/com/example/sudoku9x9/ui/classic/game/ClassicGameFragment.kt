@@ -31,13 +31,22 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentClassicGameBinding.inflate(inflater)
-        val toolbarTitle = "Fast Classic"
+        val args:ClassicGameFragmentArgs by navArgs()
+        val toolbarTitle = when(args.gameLevelId){
+            1 -> "Fast Classic"
+            2 -> "Light Classic"
+            3 -> "Hard Classic"
+            4 -> "Master Classic"
+            else -> "Fast Classic"
+        }
+        Log.e("nnnn","0   args.gameLevelId-${args.gameLevelId} toolbarTitle-$toolbarTitle")
+
         titleSpan = SpannableString(toolbarTitle).apply {
             setSpan(TextAppearanceSpan(context, R.style.TextToolbarBold),0,4,0)
             setSpan(TextAppearanceSpan(context, R.style.TextToolbarThin),5,toolbarTitle.length,0)
         }
 
-        val args:ClassicGameFragmentArgs by navArgs()
+
         val factory = ClassicGameViewModelFactory((requireActivity().application as SudokuApplication).repository,args.gameLevelId)
         viewModel = ViewModelProviders.of(this,factory).get(ClassicGameViewModel::class.java)
 
@@ -53,12 +62,11 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
 
         viewModel.finishGame.observe(viewLifecycleOwner, Observer {
             it?.let {
-                findNavController().navigate(ClassicGameFragmentDirections.actionClassicGameFragmentToClassicFinishFragment(it.first,it.second))
+                findNavController().navigate(ClassicGameFragmentDirections
+                    .actionClassicGameFragmentToClassicFinishFragment(it.first,it.second,args.gameLevelId))
             }
 
         })
-
-
 
 
         binding.viewModel = viewModel

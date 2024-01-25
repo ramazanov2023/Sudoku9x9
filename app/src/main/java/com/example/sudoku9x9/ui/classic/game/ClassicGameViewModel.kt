@@ -34,8 +34,8 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
     val timer: LiveData<String?>
         get() = _timer
 
-    private val _finishGame = MutableLiveData<Pair<Boolean,String>?>()
-    val finishGame: LiveData<Pair<Boolean,String>?>
+    private val _finishGame = MutableLiveData<Pair<Boolean, String>?>()
+    val finishGame: LiveData<Pair<Boolean, String>?>
         get() = _finishGame
 
 
@@ -71,22 +71,27 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
             }
 
             override fun onFinish() {
-                Log.e("nnnn","3  onFinish-$mistakes")
+                Log.e("nnnn", "3  onFinish-$mistakes")
                 viewModelScope.launch {
-                    Log.e("nnnn","4  viewModelScope")
+                    Log.e("nnnn", "4  viewModelScope")
                     var win = true
                     if (mistakes == 3) win = false
                     var lastMeanTime = 0L
                     if (win) {
-                        mlsLong+= mistakes*2000
+                        mlsLong += mistakes * 2000
                         lastMeanTime = mlsLong
                     } else {
                         mlsLong = 0L
                     }
-                    Log.e("nnnn","5  win-$win   lastMeanTime-$lastMeanTime   mlsLong-$mlsLong")
+                    Log.e("nnnn", "5  win-$win   lastMeanTime-$lastMeanTime   mlsLong-$mlsLong")
                     withContext(Dispatchers.IO) {
                         var finishMessage = ""
+                        Log.e("nnnn", "5.2  win-$win   gameLevelId-$gameLevelId   mlsLong-$mlsLong")
                         val lastTenGames = repository.getLastTenGameTime()
+                        Log.e(
+                            "nnnn",
+                            "5.3  win-$win   lastMeanTime-$lastMeanTime   mlsLong-$mlsLong"
+                        )
                         if (lastTenGames.isNotEmpty()) {
                             repository.getLastTenGameTime().forEach {
                                 lastMeanTime += it
@@ -97,29 +102,36 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
                         val lastGameData = userRecords.value
 
                         lastGameData?.let {
-                            Log.e("nnnn","6  lastMeanTime-$lastMeanTime   mlsLong-$mlsLong")
+                            Log.e("nnnn", "6  lastMeanTime-$lastMeanTime   mlsLong-$mlsLong")
                             var bestTime = it.bestTime
                             if (win) {
-                                bestTime = Math.min(mlsLong, it.bestTime)
-                            } else {
-                                lastMeanTime = if(it.lastMeanTime!=0L) {
-                                    it.lastMeanTime * 10 / 100 + it.lastMeanTime
+                                bestTime = if(bestTime>0){
+                                    Math.min(mlsLong, it.bestTime)
                                 }else{
+                                    mlsLong
+                                }
+
+                            } else {
+                                lastMeanTime = if (it.lastMeanTime != 0L) {
+                                    it.lastMeanTime * 10 / 100 + it.lastMeanTime
+                                } else {
                                     0
                                 }
                             }
                             var progress = true
                             var progressValue = 0L
-                            if(lastMeanTime<it.lastMeanTime){
+                            if (lastMeanTime < it.lastMeanTime) {
                                 progressValue = it.lastMeanTime - lastMeanTime
-                                finishMessage = "Your mean time \ndecreased \nby ${progressValue.convertToTime()}s"
-                            }else{
+                                finishMessage =
+                                    "Your mean time \ndecreased \nby ${progressValue.convertToTime()}s"
+                            } else {
                                 progress = false
                                 progressValue = lastMeanTime - it.lastMeanTime
-                                finishMessage = "Your mean time \nincreased \nby ${progressValue.convertToTime()}s"
+                                finishMessage =
+                                    "Your mean time \nincreased \nby ${progressValue.convertToTime()}s"
                             }
 
-                            Log.e("nnnn","7  progress-$progress   finishMessage-$finishMessage")
+                            Log.e("nnnn", "7  progress-$progress   finishMessage-$finishMessage")
                             repository.updateClassicCardData(
                                 games = it.games + 1,
                                 mistakes = mistakes,
@@ -130,7 +142,7 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
                                 bestTime = bestTime,
                                 progress = progress,
                                 progressValue = progressValue,
-                                gameLevelId = FAST_LEVEL
+                                gameLevelId = gameLevelId
                             )
                             repository.saveClassicGame(
                                 ClassicGame(
@@ -139,8 +151,8 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
                                     win = win
                                 )
                             )
-                            Log.e("nnnn","8  progress-$progress   progressValue-$progressValue")
-                            _finishGame.postValue(Pair(win,finishMessage))
+                            Log.e("nnnn", "8  progress-$progress   progressValue-$progressValue")
+                            _finishGame.postValue(Pair(win, finishMessage))
                         }
 
                     }
@@ -157,12 +169,12 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
 
 
     fun insertUserGameData(mistakes: Int) {
-        Log.e("nnnn","2  mistakes-$mistakes")
+        Log.e("nnnn", "2  mistakes-$mistakes")
         this.mistakes = mistakes
         downTimer.onFinish()
     }
 
-    fun decreasedRemainNumbers(number:Int){
+    fun decreasedRemainNumbers(number: Int) {
         sudokuNumbers.decreasedRemainNumbers(number)
     }
 

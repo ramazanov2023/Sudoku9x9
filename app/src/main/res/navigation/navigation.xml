@@ -73,6 +73,9 @@
         <argument
             android:name="finishMessage"
             app:argType="string" />
+        <argument
+            android:name="gameLevelId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/classicStartFragment"

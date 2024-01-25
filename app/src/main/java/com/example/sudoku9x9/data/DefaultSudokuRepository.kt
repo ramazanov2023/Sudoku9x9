@@ -75,6 +75,7 @@ class DefaultSudokuRepository(
     }
 
     override fun getLastTenGameTime(): Array<Long> {
+
         return localSudokuResource.sudokuDao.getLastTenClassicGames()
 //        return arrayOf(36700,40510,32590,47120,31568,36700,40510,32590,47120)
     }

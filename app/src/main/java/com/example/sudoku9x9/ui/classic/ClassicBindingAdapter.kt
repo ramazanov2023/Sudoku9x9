@@ -90,29 +90,6 @@ fun setClassicProgressBestTime(textView: TextView, progress: ClassicCard?) {
     }
 }
 
-
-private fun toTime2(it: Long): String {
-
-    var sec = it / 1000
-    var min = 0L
-    var newTime = ""
-
-    if (it == 0L) return "--"
-
-    if (sec < 60) {
-        newTime = "$sec"
-    } else {
-        min = sec / 60
-//          sec = sec%60
-        sec %= 60
-        newTime = when (sec) {
-            in 0..9 -> "$min:0$sec"
-            else -> "$min:$sec"
-        }
-    }
-    return newTime
-}
-
 private fun toTime(it: Long): String {
 
     var mls = (it % 1000) / 10

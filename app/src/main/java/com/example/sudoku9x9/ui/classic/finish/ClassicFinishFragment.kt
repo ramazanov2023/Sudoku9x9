@@ -23,7 +23,7 @@ class ClassicFinishFragment: Fragment() {
     ): View {
         val binding = FragmentClassicFinishBinding.inflate(inflater)
         val args: ClassicFinishFragmentArgs by navArgs()
-        val factory = ClassicFinishViewModelFactory((requireActivity().application as SudokuApplication).repository)
+        val factory = ClassicFinishViewModelFactory((requireActivity().application as SudokuApplication).repository,args.gameLevelId)
         viewModel = ViewModelProviders.of(this,factory).get(ClassicFinishViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

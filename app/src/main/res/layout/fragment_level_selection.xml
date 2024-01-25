@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridLayout
+        android:id="@+id/classic_dialog_game_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/classic_fast_level"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_4"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="Fast"
+            android:textColor="@color/white_1"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/classic_light_level"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_4"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="Light"
+            android:textColor="@color/white_1"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/classic_hard_level"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_4"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="Hard"
+            android:textColor="@color/white_1"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/classic_master_level"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_4"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="Master"
+            android:textColor="@color/white_1"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
