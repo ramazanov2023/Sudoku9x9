@@ -50,6 +50,7 @@ data class Profile(
 data class ClassicGame(
     @PrimaryKey(autoGenerate = true)
     var id:Int = 0,
+    var gameLevelId:Int,
     val time:Long,
     val win:Boolean,
     val date:Long

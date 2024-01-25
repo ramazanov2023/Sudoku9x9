@@ -60,6 +60,9 @@ interface SudokuDao {
     @Query("SELECT time FROM classic_games_history_table ORDER BY id DESC LIMIT 0,10")
     fun getLastTenClassicGames():Array<Long>
 
+    @Query("SELECT time FROM classic_games_history_table WHERE gameLevelId = :gameLevelId ORDER BY id DESC LIMIT 0,10")
+    fun getLastTenClassicGames(gameLevelId: Int):Array<Long>
+
 
 
 

@@ -74,9 +74,10 @@ class DefaultSudokuRepository(
         return localSudokuResource.sudokuDao.getClassicGameUserData(gameLevelId)
     }
 
-    override fun getLastTenGameTime(): Array<Long> {
 
-        return localSudokuResource.sudokuDao.getLastTenClassicGames()
+    override fun getLastTenGameTime(gameLevelId: Int): Array<Long> {
+
+        return localSudokuResource.sudokuDao.getLastTenClassicGames(gameLevelId)
 //        return arrayOf(36700,40510,32590,47120,31568,36700,40510,32590,47120)
     }
 
@@ -94,8 +95,8 @@ class DefaultSudokuRepository(
                 lastMeanTime = 0,
                 meanTime = 0,
                 lastTime = 0,
-                pastBesTime = 132125,
-                bestTime = 132125,
+                pastBesTime = 300000,
+                bestTime = 300000,
                 progress = false,
                 progressValue = 0,
                 games = 0,
@@ -121,8 +122,8 @@ class DefaultSudokuRepository(
                 lastMeanTime = 0,
                 meanTime = 0,
                 lastTime = 0,
-                pastBesTime = 0,
-                bestTime = 0,
+                pastBesTime = 300000,
+                bestTime = 300000,
                 progress = false,
                 progressValue = 0,
                 games = 0,
@@ -148,8 +149,8 @@ class DefaultSudokuRepository(
                 lastMeanTime = 0,
                 meanTime = 0,
                 lastTime = 0,
-                pastBesTime = 0,
-                bestTime = 0,
+                pastBesTime = 300000,
+                bestTime = 300000,
                 progress = false,
                 progressValue = 0,
                 games = 0,
@@ -175,8 +176,8 @@ class DefaultSudokuRepository(
                 lastMeanTime = 0,
                 meanTime = 0,
                 lastTime = 0,
-                pastBesTime = 0,
-                bestTime = 0,
+                pastBesTime = 300000,
+                bestTime = 300000,
                 progress = false,
                 progressValue = 0,
                 games = 0,

@@ -50,9 +50,9 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
             var min = 0
             var sec = 0
             var mls = 0
-            var mlsLong: Long = 0
+            var mlsTime: Long = 0
             override fun onTick(millisUntilFinished: Long) {
-                mlsLong += 10L
+                mlsTime += 10L
                 mls += 10
                 if (mls == 1000) {
                     sec++
@@ -70,7 +70,11 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
 
             }
 
+
             override fun onFinish() {
+                // mlsTime продожает увеличиваться после вызова метоа onFinish
+                // поэтому закидываем ее в новую переменную
+                var mlsLong = mlsTime
                 Log.e("nnnn", "3  onFinish-$mistakes")
                 viewModelScope.launch {
                     Log.e("nnnn", "4  viewModelScope")
@@ -87,14 +91,15 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
                     withContext(Dispatchers.IO) {
                         var finishMessage = ""
                         Log.e("nnnn", "5.2  win-$win   gameLevelId-$gameLevelId   mlsLong-$mlsLong")
-                        val lastTenGames = repository.getLastTenGameTime()
+                        val lastTenGames = repository.getLastTenGameTime(gameLevelId)
                         Log.e(
                             "nnnn",
                             "5.3  win-$win   lastMeanTime-$lastMeanTime   mlsLong-$mlsLong"
                         )
                         if (lastTenGames.isNotEmpty()) {
-                            repository.getLastTenGameTime().forEach {
+                            lastTenGames.forEach {
                                 lastMeanTime += it
+                                Log.e("nnnn", "5.4  lastTenGames  lastMeanTime-$it")
                             }
                             lastMeanTime /= lastTenGames.size + 1
                         }
@@ -146,6 +151,7 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
                             )
                             repository.saveClassicGame(
                                 ClassicGame(
+                                    gameLevelId = gameLevelId,
                                     time = mlsLong,
                                     date = System.currentTimeMillis(),
                                     win = win
