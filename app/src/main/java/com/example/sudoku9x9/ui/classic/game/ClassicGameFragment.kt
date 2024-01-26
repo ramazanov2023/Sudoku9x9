@@ -1,6 +1,7 @@
 package com.example.sudoku9x9.ui.classic.game
 
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.TextAppearanceSpan
@@ -55,6 +56,10 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
             binding.classicGameBoard.insertSudokuNumbers(it)
         })
 
+        viewModel.sudokuNumbers.remainNumbersLiveData.observe(viewLifecycleOwner, Observer {
+            binding.classicGameBoard.insertRemainNumbers(it)
+        })
+
         viewModel.number.observe(viewLifecycleOwner, Observer {
             binding.classicGameBoard.checkInputNumber(it)
         })
@@ -68,7 +73,12 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
 
         viewModel.speedGameMode.observe(viewLifecycleOwner, Observer {
             it?.let {
-                if(it){
+                if (it) {
+                    binding.classicGameSpeedBtn.setColorFilter(Color.parseColor("#28B5FE"))
+                    binding.classicGameSpeedName.setTextColor(Color.parseColor("#28B5FE"))
+                }else{
+                    binding.classicGameSpeedBtn.setColorFilter(Color.parseColor("#B6C0C6"))
+                    binding.classicGameSpeedName.setTextColor(Color.parseColor("#B6C0C6"))
                 }
                 binding.classicGameBoard.setSpeedMode(it)
                 viewModel.removeUndo()

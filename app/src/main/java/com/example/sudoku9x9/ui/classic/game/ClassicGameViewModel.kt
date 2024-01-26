@@ -38,14 +38,15 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
     val undoNumber: LiveData<Boolean?>
         get() = _undoNumber
 
-    private val _speedGameMode = MutableLiveData<Boolean?>()
-    val speedGameMode: LiveData<Boolean?>
+    private val _speedGameMode = MutableLiveData<Boolean>()
+    val speedGameMode: LiveData<Boolean>
         get() = _speedGameMode
 
 
     init {
         sudokuNumbers.getShuffleNumbersList()
         turnOnTimer()
+        _speedGameMode.value = false
     }
 
     private fun turnOnTimer() {
@@ -196,7 +197,10 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
     }
 
     fun setSpeedMode(){
-        _speedGameMode.value = true
+        _speedGameMode.value?.let {
+            _speedGameMode.value = !it
+        }
+
     }
 
 }

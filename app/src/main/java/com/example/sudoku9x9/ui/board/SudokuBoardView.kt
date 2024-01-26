@@ -20,12 +20,14 @@ const val GAME_END = 3
 class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private var indexSelectedCell: Int = 0
+    private var lastSavedNumber: Int? = null
     private var cellVertical: Int = -1
     private var cellHorizontal: Int = -1
     private val boardWidth = 9
     private val cellGroupWidth = 3
     private var cellSize = 0F
     private var sudokuNumbers: List<Cell>? = null
+    private var remainNumbers: List<Int>? = null
     private var listener: SudokuListener? = null
     private var level = 1
     private var userMistakes = 0
@@ -73,7 +75,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
     fun setLevel(gameLevelId: Int) {
-        level = when(gameLevelId){
+        level = when (gameLevelId) {
             1 -> FAST_LEVEL
             2 -> LIGHT_LEVEL
             3 -> HARD_LEVEL
@@ -82,8 +84,16 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         }
     }
 
+    fun setSpeedMode(mode: Boolean) {
+        speedGameMode = mode
+        checkGameMode()
+    }
+
     fun insertSudokuNumbers(numbers: List<Cell>) {
         sudokuNumbers = numbers
+    }
+    fun insertRemainNumbers(remainNumbers: List<Int>?) {
+        this.remainNumbers = remainNumbers
     }
 
     fun checkInputNumber(number: Int?) {
@@ -95,7 +105,6 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
                 if (selectedCell.hide) {
                     insertNumber(selectedCell, number)
                 } else {
-
                 }
             }
         }
@@ -105,7 +114,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         sudokuNumbers!![indexSelectedCell].hide = false
         if (selectedCell.value == number) {
             sudokuNumbers!![indexSelectedCell].wrong = false
-            makeNumberInactive(REMAIN_NUMBERS_DECREASE,number)
+            makeNumberInactive(REMAIN_NUMBERS_DECREASE, number)
             userOpenedNumbers++
         } else {
             addUserMistake()
@@ -117,19 +126,20 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         invalidate()
     }
 
-    fun undo(){
-        if(lastFilledCells.empty()) return
+    fun undo() {
+        if (lastFilledCells.empty()) return
         sudokuNumbers?.let {
             val cellIndex = lastFilledCells.pop()
-            if(sudokuNumbers!![cellIndex].wrong){
+            if (sudokuNumbers!![cellIndex].wrong) {
 
-            }else{
+            } else {
                 userOpenedNumbers--
-                makeNumberInactive(REMAIN_NUMBERS_INCREASE,sudokuNumbers!![cellIndex].value)
+                makeNumberInactive(REMAIN_NUMBERS_INCREASE, sudokuNumbers!![cellIndex].value)
             }
             sudokuNumbers!![cellIndex].wrong = false
             sudokuNumbers!![cellIndex].wrong_number = 0
             sudokuNumbers!![cellIndex].hide = true
+            if(it[indexSelectedCell].hide) lastSavedNumber = null
         }
         invalidate()
     }
@@ -139,20 +149,20 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         listener?.action(USER_MISTAKES, userMistakes)
     }
 
-    private fun makeNumberInactive(action:Int, number: Int) {
-        /*var count = 0
+    private fun makeNumberInactive(action: Int, number: Int) {
+        var count = 0
         sudokuNumbers?.forEach {
             if (it.value == number && !it.hide) {
                 Log.e("yyyy", "2 count-$count")
                 count++
             }
-        }*/
+        }
         Log.e("yyyy", "1 number-$number")
 
+        if(count==9) lastSavedNumber = null
+
         // 9 - count и передаем значение слушателю
-        listener?.let {
-            it.action(action, number - 1)
-        }
+        listener?.action(action, number - 1)
 
     }
 
@@ -186,9 +196,25 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
             cellVertical = (event.y / cellSize).toInt()
             cellHorizontal = (event.x / cellSize).toInt()
             indexSelectedCell = ((cellVertical + 1) * 9) - (9 - cellHorizontal)
+            checkGameMode()
             invalidate()
             true
         } else false
+    }
+
+    private fun checkGameMode() {
+        if (speedGameMode) {
+            sudokuNumbers?.let {
+                val cell = it[indexSelectedCell]
+                if (!cell.wrong && !cell.hide && remainNumbers!![cell.value-1]!=0) {
+                    lastSavedNumber = cell.value
+                } else {
+                    lastSavedNumber?.let {
+                        checkInputNumber(lastSavedNumber)
+                    }
+                }
+            }
+        }
     }
 
 
@@ -280,10 +306,6 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         }
     }
 
-
-    fun setSpeedMode(mode:Boolean) {
-        speedGameMode = mode
-    }
 
 
     interface SudokuListener {

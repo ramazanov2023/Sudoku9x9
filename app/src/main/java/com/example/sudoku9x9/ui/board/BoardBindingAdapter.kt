@@ -1,15 +1,20 @@
 package com.example.sudoku9x9.ui.board
 
+import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.StateListDrawable
 import android.util.Log
 import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.graphics.drawable.DrawableCompat.setTintList
 import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sudoku9x9.R
 import com.example.sudoku9x9.data.local.ClassicCard
 import com.example.sudoku9x9.ui.classic.start.ClassicStartAdapter
 
@@ -20,6 +25,17 @@ fun setInactiveNumber(number: TextView, hideNumber: Int?) {
 //            number.setTextColor(Color.parseColor("#333639"))
             number.visibility = View.INVISIBLE
         }
+    }
+}
+
+@BindingAdapter("speedMode")
+fun setSpeedGameMode(image: ImageView, speedMode: Boolean?) {
+    speedMode?.let {
+        /*if (it) {
+            image.setColorFilter(Color.parseColor("#28B5FE"))
+        }else{
+            image.setColorFilter(Color.parseColor("#B6C0C6"))
+        }*/
     }
 }
 
