@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
@@ -15,10 +16,10 @@ import com.example.sudoku9x9.R
 
 
 class ClassicLevelSelectionFragment:DialogFragment() {
-    private lateinit var fast:TextView
-    private lateinit var light:TextView
-    private lateinit var hard:TextView
-    private lateinit var master:TextView
+    private lateinit var fast:FrameLayout
+    private lateinit var light:FrameLayout
+    private lateinit var hard:FrameLayout
+    private lateinit var master:FrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,

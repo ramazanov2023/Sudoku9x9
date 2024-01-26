@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.util.*
-import kotlin.collections.HashMap
 
-const val HIDE_CELLS: Int = 20
+const val FAST_LEVEL = 20
+const val LIGHT_LEVEL = 30
+const val HARD_LEVEL = 40
+const val MASTER_LEVEL = 46
 
-class SudokuNumbersGenerator {
+class SudokuNumbersGenerator(private val gameLevelId: Int) {
 
     private val _remainNumbersLiveData = MutableLiveData<List<Int>?>()
     val remainNumbersLiveData: LiveData<List<Int>?>
@@ -105,12 +107,19 @@ class SudokuNumbersGenerator {
 
     private fun hideRandomNumbers(list: List<Cell>) {
         val numbers: List<Cell> = list
-        var remainNumbers = mutableListOf<Int>(0,0,0,0,0,0,0,0,0)
+        var remainNumbers = mutableListOf<Int>(0, 0, 0, 0, 0, 0, 0, 0, 0)
         var r = Random()
         var repeat = 0
         var counter = 0
+        val level = when (gameLevelId) {
+            1 -> FAST_LEVEL
+            2 -> LIGHT_LEVEL
+            3 -> HARD_LEVEL
+            4 -> MASTER_LEVEL
+            else -> FAST_LEVEL
+        }
 
-        while (repeat < HIDE_CELLS) {
+        while (repeat < level) {
             val cell = r.nextInt(80)
             if (!numbers[cell].hide) {
 
@@ -126,7 +135,7 @@ class SudokuNumbersGenerator {
         _numbersLiveData.value = numbers
 
         numbers.forEach {
-            if(it.hide) {
+            if (it.hide) {
                 val numValue = it.value - 1
                 Log.e("cccc", "numValue - $numValue")
                 var num = remainNumbers[numValue]
@@ -141,36 +150,20 @@ class SudokuNumbersGenerator {
 
     }
 
-    fun decreasedRemainNumbers(number:Int){
+    fun decreasedRemainNumbers(action: Int, number: Int) {
         _remainNumbersLiveData.value?.let {
             val list = it.toMutableList()
-            val newValue = list[number]-1
+            val newValue = when (action) {
+                REMAIN_NUMBERS_DECREASE -> list[number] - 1
+                REMAIN_NUMBERS_INCREASE -> list[number] + 1
+                else -> list[number]
+            }
             list[number] = newValue
             _remainNumbersLiveData.value = list
+
         }
     }
 
-    private fun hideRandomNumbers2(list: List<Cell>): List<Cell> {
-        val numbers: List<Cell> = list
-        var r = Random()
-        var repeat = 0
-        var counter = 0
-
-        while (repeat < HIDE_CELLS) {
-            val cell = r.nextInt(80)
-            if (numbers[cell].hide == false) {
-                numbers[cell].hide = true
-                repeat++
-            } else {
-            }
-            Log.e("asas", "$counter  -  $repeat")
-            counter++
-
-        }
-
-        return numbers
-
-    }
 
     private fun printMainArray(array: Array<Array<Array<Int>>>) {
         for (i in array) {

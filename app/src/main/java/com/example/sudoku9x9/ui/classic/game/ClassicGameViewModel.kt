@@ -6,17 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sudoku9x9.R
 import com.example.sudoku9x9.data.SudokuRepository
-import com.example.sudoku9x9.data.local.ClassicCard
 import com.example.sudoku9x9.data.local.ClassicGame
-import com.example.sudoku9x9.data.local.FAST_LEVEL
 import com.example.sudoku9x9.ui.board.SudokuNumbersGenerator
 import com.example.sudoku9x9.ui.classic.convertToTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 
 class ClassicGameViewModel(private val repository: SudokuRepository, private val gameLevelId: Int) :
     ViewModel() {
@@ -24,7 +20,7 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
     var mistakes = 0
 
     val userRecords = repository.getClassicGameUserData(gameLevelId)
-    val sudokuNumbers = SudokuNumbersGenerator()
+    val sudokuNumbers = SudokuNumbersGenerator(gameLevelId)
 
     private val _number = MutableLiveData<Int>()
     val number: LiveData<Int>
@@ -37,6 +33,14 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
     private val _finishGame = MutableLiveData<Pair<Boolean, String>?>()
     val finishGame: LiveData<Pair<Boolean, String>?>
         get() = _finishGame
+
+    private val _undoNumber = MutableLiveData<Boolean?>()
+    val undoNumber: LiveData<Boolean?>
+        get() = _undoNumber
+
+    private val _speedGameMode = MutableLiveData<Boolean?>()
+    val speedGameMode: LiveData<Boolean?>
+        get() = _speedGameMode
 
 
     init {
@@ -173,6 +177,13 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
         _number.value = num
     }
 
+    fun undo(){
+        _undoNumber.value = true
+    }
+    fun removeUndo(){
+        _undoNumber.value = null
+    }
+
 
     fun insertUserGameData(mistakes: Int) {
         Log.e("nnnn", "2  mistakes-$mistakes")
@@ -180,8 +191,12 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
         downTimer.onFinish()
     }
 
-    fun decreasedRemainNumbers(number: Int) {
-        sudokuNumbers.decreasedRemainNumbers(number)
+    fun calculateRemainNumbers(action: Int, value: Int) {
+        sudokuNumbers.decreasedRemainNumbers(action,value)
+    }
+
+    fun setSpeedMode(){
+        _speedGameMode.value = true
     }
 
 }

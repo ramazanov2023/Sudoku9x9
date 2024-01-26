@@ -9,10 +9,12 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import com.example.sudoku9x9.R
+import java.util.*
 
 const val INACTIVE_NUMBER = 1
 const val USER_MISTAKES = 2
-const val REMAIN_NUMBERS = 4
+const val REMAIN_NUMBERS_DECREASE = 4
+const val REMAIN_NUMBERS_INCREASE = 5
 const val GAME_END = 3
 
 class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, attrs) {
@@ -25,8 +27,11 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     private var cellSize = 0F
     private var sudokuNumbers: List<Cell>? = null
     private var listener: SudokuListener? = null
+    private var level = 1
     private var userMistakes = 0
     private var userOpenedNumbers = 0
+    private val lastFilledCells = Stack<Int>()
+    private var speedGameMode = false
 
 
     private val boardField = Paint().apply {
@@ -67,6 +72,15 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         this.listener = listener
     }
 
+    fun setLevel(gameLevelId: Int) {
+        level = when(gameLevelId){
+            1 -> FAST_LEVEL
+            2 -> LIGHT_LEVEL
+            3 -> HARD_LEVEL
+            4 -> MASTER_LEVEL
+            else -> FAST_LEVEL
+        }
+    }
 
     fun insertSudokuNumbers(numbers: List<Cell>) {
         sudokuNumbers = numbers
@@ -91,7 +105,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         sudokuNumbers!![indexSelectedCell].hide = false
         if (selectedCell.value == number) {
             sudokuNumbers!![indexSelectedCell].wrong = false
-            makeNumberInactive(number)
+            makeNumberInactive(REMAIN_NUMBERS_DECREASE,number)
             userOpenedNumbers++
         } else {
             addUserMistake()
@@ -99,6 +113,24 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
             sudokuNumbers!![indexSelectedCell].wrong_number = number
         }
 //        sudokuNumbers!![indexSelectedCell].hide = false
+        lastFilledCells.push(indexSelectedCell)
+        invalidate()
+    }
+
+    fun undo(){
+        if(lastFilledCells.empty()) return
+        sudokuNumbers?.let {
+            val cellIndex = lastFilledCells.pop()
+            if(sudokuNumbers!![cellIndex].wrong){
+
+            }else{
+                userOpenedNumbers--
+                makeNumberInactive(REMAIN_NUMBERS_INCREASE,sudokuNumbers!![cellIndex].value)
+            }
+            sudokuNumbers!![cellIndex].wrong = false
+            sudokuNumbers!![cellIndex].wrong_number = 0
+            sudokuNumbers!![cellIndex].hide = true
+        }
         invalidate()
     }
 
@@ -107,19 +139,19 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         listener?.action(USER_MISTAKES, userMistakes)
     }
 
-    private fun makeNumberInactive(number: Int) {
-        var count = 0
+    private fun makeNumberInactive(action:Int, number: Int) {
+        /*var count = 0
         sudokuNumbers?.forEach {
             if (it.value == number && !it.hide) {
                 Log.e("yyyy", "2 count-$count")
                 count++
             }
-        }
-        Log.e("yyyy", "1 count-$count")
+        }*/
+        Log.e("yyyy", "1 number-$number")
 
         // 9 - count и передаем значение слушателю
         listener?.let {
-            it.action(REMAIN_NUMBERS, number - 1)
+            it.action(action, number - 1)
         }
 
     }
@@ -142,7 +174,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         if (userMistakes > 2) {
             listener?.action(GAME_END, userMistakes)
         }
-        if (userOpenedNumbers == HIDE_CELLS) {
+        if (userOpenedNumbers == level) {
             listener?.action(GAME_END, userMistakes)
         }
     }
@@ -218,7 +250,6 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         )
     }
 
-
     private fun drawField(canvas: Canvas?) {
         canvas?.drawRect(0F, 0F, width.toFloat(), height.toFloat(), boardField)
         width           // фунция класса родительского класа View, которая возвращает ширину нашего View
@@ -248,6 +279,12 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
             }
         }
     }
+
+
+    fun setSpeedMode(mode:Boolean) {
+        speedGameMode = mode
+    }
+
 
     interface SudokuListener {
         fun action(id: Int, value: Int)

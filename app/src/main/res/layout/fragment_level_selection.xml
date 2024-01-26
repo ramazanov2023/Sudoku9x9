@@ -1,10 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+
+    <TextView
+        android:id="@+id/classic_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Game Level"
+        android:textColor="@color/white_3"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        style="@style/TextSmallLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mean time"
+        app:layout_constraintStart_toStartOf="@id/classic_dialog_title"
+        app:layout_constraintTop_toBottomOf="@id/classic_dialog_title" />
+
+    <View
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="86dp"
+        android:background="@color/gray_4"
+        android:layout_width="230dp"
+        android:layout_height="1dp"/>
 
     <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:layout_marginTop="56dp"
+        app:layout_constraintTop_toBottomOf="@id/classic_dialog_title"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <FrameLayout
+            android:id="@+id/classic_fast_level"
+            android:layout_width="120dp"
+            android:layout_height="110dp"
+            android:layout_weight="1"
+            android:paddingStart="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Fast"
+                android:textColor="@color/white_1"
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/TextSmallLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Games" />
+
+            <TextView
+                style="@style/TextScoreThin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="24"
+                tools:text="24" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/classic_light_level"
+            android:layout_width="120dp"
+            android:layout_height="110dp"
+            android:layout_weight="1"
+            android:paddingStart="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Light"
+                android:textColor="@color/white_1"
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/TextSmallLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Games" />
+
+            <TextView
+                style="@style/TextScoreThin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="35"
+                tools:text="35" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/classic_master_level"
+            android:layout_width="120dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:paddingStart="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Master"
+                android:textColor="@color/white_1"
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/TextSmallLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Games" />
+
+            <TextView
+                style="@style/TextScoreThin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="6"
+                tools:text="6" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/classic_hard_level"
+            android:layout_width="120dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:paddingStart="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Hard"
+                android:textColor="@color/white_1"
+                android:textSize="24sp" />
+
+            <TextView
+                style="@style/TextSmallLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Games" />
+
+            <TextView
+                style="@style/TextScoreThin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="17"
+                tools:text="17" />
+        </FrameLayout>
+
+    </GridLayout>
+
+    <!--<GridLayout
         android:id="@+id/classic_dialog_game_level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,6 +237,6 @@
             android:textSize="28sp"
             android:textStyle="bold" />
 
-    </GridLayout>
+    </GridLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

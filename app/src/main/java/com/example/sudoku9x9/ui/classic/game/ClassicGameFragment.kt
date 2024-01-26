@@ -1,5 +1,6 @@
 package com.example.sudoku9x9.ui.classic.game
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.TextAppearanceSpan
@@ -7,9 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,7 +17,6 @@ import androidx.navigation.fragment.navArgs
 import com.example.sudoku9x9.R
 import com.example.sudoku9x9.SudokuApplication
 import com.example.sudoku9x9.databinding.FragmentClassicGameBinding
-import com.example.sudoku9x9.ui.GameFragmentDirections
 import com.example.sudoku9x9.ui.board.*
 
 class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
@@ -46,6 +44,7 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
             setSpan(TextAppearanceSpan(context, R.style.TextToolbarThin),5,toolbarTitle.length,0)
         }
 
+        binding.classicGameBoard.setLevel(args.gameLevelId)
 
         val factory = ClassicGameViewModelFactory((requireActivity().application as SudokuApplication).repository,args.gameLevelId)
         viewModel = ViewModelProviders.of(this,factory).get(ClassicGameViewModel::class.java)
@@ -58,6 +57,22 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
 
         viewModel.number.observe(viewLifecycleOwner, Observer {
             binding.classicGameBoard.checkInputNumber(it)
+        })
+
+        viewModel.undoNumber.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                binding.classicGameBoard.undo()
+                viewModel.removeUndo()
+            }
+        })
+
+        viewModel.speedGameMode.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if(it){
+                }
+                binding.classicGameBoard.setSpeedMode(it)
+                viewModel.removeUndo()
+            }
         })
 
         viewModel.finishGame.observe(viewLifecycleOwner, Observer {
@@ -84,9 +99,13 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
                 Log.e("nnnn","1  value-$value")
                 viewModel.insertUserGameData(value)
             }
-            REMAIN_NUMBERS -> {
+            REMAIN_NUMBERS_DECREASE -> {
                 Log.e("bbbb","1  value-$value")
-                viewModel.decreasedRemainNumbers(value)
+                viewModel.calculateRemainNumbers(id,value)
+            }
+            REMAIN_NUMBERS_INCREASE -> {
+                Log.e("bbbb","1  value-$value")
+                viewModel.calculateRemainNumbers(id,value)
             }
 //            GAME_END -> findNavController().navigate(R.id.classicFinishFragment)
         }

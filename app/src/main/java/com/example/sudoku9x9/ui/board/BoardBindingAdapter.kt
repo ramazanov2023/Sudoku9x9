@@ -28,7 +28,11 @@ fun hideCompleteNumber(grid: GridLayout, list: List<Int>?) {
     list?.let {
         for(i in 0..8){
             val num = list[i]
-            if(num == 0) (grid[i] as TextView).visibility = View.INVISIBLE
+            if(num == 0){
+                (grid[i] as TextView).visibility = View.INVISIBLE
+            }else{
+                (grid[i] as TextView).visibility = View.VISIBLE
+            }
             Log.e("vvvv","grid  -  $num")
         }
     }
