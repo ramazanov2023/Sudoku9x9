@@ -71,6 +71,13 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="TextMediumMedium">
+<!--        <item name="android:fontFamily">sans-serif-medium</item>-->
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/white_1</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
     <style name="TextSmallBlack">
         <item name="android:fontFamily">sans-serif-black</item>
         <item name="android:textColor">@color/white_1</item>

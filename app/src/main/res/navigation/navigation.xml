@@ -15,7 +15,9 @@
             app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_gameFragment_to_classicGameFragment"
-            app:destination="@id/classicGameFragment" />
+            app:destination="@id/classicGameFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/statisticsFragment"
@@ -57,6 +59,8 @@
         <action
             android:id="@+id/action_classicGameFragment_to_classicFinishFragment"
             app:destination="@id/classicFinishFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/gameFragment" />
         <argument
             android:name="gameLevelId"

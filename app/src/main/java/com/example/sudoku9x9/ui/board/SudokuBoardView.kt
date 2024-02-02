@@ -1,5 +1,7 @@
 package com.example.sudoku9x9.ui.board
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -8,6 +10,8 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.LinearInterpolator
 import com.example.sudoku9x9.R
 import java.util.*
 
@@ -34,6 +38,9 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     private var userOpenedNumbers = 0
     private val lastFilledCells = Stack<Int>()
     private var speedGameMode = false
+
+    private var animSelectCells:ValueAnimator = ValueAnimator()
+    private var newAnim:ValueAnimator = ValueAnimator()
 
 
     private val boardField = Paint().apply {
@@ -89,6 +96,33 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         checkGameMode()
     }
 
+    init {
+        setAnimation()
+    }
+
+    private fun setAnimation(){
+        val startColor = resources.getColor(R.color.white_2)
+        val middleColor = resources.getColor(R.color.blue_2_1)
+        val endColor = resources.getColor(R.color.blue_2)
+        newAnim = ValueAnimator.ofArgb(middleColor,endColor)
+        newAnim.duration = 200
+        newAnim.addUpdateListener {
+            boardSelectCell.color = it.animatedValue as Int
+            postInvalidateOnAnimation()
+        }
+        /*animSelectCells.apply {
+            duration = 1000
+            setEvaluator(ArgbEvaluator())
+            setIntValues(startColor,endColor)
+            interpolator = LinearInterpolator()
+            addUpdateListener {
+                boardSelectCell.color = animatedValue as Int
+                postInvalidateOnAnimation()
+            }
+        }*/
+
+    }
+
     fun insertSudokuNumbers(numbers: List<Cell>) {
         sudokuNumbers = numbers
     }
@@ -105,6 +139,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
                 if (selectedCell.hide) {
                     insertNumber(selectedCell, number)
                 } else {
+
                 }
             }
         }
@@ -196,10 +231,28 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
             cellVertical = (event.y / cellSize).toInt()
             cellHorizontal = (event.x / cellSize).toInt()
             indexSelectedCell = ((cellVertical + 1) * 9) - (9 - cellHorizontal)
-            checkGameMode()
-            invalidate()
+//            checkGameMode()
+            selectLinkCells()
+//            animSelectCells.start()
+//            newAnim.start()
+//            invalidate()
             true
         } else false
+    }
+
+    private fun selectLinkCells(){
+        sudokuNumbers?.let {
+            val cell = it[indexSelectedCell]
+            if (!cell.wrong && !cell.hide && remainNumbers!![cell.value-1]!=0) {
+                lastSavedNumber = cell.value
+                newAnim.start()
+            } else {
+                if (speedGameMode) {
+                    lastSavedNumber?.let { checkInputNumber(lastSavedNumber) }
+                }
+                invalidate()
+            }
+        }
     }
 
     private fun checkGameMode() {
@@ -208,12 +261,16 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
                 val cell = it[indexSelectedCell]
                 if (!cell.wrong && !cell.hide && remainNumbers!![cell.value-1]!=0) {
                     lastSavedNumber = cell.value
+                    newAnim.start()
                 } else {
                     lastSavedNumber?.let {
                         checkInputNumber(lastSavedNumber)
+                        invalidate()
                     }
                 }
             }
+        }else{
+            invalidate()
         }
     }
 

@@ -9,17 +9,221 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/gray_1">
 
-        <TextView
-            android:text="Profile"
-            android:textSize="40dp"
-            android:gravity="center"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:scaleType="centerCrop"
+            android:src="@drawable/kkkkkkk_00000"
+            android:visibility="gone" />
+
+        <TextView
+            style="@style/TextSmallLight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nickname"
+            app:layout_constraintBottom_toTopOf="@id/profile_nickname"
+            app:layout_constraintStart_toStartOf="@id/profile_nickname" />
+
+        <TextView
+            android:id="@+id/profile_nickname"
+            style="@style/TextLargeBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="DarkDesert"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/profile_card_avatar"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="50dp"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintEnd_toStartOf="@id/profile_card_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_nickname">
+
+            <ImageView
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/fot_11"
+                android:text="Date" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/white_1" />
+        </androidx.cardview.widget.CardView>
+
+
+        <FrameLayout
+            android:id="@+id/profile_card_date"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_3"
+            app:layout_constraintEnd_toStartOf="@id/profile_card_country"
+            app:layout_constraintStart_toEndOf="@id/profile_card_avatar"
+            app:layout_constraintTop_toBottomOf="@id/profile_nickname">
+
+            <TextView
+                style="@style/TextSmallLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Date" />
+
+            <TextView
+                style="@style/TextMediumMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="08.2023" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/white_3" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/profile_card_country"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/profile_card_date"
+            app:layout_constraintTop_toBottomOf="@id/profile_nickname">
+
+            <TextView
+                style="@style/TextSmallLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Country" />
+
+            <TextView
+                style="@style/TextMediumMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="USA" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/white_3" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/profile_card_email"
+            android:layout_width="228dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_card_avatar">
+
+            <TextView
+                style="@style/TextSmallLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Email" />
+
+            <TextView
+                style="@style/TextMediumMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Juclin.Jer@gmail.com" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/white_3" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/profile_card_gender"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_card_email">
+
+            <TextView
+                style="@style/TextSmallLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Gender" />
+
+            <TextView
+                style="@style/TextMediumMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Female" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/white_3" />
+
+        </FrameLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

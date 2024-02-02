@@ -1,5 +1,6 @@
 package com.example.sudoku9x9.ui.classic.start
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,8 +8,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sudoku9x9.data.local.ClassicCard
 import com.example.sudoku9x9.databinding.CardClassicBinding
+const val EXPAND_SCREEN = 1
+const val REDUCE_SCREEN = 2
 
-class ClassicStartAdapter:ListAdapter<ClassicCard,ClassicStartAdapter.Holder>(Diff) {
+class ClassicStartAdapter():ListAdapter<ClassicCard,ClassicStartAdapter.Holder>(Diff) {
     class Holder(val binding:CardClassicBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(card: ClassicCard){
             binding.card = card
@@ -26,12 +29,14 @@ class ClassicStartAdapter:ListAdapter<ClassicCard,ClassicStartAdapter.Holder>(Di
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        Log.e("iiii","0  -  viewType-${viewType}")
         return Holder(CardClassicBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val card = getItem(position)
         holder.bind(card)
+
     }
 
 
