@@ -1,6 +1,5 @@
 package com.example.sudoku9x9.ui.board
 
-import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -10,8 +9,6 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.DecelerateInterpolator
-import android.view.animation.LinearInterpolator
 import com.example.sudoku9x9.R
 import java.util.*
 
@@ -20,9 +17,12 @@ const val USER_MISTAKES = 2
 const val REMAIN_NUMBERS_DECREASE = 4
 const val REMAIN_NUMBERS_INCREASE = 5
 const val GAME_END = 3
+const val SELECT_NUMBER_BUTTON = 6
+const val NO_NUMBER_BUTTON = 10
 
 class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
+    private var selectCellsByButton: Int? = null
     private var indexSelectedCell: Int = 0
     private var lastSavedNumber: Int? = null
     private var cellVertical: Int = -1
@@ -93,7 +93,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
 
     fun setSpeedMode(mode: Boolean) {
         speedGameMode = mode
-        checkGameMode()
+//        selectLinkCells()
     }
 
     init {
@@ -134,12 +134,16 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         number?.let {
             val selectedCell = sudokuNumbers!![indexSelectedCell]
             if (selectedCell.wrong) {
-                insertNumber(selectedCell, number)
+                insertNumber(selectedCell, it)
             } else {
                 if (selectedCell.hide) {
-                    insertNumber(selectedCell, number)
+                    insertNumber(selectedCell, it)
                 } else {
-
+                    selectCellsByButton = it
+                    lastSavedNumber = it
+                    listener?.action(SELECT_NUMBER_BUTTON, it)
+                    Log.e("nnnn","1.4  selectCellsByButton-$selectCellsByButton")
+                    newAnim.start()
                 }
             }
         }
@@ -150,15 +154,18 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         if (selectedCell.value == number) {
             sudokuNumbers!![indexSelectedCell].wrong = false
             makeNumberInactive(REMAIN_NUMBERS_DECREASE, number)
+            listener?.action(SELECT_NUMBER_BUTTON, number)
             userOpenedNumbers++
         } else {
             addUserMistake()
             sudokuNumbers!![indexSelectedCell].wrong = true
             sudokuNumbers!![indexSelectedCell].wrong_number = number
+            listener?.action(SELECT_NUMBER_BUTTON, NO_NUMBER_BUTTON)
         }
 //        sudokuNumbers!![indexSelectedCell].hide = false
         lastFilledCells.push(indexSelectedCell)
         invalidate()
+//        selectLinkCells()
     }
 
     fun undo() {
@@ -232,6 +239,7 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
             cellHorizontal = (event.x / cellSize).toInt()
             indexSelectedCell = ((cellVertical + 1) * 9) - (9 - cellHorizontal)
 //            checkGameMode()
+            selectCellsByButton = null
             selectLinkCells()
 //            animSelectCells.start()
 //            newAnim.start()
@@ -245,32 +253,22 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
             val cell = it[indexSelectedCell]
             if (!cell.wrong && !cell.hide && remainNumbers!![cell.value-1]!=0) {
                 lastSavedNumber = cell.value
+                listener?.action(SELECT_NUMBER_BUTTON, lastSavedNumber ?:1)
+                Log.e("nnnn","1.1  lastSavedNumber-$lastSavedNumber")
+                newAnim.start()
+            } else if(remainNumbers!![cell.value-1]==0){
+                lastSavedNumber = null
+                listener?.action(SELECT_NUMBER_BUTTON, NO_NUMBER_BUTTON)
+                Log.e("nnnn","1.2  lastSavedNumber-$lastSavedNumber")
                 newAnim.start()
             } else {
+                Log.e("nnnn","1.3  lastSavedNumber-$lastSavedNumber")
+                listener?.action(SELECT_NUMBER_BUTTON, NO_NUMBER_BUTTON)
                 if (speedGameMode) {
                     lastSavedNumber?.let { checkInputNumber(lastSavedNumber) }
                 }
                 invalidate()
             }
-        }
-    }
-
-    private fun checkGameMode() {
-        if (speedGameMode) {
-            sudokuNumbers?.let {
-                val cell = it[indexSelectedCell]
-                if (!cell.wrong && !cell.hide && remainNumbers!![cell.value-1]!=0) {
-                    lastSavedNumber = cell.value
-                    newAnim.start()
-                } else {
-                    lastSavedNumber?.let {
-                        checkInputNumber(lastSavedNumber)
-                        invalidate()
-                    }
-                }
-            }
-        }else{
-            invalidate()
         }
     }
 
@@ -306,6 +304,14 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
 
     private fun drawSelectCell(canvas: Canvas?) {
         if (cellHorizontal == -1) return
+
+        selectCellsByButton?.let{number ->
+            sudokuNumbers?.forEach {if (it.value == number && !it.hide && !it.wrong) {
+                    drawCell(canvas, it, boardSelectCell)
+                }
+            }
+            return
+        }
 
         sudokuNumbers?.let { numbers ->
             val cell = numbers[indexSelectedCell]

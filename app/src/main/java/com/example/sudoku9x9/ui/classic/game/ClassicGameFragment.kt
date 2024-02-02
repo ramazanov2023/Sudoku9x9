@@ -105,16 +105,20 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
     override fun action(id: Int, value: Int) {
         when(id){
             USER_MISTAKES -> binding.classicGameUserMistakes.text = value.convertToX()
-            GAME_END -> {
+            SELECT_NUMBER_BUTTON -> {
                 Log.e("nnnn","1  value-$value")
+                viewModel.makeInputNumberSelected(value-1)
+            }
+            GAME_END -> {
+                Log.e("nnnn","2  value-$value")
                 viewModel.insertUserGameData(value)
             }
             REMAIN_NUMBERS_DECREASE -> {
-                Log.e("bbbb","1  value-$value")
+                Log.e("bbbb","3  value-$value")
                 viewModel.calculateRemainNumbers(id,value)
             }
             REMAIN_NUMBERS_INCREASE -> {
-                Log.e("bbbb","1  value-$value")
+                Log.e("bbbb","4  value-$value")
                 viewModel.calculateRemainNumbers(id,value)
             }
 //            GAME_END -> findNavController().navigate(R.id.classicFinishFragment)

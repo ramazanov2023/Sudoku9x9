@@ -18,6 +18,7 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
     ViewModel() {
     private lateinit var downTimer: CountDownTimer
     var mistakes = 0
+    private lateinit var listInputNumbers:MutableList<Boolean>
 
     val userRecords = repository.getClassicGameUserData(gameLevelId)
     val sudokuNumbers = SudokuNumbersGenerator(gameLevelId)
@@ -42,11 +43,16 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
     val speedGameMode: LiveData<Boolean>
         get() = _speedGameMode
 
+    private val _selectInputNumber = MutableLiveData<Int?>()
+    val selectInputNumber: LiveData<Int?>
+        get() = _selectInputNumber
+
 
     init {
         sudokuNumbers.getShuffleNumbersList()
         turnOnTimer()
         _speedGameMode.value = false
+        _selectInputNumber.value = 10
     }
 
     private fun turnOnTimer() {
@@ -175,7 +181,12 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
 
 
     fun insertNumber(num: Int) {
+        makeInputNumberSelected(num-1)
         _number.value = num
+    }
+
+    fun makeInputNumberSelected(num: Int) {
+        _selectInputNumber.value = num
     }
 
     fun undo(){
