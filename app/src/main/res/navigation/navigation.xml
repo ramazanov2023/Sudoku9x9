@@ -12,12 +12,14 @@
         android:label="Game" >
         <action
             android:id="@+id/action_gameFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/move_right_scale_down"
+            app:exitAnim="@anim/move_right_scale_down_out" />
         <action
             android:id="@+id/action_gameFragment_to_classicGameFragment"
             app:destination="@id/classicGameFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out" />
+            app:enterAnim="@anim/move_right_scale_down"
+            app:exitAnim="@anim/move_right_scale_down_out" />
     </fragment>
     <fragment
         android:id="@+id/statisticsFragment"
@@ -49,7 +51,7 @@
     <fragment
         android:id="@+id/profileFragment"
         tools:layout="@layout/fragment_profile"
-        android:name="com.example.sudoku9x9.ui.ProfileFragment"
+        android:name="com.example.sudoku9x9.ui.profile.ProfileFragment"
         android:label="Profile" />
     <fragment
         android:id="@+id/classicGameFragment"
@@ -59,12 +61,15 @@
         <action
             android:id="@+id/action_classicGameFragment_to_classicFinishFragment"
             app:destination="@id/classicFinishFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
+            app:enterAnim="@anim/move_right_scale_down"
+            app:exitAnim="@anim/move_right_scale_down_out"
             app:popUpTo="@id/gameFragment" />
         <argument
             android:name="gameLevelId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_classicGameFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/classicFinishFragment"
@@ -80,6 +85,9 @@
         <argument
             android:name="gameLevelId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_classicFinishFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/classicStartFragment"

@@ -41,8 +41,15 @@ data class Profile(
     @PrimaryKey
     val id:Int,
     var userName:String = "",
+    var userId:Int = 0,
     var userEmail:String = "",
+    var userPassword:String = "",
     var userAvatar:String = "",
+    var userCountry:String = "",
+    var userGender:String = "",
+    var signUp:Boolean = false,
+    var signUpTime:Long = 0L,
+    var proVersion:Boolean = false,
     var firstLaunch:Boolean = false
 )
 

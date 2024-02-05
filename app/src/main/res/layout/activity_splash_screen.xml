@@ -7,10 +7,9 @@
     android:background="@color/gray_1"
     tools:context=".SplashScreenActivity">
 
-    <TextView
-        android:gravity="center"
-        style="@style/TextMediumMedium"
-        android:text="Sudoku"
+    <ImageView
+        android:src="@drawable/ic_game"
+        android:scaleType="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

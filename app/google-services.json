@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "140011381168",
+    "project_id": "sudoku9x9-276cf",
+    "storage_bucket": "sudoku9x9-276cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140011381168:android:fbc979243e89bbb9bcb675",
+        "android_client_info": {
+          "package_name": "com.example.sudoku9x9"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqYCoxdcmOhJTVEB0t7MapluxiKDuvJ5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

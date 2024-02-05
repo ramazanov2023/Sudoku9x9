@@ -68,12 +68,12 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     private val boardNumbers = Paint().apply {
         color = resources.getColor(R.color.gray_3)
         style = Paint.Style.FILL
-        textSize = 82F
+        textSize = 90F
     }
     private val boardWrongNumber = Paint().apply {
         color = resources.getColor(R.color.red_1)
         style = Paint.Style.FILL
-        textSize = 82F
+        textSize = 90F
     }
 
 

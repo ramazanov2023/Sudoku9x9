@@ -10,6 +10,8 @@ import android.widget.FrameLayout
 import android.widget.GridLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
 import androidx.fragment.app.DialogFragment
 import com.example.sudoku9x9.R
@@ -54,6 +56,8 @@ class ClassicLevelSelectionFragment:DialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
+        WindowCompat.getInsetsController(requireActivity().window, requireActivity().window.decorView)
+            .hide(WindowInsetsCompat.Type.navigationBars())
     }
 
     override fun onCancel(dialog: DialogInterface) {

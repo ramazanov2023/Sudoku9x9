@@ -12,8 +12,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@drawable/screensaver</item>
+        <item name="android:windowBackground">@color/gray_1</item>
+
+<!--        <item name="android:windowTranslucentNavigation">true</item>-->
+        <item name="android:navigationBarColor">@color/gray_1</item>
+<!--        <item name="android:windowTranslucentStatus">true</item>-->
 
     </style>
-
 </resources>

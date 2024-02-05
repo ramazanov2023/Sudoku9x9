@@ -85,6 +85,14 @@ class DefaultSudokuRepository(
         localSudokuResource.sudokuDao.insertClassicGame(classicGame)
     }
 
+    override fun checkRegistration():Profile {
+       return localSudokuResource.sudokuDao.getProfile(1)
+    }
+
+    override fun saveRegistration(uid:String,email:String,password:String,time: Long) {
+        localSudokuResource.sudokuDao.saveRegistration(uid,email,password,time,1)
+    }
+
     private fun getCardsList(): List<ClassicCard> {
         return listOf(
             ClassicCard(

@@ -1,11 +1,14 @@
 package com.example.sudoku9x9
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.*
 import android.view.Window
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -18,10 +21,30 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.transition.Visibility
+import com.example.sudoku9x9.ui.*
+import com.example.sudoku9x9.ui.classic.finish.ClassicFinishFragmentDirections
+import com.example.sudoku9x9.ui.classic.game.ClassicGameFragmentDirections
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+enum class TypeScreen{
+    GAME,
+    STATISTICS,
+    SETTINGS,
+    PLAYERS,
+    PROFILE,
+    CLASSIC_GAME,
+    CLASSIC_FINISH,
+}
 
 class MainActivity : AppCompatActivity() {
     lateinit var bottomNavBar: BottomNavigationView
+    private var screen = TypeScreen.GAME
     lateinit var windowInsetsController: WindowInsetsControllerCompat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +66,45 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavBar.setupWithNavController(navController)
 
+        bottomNavBar
+
+        /*bottomNavBar.setOnItemSelectedListener {
+            when(it.itemId){
+                R.id.gameFragment -> {
+                    navController.navigate(R.id.gameFragment)
+
+                    true
+                }
+                R.id.statisticsFragment -> {
+                    navController.navigate(R.id.statisticsFragment)
+                    true
+                }
+                R.id.settingsFragment -> {
+                    navController.navigate(R.id.settingsFragment)
+                    true
+                }
+                R.id.playersFragment -> {
+                    navController.navigate(R.id.playersFragment)
+                    true
+                }
+                else -> false
+            }
+        }*/
+
+
+
 
         ava.setOnClickListener {
-            navController.navigate(R.id.profileFragment)
+            when(screen){
+                TypeScreen.GAME -> navController.navigate(GameFragmentDirections.actionGameFragmentToProfileFragment())
+                TypeScreen.CLASSIC_GAME -> navController.navigate(ClassicGameFragmentDirections.actionClassicGameFragmentToProfileFragment())
+                TypeScreen.CLASSIC_FINISH -> navController.navigate(ClassicFinishFragmentDirections.actionClassicFinishFragmentToProfileFragment())
+                TypeScreen.STATISTICS -> navController.navigate(StatisticsFragmentDirections.actionStatisticsFragmentToProfileFragment())
+                TypeScreen.SETTINGS -> navController.navigate(SettingsFragmentDirections.actionSettingsFragmentToProfileFragment())
+                TypeScreen.PLAYERS -> navController.navigate(PlayersFragmentDirections.actionPlayersFragmentToProfileFragment())
+                else -> navController.navigate(R.id.profileFragment)
+            }
+
         }
 
         navController.addOnDestinationChangedListener { _, des, _ ->
@@ -63,6 +122,7 @@ class MainActivity : AppCompatActivity() {
 //                        title = "Statistics"
                         setDisplayHomeAsUpEnabled(false)
                     }
+                    screen = TypeScreen.STATISTICS
                 }
                 R.id.settingsFragment -> {
                     bottomNavBar.visibility = VISIBLE
@@ -70,6 +130,7 @@ class MainActivity : AppCompatActivity() {
                         title = "Settings"
                         setDisplayHomeAsUpEnabled(false)
                     }
+                    screen = TypeScreen.SETTINGS
                 }
                 R.id.playersFragment -> {
                     bottomNavBar.visibility = VISIBLE
@@ -77,6 +138,21 @@ class MainActivity : AppCompatActivity() {
                         title = "Players"
                         setDisplayHomeAsUpEnabled(false)
                     }
+                    screen = TypeScreen.PLAYERS
+                }
+                R.id.classicGameFragment -> {
+                    bottomNavBar.visibility = GONE
+                    supportActionBar?.apply {
+                        setDisplayHomeAsUpEnabled(false)
+                    }
+                    screen = TypeScreen.CLASSIC_GAME
+                }
+                R.id.classicFinishFragment -> {
+                    bottomNavBar.visibility = GONE
+                    supportActionBar?.apply {
+                        setDisplayHomeAsUpEnabled(false)
+                    }
+                    screen = TypeScreen.CLASSIC_FINISH
                 }
 
                 else -> {
@@ -84,6 +160,7 @@ class MainActivity : AppCompatActivity() {
                     supportActionBar?.apply {
                         setDisplayHomeAsUpEnabled(false)
                     }
+                    screen = TypeScreen.GAME
                 }
             }
         }
@@ -112,7 +189,35 @@ class MainActivity : AppCompatActivity() {
             }
             view.onApplyWindowInsets(windowInsets)
         }*/
+
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.IO){
+                val auth = FirebaseAuth.getInstance()
+                val userProfile = (application as SudokuApplication).repository.checkRegistration()
+                if(userProfile.signUp){
+                    auth.signInWithEmailAndPassword(userProfile.userEmail, userProfile.userPassword)
+                        .addOnCompleteListener(this@MainActivity) { task ->
+                            if (task.isSuccessful) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("sasasa", "signInWithEmail:success")
+                                val user = auth.currentUser
+//                                updateUI(user)
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w("sasasa", "signInWithEmail:failure", task.exception)
+                                Toast.makeText(
+                                    baseContext,
+                                    "Authentication failed.",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+//                                updateUI(null)
+                            }
+                        }
+                }
+            }
+        }
     }
+
 
     override fun onResume() {
         super.onResume()

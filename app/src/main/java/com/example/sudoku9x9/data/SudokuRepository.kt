@@ -3,6 +3,7 @@ package com.example.sudoku9x9.data
 import androidx.lifecycle.LiveData
 import com.example.sudoku9x9.data.local.ClassicCard
 import com.example.sudoku9x9.data.local.ClassicGame
+import com.example.sudoku9x9.data.local.Profile
 
 interface SudokuRepository {
 
@@ -28,6 +29,8 @@ interface SudokuRepository {
                               gameLevelId: Int)
 
     fun saveClassicGame(classicGame: ClassicGame)
+    fun checkRegistration(): Profile
+    fun saveRegistration(uid:String,email:String,password:String,time: Long)
 
 
 }

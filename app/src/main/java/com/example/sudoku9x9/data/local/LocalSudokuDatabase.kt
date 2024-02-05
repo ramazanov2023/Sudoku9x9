@@ -18,7 +18,8 @@ abstract class LocalSudokuDatabase:RoomDatabase() {
                     context,
                     LocalSudokuDatabase::class.java,
                     "sudoku_9x9_database"
-                ).build()
+                )
+                    .build()
 
                 return INSTANCE as LocalSudokuDatabase
             }

@@ -79,6 +79,7 @@ class ClassicStartFragment : Fragment() {
         binding.classicStartModeFirstName.setOnClickListener {
             it.startAnimation(minAnimMode)
         }*/
+
         binding.classicStartRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             var scrollPosition = 0
             var run:Boolean = true

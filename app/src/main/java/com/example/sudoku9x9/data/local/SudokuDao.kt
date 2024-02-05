@@ -24,6 +24,9 @@ interface SudokuDao {
     @Query("SELECT * FROM profile_table WHERE id == :id")
     fun getUserProfile(id:Int):LiveData<Profile>
 
+    @Query("SELECT * FROM profile_table WHERE id == :id")
+    fun getProfile(id:Int):Profile
+
     @Query("SELECT firstLaunch FROM profile_table WHERE id == :id")
     fun checkFirstLaunch(id:Int):Boolean
 
@@ -42,6 +45,9 @@ interface SudokuDao {
 
     @Query("UPDATE profile_table SET userName = :userName,userEmail = :userEmail,userAvatar = :userAvatar WHERE id == :id")
     fun updateUserProfile(userName:String, userEmail:String, userAvatar:String, id:Int)
+
+    @Query("UPDATE profile_table SET userId = :uid,userEmail = :email,userPassword = :password,signUpTime = :time  WHERE id == :id")
+    fun saveRegistration(uid:String, email: String, password: String, time: Long, id:Int)
 
     @Query("UPDATE profile_table SET firstLaunch = :firstLaunch WHERE id == :id")
     fun setFirstLaunch(firstLaunch:Boolean, id:Int)
@@ -62,7 +68,6 @@ interface SudokuDao {
 
     @Query("SELECT time FROM classic_games_history_table WHERE gameLevelId = :gameLevelId ORDER BY id DESC LIMIT 0,10")
     fun getLastTenClassicGames(gameLevelId: Int):Array<Long>
-
 
 
 
