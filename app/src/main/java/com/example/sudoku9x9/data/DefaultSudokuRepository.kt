@@ -33,6 +33,7 @@ class DefaultSudokuRepository(
                     localSudokuResource.sudokuDao.insertClassicCardsData(*getCardsList().toTypedArray())
                     localSudokuResource.sudokuDao.insertUserProfile(Profile(id = 1))
                     localSudokuResource.sudokuDao.setFirstLaunch(true,1)
+                    Log.e("qqq", "2")
                 }
             }
         }
@@ -85,12 +86,21 @@ class DefaultSudokuRepository(
         localSudokuResource.sudokuDao.insertClassicGame(classicGame)
     }
 
+    override fun getUserProfile(id: Int):LiveData<Profile> {
+        return localSudokuResource.sudokuDao.getUserProfile(id)
+    }
+
     override fun checkRegistration():Profile {
        return localSudokuResource.sudokuDao.getProfile(1)
     }
 
-    override fun saveRegistration(uid:String,email:String,password:String,time: Long) {
-        localSudokuResource.sudokuDao.saveRegistration(uid,email,password,time,1)
+    override fun saveRegistration(uid:String, nickname:String, email:String, password:String, signUp:Boolean, time: Long, country: String) {
+        Log.e("search_null","4  -  nickname-$nickname  email-$email  password-$password  uid-${uid}")
+        localSudokuResource.sudokuDao.saveRegistration(uid,nickname,email,password,signUp,time, country,1)
+    }
+
+    override fun updateUserAvatar(userAvatar:String, id:Int) {
+        localSudokuResource.sudokuDao.updateUserAvatar(userAvatar, id)
     }
 
     private fun getCardsList(): List<ClassicCard> {

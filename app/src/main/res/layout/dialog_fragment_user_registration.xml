@@ -8,63 +8,71 @@
     <View
         android:id="@+id/reg_frame"
         android:layout_width="320dp"
-        android:layout_height="200dp"
+        android:layout_height="280dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/classic_dialog_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="sans-serif-light"
-        android:text="Enter email"
-        android:textColor="@color/white_3"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@id/reg_email"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/reg_email"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:background="@android:color/transparent"
+        android:background="@color/gray_3"
         android:gravity="start|center_vertical"
-        android:minWidth="100dp"
+        android:minWidth="180dp"
+        android:layout_marginTop="32dp"
         android:inputType="textEmailAddress"
         android:textColor="@color/white_2"
+        android:hint="Email"
+        android:paddingStart="8dp"
+        android:textColorHint="@color/gray_5"
         app:layout_constraintEnd_toEndOf="@id/reg_frame"
         app:layout_constraintStart_toStartOf="@id/reg_frame"
-        app:layout_constraintTop_toBottomOf="@id/classic_dialog_title"
-        tools:text="ramazanov.game@gmail.com" />
+        app:layout_constraintTop_toTopOf="@id/reg_frame"/>
 
     <EditText
         android:id="@+id/reg_password"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:background="@android:color/transparent"
+        android:background="@color/gray_3"
         android:gravity="start|center_vertical"
-        android:minWidth="100dp"
+        android:minWidth="180dp"
+        android:layout_marginTop="16dp"
+        android:hint="Password"
+        android:paddingStart="8dp"
+        android:textColorHint="@color/gray_5"
         android:inputType="numberPassword"
         android:textColor="@color/white_2"
         app:layout_constraintStart_toStartOf="@id/reg_email"
-        app:layout_constraintTop_toBottomOf="@id/reg_email"
-        tools:text="123456" />
+        app:layout_constraintTop_toBottomOf="@id/reg_email"/>
+
+    <EditText
+        android:id="@+id/reg_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@color/gray_3"
+        android:gravity="start|center_vertical"
+        android:minWidth="180dp"
+        android:layout_marginTop="16dp"
+        android:hint="Name"
+        android:paddingStart="8dp"
+        android:textColorHint="@color/gray_5"
+        android:textColor="@color/white_2"
+        app:layout_constraintStart_toStartOf="@id/reg_email"
+        app:layout_constraintTop_toBottomOf="@id/reg_password"/>
 
     <Button
         android:id="@+id/reg_sign_up_button"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="@color/blue"
         android:text="Sign Up"
         android:textAllCaps="false"
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="@id/reg_frame"
         app:layout_constraintStart_toStartOf="@id/reg_frame"
-        app:layout_constraintTop_toBottomOf="@id/reg_password" />
+        app:layout_constraintTop_toBottomOf="@id/reg_nickname" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

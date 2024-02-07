@@ -17,6 +17,7 @@ import com.example.sudoku9x9.R
 class UserRegistrationDialogFragment:DialogFragment() {
     private lateinit var inputEmail: EditText
     private lateinit var inputPassword: EditText
+    private lateinit var inputName: EditText
     private lateinit var signUpButton: Button
 
     override fun onCreateView(
@@ -27,10 +28,11 @@ class UserRegistrationDialogFragment:DialogFragment() {
         val root: View = inflater.inflate(R.layout.dialog_fragment_user_registration,container,false)
         inputEmail = root.findViewById(R.id.reg_email)
         inputPassword = root.findViewById(R.id.reg_password)
+        inputName = root.findViewById(R.id.reg_nickname)
         signUpButton = root.findViewById(R.id.reg_sign_up_button)
 
         signUpButton.setOnClickListener {
-            setResult(inputEmail.text.toString(),inputPassword.text.toString())
+            setResult(inputEmail.text.toString(),inputPassword.text.toString(),inputName.text.toString())
         }
 
         return root
@@ -50,14 +52,21 @@ class UserRegistrationDialogFragment:DialogFragment() {
         super.onCancel(dialog)
     }
 
-    private fun setResult(email:String,password:String){
-        parentFragmentManager.setFragmentResult(REQUEST_REGISTRATION, bundleOf(Pair(REG_EMAIL,email),Pair(REG_PASSWORD,password)))
+    private fun setResult(email: String, password: String, nickname: String){
+        if(email.isEmpty()) return
+        if(nickname.isEmpty()) return
+        if(password.length<6) return
+
+        parentFragmentManager.setFragmentResult(
+            REQUEST_REGISTRATION,
+            bundleOf(Pair(REG_EMAIL,email),Pair(REG_PASSWORD,password),Pair(REG_NICKNAME,nickname)))
     }
 
     companion object{
         val REG = UserRegistrationDialogFragment::class.java.simpleName
         val REQUEST_REGISTRATION = "UserRegistration"
         val REG_PASSWORD = "UserPassword"
+        val REG_NICKNAME = "UserName"
         val REG_EMAIL = "UserEmail"
     }
 }

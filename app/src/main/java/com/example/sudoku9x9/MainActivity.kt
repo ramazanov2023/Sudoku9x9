@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity() {
                 val auth = FirebaseAuth.getInstance()
                 val userProfile = (application as SudokuApplication).repository.checkRegistration()
                 if(userProfile.signUp){
-                    auth.signInWithEmailAndPassword(userProfile.userEmail, userProfile.userPassword)
+                    auth.signInWithEmailAndPassword(userProfile.userEmail!!, userProfile.userPassword!!)
                         .addOnCompleteListener(this@MainActivity) { task ->
                             if (task.isSuccessful) {
                                 // Sign in success, update UI with the signed-in user's information

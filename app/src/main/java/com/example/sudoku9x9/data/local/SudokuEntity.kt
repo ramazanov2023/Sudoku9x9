@@ -40,15 +40,15 @@ data class ClassicCard(
 data class Profile(
     @PrimaryKey
     val id:Int,
-    var userName:String = "",
-    var userId:Int = 0,
-    var userEmail:String = "",
-    var userPassword:String = "",
-    var userAvatar:String = "",
-    var userCountry:String = "",
-    var userGender:String = "",
+    var userName:String? = null,
+    var userId:Int? = null,
+    var userEmail:String? = null,
+    var userPassword:String? = null,
+    var userAvatar:String? = "",
+    var userCountry:String? = null,
+    var userGender:String? = null,
     var signUp:Boolean = false,
-    var signUpTime:Long = 0L,
+    var signUpTime:Long? = null,
     var proVersion:Boolean = false,
     var firstLaunch:Boolean = false
 )

@@ -29,8 +29,14 @@ interface SudokuRepository {
                               gameLevelId: Int)
 
     fun saveClassicGame(classicGame: ClassicGame)
+
+
+
+
+    fun getUserProfile(id:Int):LiveData<Profile>
     fun checkRegistration(): Profile
-    fun saveRegistration(uid:String,email:String,password:String,time: Long)
+    fun saveRegistration(uid:String,nickname:String, email:String,password:String,signUp:Boolean,time: Long,country: String)
+    fun updateUserAvatar(userAvatar:String, id:Int)
 
 
 }

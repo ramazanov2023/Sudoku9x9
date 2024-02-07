@@ -1,22 +1,13 @@
 package com.example.sudoku9x9.data.local
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 
 @Dao
 interface SudokuDao {
 
-    // for Classic
-
-    @Query("SELECT * FROM classic_card_table")
-    fun getClassicCardsData():LiveData<List<ClassicCard>>
-
-    @Query("SELECT * FROM classic_card_table WHERE id == :gameLevelId")
-    fun getClassicGameUserData(gameLevelId:Int):LiveData<ClassicCard>
+    // for Profile
 
     @Insert
     fun insertUserProfile(profile: Profile)
@@ -29,6 +20,31 @@ interface SudokuDao {
 
     @Query("SELECT firstLaunch FROM profile_table WHERE id == :id")
     fun checkFirstLaunch(id:Int):Boolean
+
+    @Query("UPDATE profile_table SET userName = :userName,userEmail = :userEmail,userAvatar = :userAvatar WHERE id == :id")
+    fun updateUserProfile(userName:String, userEmail:String, userAvatar:String, id:Int)
+
+    @Query("UPDATE profile_table SET userAvatar = :userAvatar WHERE id == :id")
+    fun updateUserAvatar(userAvatar:String, id:Int)
+
+    @Query("UPDATE profile_table SET userId = :uid,userName = :nickname,userEmail = :email,userPassword = :password,signUp = :signUp,signUpTime = :signUpTime,userCountry = :country  WHERE id == :id")
+    fun saveRegistration(uid:String,nickname:String, email:String,password:String,signUp:Boolean,signUpTime: Long,country: String, id:Int)
+
+    @Query("UPDATE profile_table SET firstLaunch = :firstLaunch WHERE id == :id")
+    fun setFirstLaunch(firstLaunch:Boolean, id:Int)
+
+
+
+
+
+
+    // for Classic
+
+    @Query("SELECT * FROM classic_card_table")
+    fun getClassicCardsData():LiveData<List<ClassicCard>>
+
+    @Query("SELECT * FROM classic_card_table WHERE id == :gameLevelId")
+    fun getClassicGameUserData(gameLevelId:Int):LiveData<ClassicCard>
 
     @Query("UPDATE classic_card_table SET lastMeanTime = :lastMeanTime,meanTime = :meanTime,lastTime = :lastTime,pastBesTime = :pastBesTime, bestTime = :bestTime,progress = :progress,progressValue = :progressValue,games = :games, mistakes = :mistakes WHERE id == :gameLevelId")
     fun updateClassicCardData(
@@ -43,14 +59,6 @@ interface SudokuDao {
         lastTime:Long,
         gameLevelId:Int)
 
-    @Query("UPDATE profile_table SET userName = :userName,userEmail = :userEmail,userAvatar = :userAvatar WHERE id == :id")
-    fun updateUserProfile(userName:String, userEmail:String, userAvatar:String, id:Int)
-
-    @Query("UPDATE profile_table SET userId = :uid,userEmail = :email,userPassword = :password,signUpTime = :time  WHERE id == :id")
-    fun saveRegistration(uid:String, email: String, password: String, time: Long, id:Int)
-
-    @Query("UPDATE profile_table SET firstLaunch = :firstLaunch WHERE id == :id")
-    fun setFirstLaunch(firstLaunch:Boolean, id:Int)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertClassicCardsData(vararg card:ClassicCard)
