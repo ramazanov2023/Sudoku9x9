@@ -28,6 +28,9 @@
             app:cardElevation="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -45,20 +48,21 @@
                         android:layout_height="120dp"
                         android:layout_gravity="bottom"
                         android:scaleType="centerCrop"
-                        app:setClassicBestUserAva="@{card.user1}"
+                        app:setClassicUsersAvatar="@{card.user1}"
                         tools:src="@drawable/fot_11" />
 
                     <GridLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="600dp"
                         android:layout_height="wrap_content"
-                        android:columnCount="6">
+                        android:orientation="vertical"
+                        android:rowCount="2">
 
                         <ImageView
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_gravity="bottom"
                             android:scaleType="centerCrop"
-                            app:setClassicBestUserAva="@{card.user2}"
+                            app:setClassicUsersAvatar="@{card.user2}"
                             tools:src="@drawable/fot_1" />
 
                         <ImageView
@@ -66,7 +70,7 @@
                             android:layout_height="60dp"
                             android:layout_gravity="bottom"
                             android:scaleType="centerCrop"
-                            app:setClassicBestUserAva="@{card.user4}"
+                            app:setClassicUsersAvatar="@{card.user3}"
                             tools:src="@drawable/fot_14" />
 
                         <ImageView
@@ -74,7 +78,7 @@
                             android:layout_height="60dp"
                             android:layout_gravity="bottom"
                             android:scaleType="centerCrop"
-                            app:setClassicBestUserAva="@{card.user6}"
+                            app:setClassicUsersAvatar="@{card.user4}"
                             tools:src="@drawable/fot_8" />
 
                         <ImageView
@@ -82,7 +86,7 @@
                             android:layout_height="60dp"
                             android:layout_gravity="bottom"
                             android:scaleType="centerCrop"
-                            app:setClassicBestUserAva="@{card.user8}"
+                            app:setClassicUsersAvatar="@{card.user5}"
                             tools:src="@drawable/fot_5" />
 
                         <ImageView
@@ -90,7 +94,7 @@
                             android:layout_height="60dp"
                             android:layout_gravity="bottom"
                             android:scaleType="centerCrop"
-                            app:setClassicBestUserAva="@{card.user10}"
+                            app:setClassicUsersAvatar="@{card.user6}"
                             tools:src="@drawable/fot_16" />
 
                         <ImageView
@@ -98,10 +102,26 @@
                             android:layout_height="60dp"
                             android:layout_gravity="bottom"
                             android:scaleType="centerCrop"
-                            app:setClassicBestUserAva="@{card.user12}"
-                            tools:src="@drawable/fot_17" />
+                            app:setClassicUsersAvatar="@{card.user7}"
+                            tools:src="@drawable/fot_13" />
 
                         <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:scaleType="centerCrop"
+                            app:setClassicUsersAvatar="@{card.user8}"
+                            tools:src="@drawable/fot_19" />
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="bottom"
+                            android:scaleType="centerCrop"
+                            app:setClassicUsersAvatar="@{card.user9}"
+                            tools:src="@drawable/fot_17" />
+
+                        <!--<ImageView
                             android:layout_width="60dp"
                             android:layout_height="60dp"
                             android:layout_gravity="bottom"
@@ -139,7 +159,7 @@
                             android:layout_gravity="bottom"
                             android:scaleType="centerCrop"
                             app:setClassicBestUserAva="@{card.user11}"
-                            tools:src="@drawable/fot_13" />
+                            tools:src="@drawable/fot_13" />-->
                     </GridLayout>
                 </LinearLayout>
             </HorizontalScrollView>

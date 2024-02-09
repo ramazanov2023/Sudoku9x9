@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 const val PICTURE_REQUEST = 1
 
@@ -34,6 +35,7 @@ class ProfileFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
     private lateinit var myRef: DatabaseReference
+    private  var userRef: DatabaseReference? = null
 
 
     private val viewModel by viewModels<ProfileViewModel> {
@@ -51,7 +53,10 @@ class ProfileFragment : Fragment() {
 //        https://sudoku9x9-276cf-default-rtdb.europe-west1.firebasedatabase.app/
         val database =
             FirebaseDatabase.getInstance("https://sudoku9x9-276cf-default-rtdb.europe-west1.firebasedatabase.app/")
-        myRef = database.getReference().child("sudoku")
+        myRef = database.reference.child("sudoku")
+        auth.currentUser?.let{
+            userRef = myRef.child("players").child(it.uid)
+        }
 
 //        myRef.setValue("Hello, World!")
 //        myRef.child("sudoku").child("players")
@@ -117,7 +122,8 @@ class ProfileFragment : Fragment() {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
                     if (user != null) {
-                        user.uid
+                        userRef = myRef.child("players").child(user.uid)
+
                         Log.e(
                             "search_null",
                             "1  -  nickname-$nickname  email-$email  password-$password  user.uid-${user.uid}"
@@ -132,8 +138,7 @@ class ProfileFragment : Fragment() {
                             signUpTime = time,
                             country = "USA"
                         )
-                        myRef.child("players").child(user.uid)
-                            .child("profile")
+                        userRef!!.child("profile")
                             .setValue(userProfile)
                             .addOnCompleteListener {
                                 if (it.isSuccessful) {
@@ -177,8 +182,15 @@ class ProfileFragment : Fragment() {
                 val localAvatarUri = it.data
                 Log.e("oooo", "1 -  it.data-${it.data} ")
                 // Загружаем картинку в FirebaseStorage
-                val player = storage.reference.child("players").child("123456")
-                val userAvatar = player.child("test_avatar.jpg")
+                var userAvatar: StorageReference? = null
+                if(auth.currentUser!=null){
+                    val avatar = "${auth.currentUser!!.uid}.jpg"
+                    userAvatar = storage.reference.child("players").child(avatar)
+                }else{
+                    return@let
+                }
+//                val player = storage.reference.child("players").child("123456")
+//                val userAvatar = player.child("test_avatar.jpg")
 
                 // Получаем ее адрес
                 // Передаем этот адрес в локальную базу данных
@@ -191,13 +203,25 @@ class ProfileFragment : Fragment() {
 
                         val uriTask = userAvatar.downloadUrl
                         uriTask.addOnCompleteListener {
-                            if (it.isSuccessful) {
-//                                it.result
+                            if (it.isSuccessful && userRef!=null) {
+                                val uriAvatar = it.result.toString()
+                                    userRef!!.child("profile").child("avatar")
+                                    .setValue(uriAvatar)
+                                    .addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            Log.e(
+                                                "search_null",
+                                                "8  -  it.result-$uriAvatar"
+                                            )
+                                            viewModel.updateUserProfile(
+                                                uriAvatar,
+                                                id = 1
+                                            )
+                                        }
+                                    }
 
                                 Log.e("search_null", "7  -  uri-${it.result}")
                                 viewModel.updateUserProfile(it.result.toString(), id = 1)
-                            } else {
-                                null
                             }
                         }
 

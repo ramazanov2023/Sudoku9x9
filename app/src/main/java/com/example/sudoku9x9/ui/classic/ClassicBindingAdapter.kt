@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.sudoku9x9.data.local.ClassicCard
 import com.example.sudoku9x9.ui.classic.start.ClassicStartAdapter
 
@@ -21,6 +22,17 @@ fun setClassicCardsList(recycler: RecyclerView, cards: List<ClassicCard>?) {
 fun setClassicBestUserAvaList(image: ImageView, ava: Int?) {
     ava?.let {
         image.setImageResource(ava)
+    }
+}
+
+@BindingAdapter("setClassicUsersAvatar")
+fun setClassicAvatar(image: ImageView, ava: String?) {
+    ava?.let {
+        Glide
+            .with(image.context)
+            .load(ava)
+            .fitCenter()
+            .into(image)
     }
 }
 

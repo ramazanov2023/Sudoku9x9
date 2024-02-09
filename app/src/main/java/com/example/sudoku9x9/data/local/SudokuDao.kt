@@ -59,6 +59,19 @@ interface SudokuDao {
         lastTime:Long,
         gameLevelId:Int)
 
+    @Query("UPDATE classic_card_table SET user1 = :user1,user2 = :user2,user3 = :user3,user4 = :user4, user5 = :user5,user6 = :user6,user7 = :user7,user8 = :user8,user9 = :user9 WHERE id == :gameLevelId")
+    fun updateClassicCardPlayersData(
+        user1:String,
+        user2:String,
+        user3:String,
+        user4:String,
+        user5:String,
+        user6:String,
+        user7:String,
+        user8:String,
+        user9:String,
+        gameLevelId: Int)
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertClassicCardsData(vararg card:ClassicCard)
