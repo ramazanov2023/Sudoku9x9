@@ -1,5 +1,6 @@
 package com.example.sudoku9x9
 
+import com.example.sudoku9x9.ui.board.turnStatistics
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -12,6 +13,9 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
+        turnStatistics()
         assertEquals(4, 2 + 2)
     }
+
+
 }

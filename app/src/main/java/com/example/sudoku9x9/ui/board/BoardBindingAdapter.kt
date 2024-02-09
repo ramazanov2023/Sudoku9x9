@@ -9,6 +9,12 @@ import android.widget.TextView
 import androidx.core.view.get
 import androidx.databinding.BindingAdapter
 
+
+fun turnStatistics(){
+
+}
+
+
 @BindingAdapter("inactiveNumber")
 fun setInactiveNumber(number: TextView, hideNumber: Int?) {
     hideNumber?.let {

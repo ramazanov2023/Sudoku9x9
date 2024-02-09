@@ -247,7 +247,6 @@ class DefaultSudokuRepository(
     }*/
 
     private fun getCardsList(): List<ClassicCard> {
-//       getBestPlayers()
         return listOf(
             ClassicCard(
                 id = 1,

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sudoku9x9.R
 import com.example.sudoku9x9.SudokuApplication
@@ -82,12 +83,38 @@ class ClassicStartFragment : Fragment() {
 
         binding.classicStartRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             var scrollPosition = 0
-            var run:Boolean = true
+//            var scroll = 0
+//            var run:Boolean = true
+            var run:Boolean = viewModel.scroll
+
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                scrollPosition += dy
-                Log.e("iiii", "0  -  scrollPosition-${scrollPosition}")
-                if (scrollPosition > 600) {
+                val scroll = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+//                scrollPosition += dy
+//                Log.e("iiii", "0  -  scrollPosition-${scrollPosition}   scroll-${scroll}")
+                if(scroll<1){
+                    if(!run) {
+                        binding.apply {
+                            Log.e("iiii", "3  -  scroll-${scroll}")
+                            classicModeContainer.setLongMode()
+                        }
+                        run = true
+                        viewModel.scroll = true
+//                        Log.e("iiii", "2  -  dy-${dy}")
+                    }
+                }else{
+                    if(run) {
+                        binding.apply{
+                            Log.e("iiii", "4  -  scroll-${scroll}")
+                            classicModeContainer.setShortMode()
+                        }
+                        run = false
+                        viewModel.scroll = false
+//                        Log.e("iiii", "1  -  dy-${dy}")
+                    }
+                }
+
+                /*if (scrollPosition > 600) {
                     if(run) {
                         binding.apply{
                             classicModeContainer.setShortMode()
@@ -95,6 +122,7 @@ class ClassicStartFragment : Fragment() {
 //                            classicModeDescription.startAnimation(minAnimMode)
                         }
                         run = false
+
                         Log.e("iiii", "1  -  dy-${dy}")
                     }
                 } else if (scrollPosition < 300) {
@@ -107,7 +135,7 @@ class ClassicStartFragment : Fragment() {
                         run = true
                         Log.e("iiii", "2  -  dy-${dy}")
                     }
-                }
+                }*/
             }
         })
 

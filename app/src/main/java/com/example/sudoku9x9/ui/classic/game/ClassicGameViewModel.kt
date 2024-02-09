@@ -55,7 +55,7 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
         _selectInputNumber.value = 10
     }
 
-    private fun turnOnTimer() {
+     private fun turnOnTimer() {
 
         downTimer = object : CountDownTimer(600000, 10) {
             var min = 0
@@ -170,11 +170,13 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
                             )
                             Log.e("nnnn", "8  progress-$progress   progressValue-$progressValue")
                             _finishGame.postValue(Pair(win, finishMessage))
+                            downTimer.cancel()
                         }
 
                     }
                 }
             }
+
         }
         downTimer.start()
     }

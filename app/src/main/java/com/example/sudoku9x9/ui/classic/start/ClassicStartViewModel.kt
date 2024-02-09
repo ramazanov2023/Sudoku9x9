@@ -9,6 +9,7 @@ import com.example.sudoku9x9.data.SudokuRepository
 import com.example.sudoku9x9.data.local.ClassicCard
 
 class ClassicStartViewModel(private val repository: SudokuRepository) : ViewModel() {
+    var scroll: Boolean = true
     val cardsData = repository.getClassicCardsData()
 
     private val _start = MutableLiveData<Boolean?>()
