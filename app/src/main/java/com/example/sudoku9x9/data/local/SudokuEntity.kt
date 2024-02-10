@@ -10,8 +10,8 @@ data class ClassicCard(
 
     @PrimaryKey
     val id:Int,
-    val level:String,
-    val rating:String,
+    val level:String? = null,
+    val rating:String? = null,
     val meanTime:Long,
     val lastMeanTime:Long,
     val pastBesTime:Long,
@@ -21,7 +21,7 @@ data class ClassicCard(
     val lastTime:Long,
     val games:Long,
     val mistakes:Int,
-    val record:String,
+    val record:String? = null,
     val user1:String? = null,
     val user2:String? = null,
     val user3:String? = null,

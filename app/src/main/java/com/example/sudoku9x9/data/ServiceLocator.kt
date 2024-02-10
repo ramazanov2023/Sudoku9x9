@@ -4,10 +4,12 @@ import android.content.Context
 import com.example.sudoku9x9.data.local.LocalSudokuDatabase
 import com.example.sudoku9x9.data.local.LocalSudokuResource
 import com.example.sudoku9x9.data.remote.RemoteSudokuResource
+import com.google.firebase.FirebaseApp
 
 object ServiceLocator {
 
     fun createRepository(context: Context):SudokuRepository{
+        FirebaseApp.initializeApp(context)
         return DefaultSudokuRepository(createLocalSudokuResource(context),RemoteSudokuResource())
     }
 

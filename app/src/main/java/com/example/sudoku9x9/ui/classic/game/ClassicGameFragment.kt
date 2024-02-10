@@ -129,4 +129,9 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
         super.onResume()
         (activity as? AppCompatActivity)?.supportActionBar?.title = titleSpan
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.downTimer.cancel()
+    }
 }
