@@ -15,12 +15,16 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.transition.Visibility
+import com.bumptech.glide.Glide
+import com.example.sudoku9x9.databinding.ActivityMainBinding
 import com.example.sudoku9x9.ui.*
 import com.example.sudoku9x9.ui.classic.finish.ClassicFinishFragmentDirections
 import com.example.sudoku9x9.ui.classic.game.ClassicGameFragmentDirections
@@ -43,30 +47,24 @@ enum class TypeScreen{
 }
 
 class MainActivity : AppCompatActivity() {
-    lateinit var bottomNavBar: BottomNavigationView
+//    lateinit var bottomNavBar: BottomNavigationView
     private var screen = TypeScreen.GAME
     lateinit var windowInsetsController: WindowInsetsControllerCompat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        bottomNavBar = findViewById<BottomNavigationView>(R.id.nav_bar)
-        var toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val binding:ActivityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+
+//        setContentView(R.layout.activity_main)
+
+//        bottomNavBar = findViewById<BottomNavigationView>(R.id.nav_bar)
+//        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
         val navController = findNavController(R.id.myNavHostFragment)
 
-        setSupportActionBar(toolbar)
-        var ava = toolbar.findViewById<CardView>(R.id.avatar)
+        setSupportActionBar(binding.toolbar)
 
-        /*val appBarConfiguration = AppBarConfiguration.Builder(R.id.tasks_fragment_dest, R.id.statistics_fragment_dest)
-            .setDrawerLayout(drawerLayout)
-            .build()
-
-        setupActionBarWithNavController(navController, appBarConfiguration)*/
-
-        bottomNavBar.setupWithNavController(navController)
-
-        bottomNavBar
+        binding.navBar.setupWithNavController(navController)
 
         /*bottomNavBar.setOnItemSelectedListener {
             when(it.itemId){
@@ -92,9 +90,7 @@ class MainActivity : AppCompatActivity() {
         }*/
 
 
-
-
-        ava.setOnClickListener {
+        binding.avatar.setOnClickListener {
             when(screen){
                 TypeScreen.GAME -> navController.navigate(GameFragmentDirections.actionGameFragmentToProfileFragment())
                 TypeScreen.CLASSIC_GAME -> navController.navigate(ClassicGameFragmentDirections.actionClassicGameFragmentToProfileFragment())
@@ -104,60 +100,66 @@ class MainActivity : AppCompatActivity() {
                 TypeScreen.PLAYERS -> navController.navigate(PlayersFragmentDirections.actionPlayersFragmentToProfileFragment())
                 else -> navController.navigate(R.id.profileFragment)
             }
-
         }
 
         navController.addOnDestinationChangedListener { _, des, _ ->
             when (des.id) {
                 R.id.profileFragment -> {
-                    bottomNavBar.visibility = INVISIBLE
+                    binding.navBar.visibility = INVISIBLE
                     supportActionBar?.apply {
                         title = "Profile"
+                        binding.avatar.visibility = GONE
                         setDisplayHomeAsUpEnabled(true)
                     }
                 }
                 R.id.statisticsFragment -> {
-                    bottomNavBar.visibility = VISIBLE
+                    binding.navBar.visibility = VISIBLE
                     supportActionBar?.apply {
 //                        title = "Statistics"
+                        binding.avatar.visibility = VISIBLE
                         setDisplayHomeAsUpEnabled(false)
                     }
                     screen = TypeScreen.STATISTICS
                 }
                 R.id.settingsFragment -> {
-                    bottomNavBar.visibility = VISIBLE
+                    binding.navBar.visibility = VISIBLE
                     supportActionBar?.apply {
                         title = "Settings"
+                        binding.avatar.visibility = VISIBLE
                         setDisplayHomeAsUpEnabled(false)
                     }
                     screen = TypeScreen.SETTINGS
                 }
                 R.id.playersFragment -> {
-                    bottomNavBar.visibility = VISIBLE
+                    binding.navBar.visibility = VISIBLE
                     supportActionBar?.apply {
                         title = "Players"
+                        binding.avatar.visibility = VISIBLE
                         setDisplayHomeAsUpEnabled(false)
                     }
                     screen = TypeScreen.PLAYERS
                 }
                 R.id.classicGameFragment -> {
-                    bottomNavBar.visibility = GONE
+                    binding.navBar.visibility = GONE
                     supportActionBar?.apply {
+                        binding.avatar.visibility = VISIBLE
                         setDisplayHomeAsUpEnabled(false)
                     }
                     screen = TypeScreen.CLASSIC_GAME
                 }
                 R.id.classicFinishFragment -> {
-                    bottomNavBar.visibility = GONE
+                    binding.navBar.visibility = GONE
                     supportActionBar?.apply {
+                        binding.avatar.visibility = VISIBLE
                         setDisplayHomeAsUpEnabled(false)
                     }
                     screen = TypeScreen.CLASSIC_FINISH
                 }
 
                 else -> {
-                    bottomNavBar.visibility = VISIBLE
+                    binding.navBar.visibility = VISIBLE
                     supportActionBar?.apply {
+                        binding.avatar.visibility = VISIBLE
                         setDisplayHomeAsUpEnabled(false)
                     }
                     screen = TypeScreen.GAME
@@ -171,51 +173,20 @@ class MainActivity : AppCompatActivity() {
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
 
-        /*window.decorView.setOnApplyWindowInsetsListener { view, windowInsets ->
-            // You can hide the caption bar even when the other system bars are visible.
-            // To account for this, explicitly check the visibility of navigationBars()
-            // and statusBars() rather than checking the visibility of systemBars().
+        (application as SudokuApplication).repository.getUserProfile(1).observe(this, Observer {
+            Glide
+                .with(this)
+                .load(it.userAvatar)
+                .fitCenter()
+                .into(binding.userAvatar)
+        })
 
-            if (windowInsets.hasInsets()){
-                constraint.setOnClickListener {
-                    // Hide both the status bar and the navigation bar.
-                    windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars())
-                }
-            } else {
-                constraint.setOnClickListener {
-                    // Show both the status bar and the navigation bar.
-                    windowInsetsController.show(WindowInsetsCompat.Type.navigationBars())
-                }
-            }
-            view.onApplyWindowInsets(windowInsets)
-        }*/
+    }
 
-        CoroutineScope(Dispatchers.Main).launch {
-            withContext(Dispatchers.IO){
-                val auth = FirebaseAuth.getInstance()
-                val userProfile = (application as SudokuApplication).repository.checkRegistration()
-                if(userProfile.signUp){
-                    auth.signInWithEmailAndPassword(userProfile.userEmail!!, userProfile.userPassword!!)
-                        .addOnCompleteListener(this@MainActivity) { task ->
-                            if (task.isSuccessful) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d("sasasa", "signInWithEmail:success")
-                                val user = auth.currentUser
-//                                updateUI(user)
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w("sasasa", "signInWithEmail:failure", task.exception)
-                                Toast.makeText(
-                                    baseContext,
-                                    "Authentication failed.",
-                                    Toast.LENGTH_SHORT,
-                                ).show()
-//                                updateUI(null)
-                            }
-                        }
-                }
-            }
-        }
+
+    override fun onStart() {
+        super.onStart()
+        (application as SudokuApplication).repository.setUserSignIn()
     }
 
 
@@ -229,5 +200,9 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp()
     }
 
+    override fun onStop() {
+        super.onStop()
+        (application as SudokuApplication).repository.setUserSignOut()
+    }
 
 }

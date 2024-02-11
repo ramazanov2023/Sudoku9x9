@@ -13,19 +13,11 @@ class ProfileViewModel(private val repository: SudokuRepository) : ViewModel() {
 
     var profileData = repository.getUserProfile(1)
 
-    fun saveRegistration(
-        uid: String,
-        email: String,
-        password: String,
-        nickname: String,
-        country: String,
-        signUp: Boolean,
-        signUpTime: Long
-    ) {
+    fun saveRegistration(profile: Profile) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                Log.e("search_null","3  -  nickname-$nickname  email-$email  password-$password  uid-${uid}")
-                repository.saveRegistration(uid,nickname, email, password,signUp,signUpTime, country)
+                Log.e("search_null","3  -  profile-$profile")
+                repository.saveRegistration(profile)
 
             }
         }

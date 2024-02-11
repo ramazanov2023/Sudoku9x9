@@ -9,7 +9,11 @@ interface SudokuRepository {
 
     fun getClassicCardsData(): LiveData<List<ClassicCard>>
 
-    fun updateClassicCardsData()
+    fun updateUserData()
+
+    fun setUserSignOut()
+
+    fun setUserSignIn()
 
     fun getClassicGameUserData(gameLevelId:Int): LiveData<ClassicCard>
 
@@ -35,7 +39,7 @@ interface SudokuRepository {
 
     fun getUserProfile(id:Int):LiveData<Profile>
     fun checkRegistration(): Profile
-    fun saveRegistration(uid:String,nickname:String, email:String,password:String,signUp:Boolean,time: Long,country: String)
+    fun saveRegistration(profile:Profile)
     fun updateUserAvatar(userAvatar:String, id:Int)
 
 

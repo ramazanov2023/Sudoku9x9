@@ -82,16 +82,12 @@ class ClassicStartFragment : Fragment() {
         }*/
 
         binding.classicStartRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var scrollPosition = 0
-//            var scroll = 0
 //            var run:Boolean = true
             var run:Boolean = viewModel.scroll
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val scroll = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-//                scrollPosition += dy
-//                Log.e("iiii", "0  -  scrollPosition-${scrollPosition}   scroll-${scroll}")
                 if(scroll<1){
                     if(!run) {
                         binding.apply {
@@ -100,7 +96,6 @@ class ClassicStartFragment : Fragment() {
                         }
                         run = true
                         viewModel.scroll = true
-//                        Log.e("iiii", "2  -  dy-${dy}")
                     }
                 }else{
                     if(run) {
@@ -110,32 +105,8 @@ class ClassicStartFragment : Fragment() {
                         }
                         run = false
                         viewModel.scroll = false
-//                        Log.e("iiii", "1  -  dy-${dy}")
                     }
                 }
-
-                /*if (scrollPosition > 600) {
-                    if(run) {
-                        binding.apply{
-                            classicModeContainer.setShortMode()
-//                            classicStartModeLastName.startAnimation(minAnimMode)
-//                            classicModeDescription.startAnimation(minAnimMode)
-                        }
-                        run = false
-
-                        Log.e("iiii", "1  -  dy-${dy}")
-                    }
-                } else if (scrollPosition < 300) {
-                    if(!run) {
-                        binding.apply{
-                            classicModeContainer.setLongMode()
-//                            classicStartModeLastName.startAnimation(maxAnimMode)
-//                            classicModeDescription.startAnimation(maxAnimMode)
-                        }
-                        run = true
-                        Log.e("iiii", "2  -  dy-${dy}")
-                    }
-                }*/
             }
         })
 

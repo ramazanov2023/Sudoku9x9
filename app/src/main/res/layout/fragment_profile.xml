@@ -100,15 +100,6 @@
                 android:layout_marginBottom="16dp"
                 tools:text="08.2023" />
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_gravity="end"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_edit"
-                app:tint="@color/white_3" />
-
         </FrameLayout>
 
         <FrameLayout
@@ -157,7 +148,7 @@
             android:layout_width="228dp"
             android:layout_height="110dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="3dp"
             android:background="@drawable/back_round"
             android:backgroundTint="@color/gray_3"
             app:layout_constraintStart_toStartOf="parent"
@@ -181,6 +172,38 @@
                 android:text="@{viewModel.profileData.userEmail}"
                 tools:text="Juclin.Jer@gmail.com" />
 
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/profile_card_version"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/profile_card_email"
+            app:layout_constraintTop_toBottomOf="@id/profile_card_country">
+
+            <TextView
+                style="@style/TextSmallLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Version" />
+
+            <TextView
+                style="@style/TextMediumMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                app:setAppVersion="@{viewModel.profileData.proVersion}"
+                tools:text="Free" />
+
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
@@ -191,13 +214,12 @@
                 app:tint="@color/white_3" />
 
         </FrameLayout>
-
         <FrameLayout
-            android:id="@+id/profile_card_gender"
+            android:id="@+id/profile_card_signin"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="3dp"
             android:background="@drawable/back_round"
             android:backgroundTint="@color/gray_3"
             app:layout_constraintStart_toStartOf="parent"
@@ -209,7 +231,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Gender" />
+                android:text="Sign in" />
 
             <TextView
                 style="@style/TextMediumMedium"
@@ -218,8 +240,38 @@
                 android:layout_gravity="bottom"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="@{viewModel.profileData.userGender}"
-                tools:text="Female" />
+                app:setSignIn="@{viewModel.profileData.signIn}"
+                tools:text="Online" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/profile_card_signup"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="3dp"
+            android:background="@drawable/back_round"
+            android:backgroundTint="@color/gray_3"
+            app:layout_constraintStart_toEndOf="@+id/profile_card_signin"
+            app:layout_constraintTop_toBottomOf="@id/profile_card_email">
+
+            <TextView
+                style="@style/TextSmallLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Sign up" />
+
+            <TextView
+                style="@style/TextMediumMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                app:setSignUp="@{viewModel.profileData.signUp}"
+                tools:text="Yes" />
 
             <ImageView
                 android:layout_width="16dp"

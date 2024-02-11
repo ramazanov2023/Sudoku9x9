@@ -27,11 +27,17 @@ interface SudokuDao {
     @Query("UPDATE profile_table SET userAvatar = :userAvatar WHERE id == :id")
     fun updateUserAvatar(userAvatar:String, id:Int)
 
-    @Query("UPDATE profile_table SET userId = :uid,userName = :nickname,userEmail = :email,userPassword = :password,signUp = :signUp,signUpTime = :signUpTime,userCountry = :country  WHERE id == :id")
-    fun saveRegistration(uid:String,nickname:String, email:String,password:String,signUp:Boolean,signUpTime: Long,country: String, id:Int)
+    @Query("UPDATE profile_table SET userId = :uid,userName = :nickname,userEmail = :email,userPassword = :password,signIn = :signIn,signUp = :signUp,signUpTime = :signUpTime,userCountry = :country  WHERE id == :id")
+    fun saveRegistration(uid:String,nickname:String, email:String,password:String,signIn:Boolean,signUp:Boolean,signUpTime: Long,country: String, id:Int)
 
     @Query("UPDATE profile_table SET firstLaunch = :firstLaunch WHERE id == :id")
     fun setFirstLaunch(firstLaunch:Boolean, id:Int)
+
+    @Query("UPDATE profile_table SET signIn = :userSignIn WHERE id == :id")
+    fun setSignIn(userSignIn:Boolean, id:Int)
+
+    @Query("UPDATE profile_table SET signIn = :signIn WHERE id == :id")
+    fun setSignOut(signIn: Boolean, id: Int)
 
 
 
@@ -89,7 +95,6 @@ interface SudokuDao {
 
     @Query("SELECT time FROM classic_games_history_table WHERE gameLevelId = :gameLevelId ORDER BY id DESC LIMIT 0,10")
     fun getLastTenClassicGames(gameLevelId: Int):Array<Long>
-
 
 
 }

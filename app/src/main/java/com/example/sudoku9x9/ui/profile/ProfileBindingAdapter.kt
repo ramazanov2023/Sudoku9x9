@@ -30,6 +30,38 @@ fun setUserAvatar(image: ImageView, avatarUri: String?) {
     }
 }
 
+@BindingAdapter("setAppVersion")
+fun setUserAppVersion(text: TextView, pro: Boolean?) {
+    pro?.let {
+        text.text = if(it){
+            "Pro"
+        }else{
+            "Free"
+        }
+    }
+}
+
+@BindingAdapter("setSignIn")
+fun setUserSignIn(text: TextView, signIn: Boolean?) {
+    signIn?.let {
+        text.text = if(it){
+            "Online"
+        }else{
+            "Offline"
+        }
+    }
+}
+
+@BindingAdapter("setSignUp")
+fun setUserSignUp(text: TextView, signUp: Boolean?) {
+    signUp?.let {
+        text.text = if(it){
+            "Yes"
+        }else{
+            "No"
+        }
+    }
+}
 
 
 

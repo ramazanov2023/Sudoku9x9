@@ -1,18 +1,13 @@
 package com.example.sudoku9x9.data
 
-import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.sudoku9x9.R
 import com.example.sudoku9x9.data.local.ClassicCard
 import com.example.sudoku9x9.data.local.ClassicGame
 import com.example.sudoku9x9.data.local.LocalSudokuResource
 import com.example.sudoku9x9.data.local.Profile
 import com.example.sudoku9x9.data.remote.RemoteSudokuResource
 import com.example.sudoku9x9.data.remote.UserProfile
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.FirebaseApp
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +26,7 @@ class DefaultSudokuRepository(
         return localSudokuResource.sudokuDao.getClassicCardsData()
     }
 
-    override fun updateClassicCardsData() {
+    override fun updateUserData() {
         CoroutineScope(Dispatchers.Main).launch {
             Log.e("qqq", "0")
             withContext(Dispatchers.IO) {
@@ -48,13 +43,48 @@ class DefaultSudokuRepository(
                     Log.e("qqq", "2")
                 } else {
                     getBestPlayers()
-//                    setBestPlayers(playersList)
-                    Log.e("qqq", "3  -  playersList")
+                    Log.e("qqq", "3.5  -  playersList")
                 }
             }
         }
     }
 
+    override fun setUserSignIn() {
+        // Передаем значение signIn в Firebase
+        CoroutineScope(Dispatchers.Main).launch {
+            val userProfile:Profile?
+            withContext(Dispatchers.IO) {
+                userProfile = checkRegistration()
+            }
+            userProfile ?:return@launch
+
+            // Проверяем, зарегистировался пользователь или нет
+            if (userProfile.signUp) {
+                remoteSudokuResource.setUserSignIn(
+                    userProfile.userEmail,
+                    userProfile.userPassword
+                ) {
+                    // Если запись добавлена успешно то передаем ее в локальную базу данных
+                    CoroutineScope(Dispatchers.Main).launch {
+                        withContext(Dispatchers.IO) {
+                            localSudokuResource.sudokuDao.setSignIn(true, 1)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun setUserSignOut() {
+        remoteSudokuResource.setUserSignOut {
+            CoroutineScope(Dispatchers.Main).launch {
+                withContext(Dispatchers.IO) {
+                    localSudokuResource.sudokuDao.setSignOut(false, 1)
+                    Log.e("jjjj", "2.2  setUserSignOut")
+                }
+            }
+        }
+    }
 
     override fun updateClassicCardData(
         games: Long,
@@ -109,28 +139,21 @@ class DefaultSudokuRepository(
         return localSudokuResource.sudokuDao.getProfile(1)
     }
 
-    override fun saveRegistration(
-        uid: String,
-        nickname: String,
-        email: String,
-        password: String,
-        signUp: Boolean,
-        time: Long,
-        country: String
-    ) {
+    override fun saveRegistration(profile: Profile) {
         Log.e(
             "search_null",
-            "4  -  nickname-$nickname  email-$email  password-$password  uid-${uid}"
+            "4  -  profile-$profile"
         )
         localSudokuResource.sudokuDao.saveRegistration(
-            uid,
-            nickname,
-            email,
-            password,
-            signUp,
-            time,
-            country,
-            1
+            profile.userId!!,
+            profile.userName!!,
+            profile.userEmail!!,
+            profile.userPassword!!,
+            profile.signIn,
+            profile.signUp,
+            profile.signUpTime!!,
+            profile.userCountry!!,
+            profile.id
         )
     }
 
@@ -203,44 +226,29 @@ class DefaultSudokuRepository(
         )
     }
 
-    private fun getBestPlayers(){
-            val list = mutableListOf<String>()
-            Log.e("qqq", "4")
-            val myRef = database.getReference().child("sudoku").child("players")
-            Log.e("qqq", "4.2  -  myRef-$myRef")
+    private fun getBestPlayers() {
+        val list = mutableListOf<String>()
+        Log.e("qqq", "4")
+        val myRef = database.getReference().child("sudoku").child("players")
+        Log.e("qqq", "4.2  -  myRef-$myRef")
 
-            myRef.get().addOnCompleteListener {
-                Log.e("qqq", "5")
-                if (it.isSuccessful) {
-                    for (i in it.result.children) {
+        myRef.get().addOnCompleteListener {
+            Log.e("qqq", "5")
+            if (it.isSuccessful) {
+                for (i in it.result.children) {
 //                    val avatar = (i.child("profile").child("avatar").value) as String
-                        val user = i.child("profile").getValue(UserProfile::class.java)
-                        user ?: return@addOnCompleteListener
-                        list.add(user.avatar)
-                    }
-                    setBestPlayers(list)
-                    /*for (i in 1..4) {
-                        localSudokuResource.sudokuDao.updateClassicCardPlayersData(
-                            list[0],
-                            list[1],
-                            list[2],
-                            list[3],
-                            list[4],
-                            list[5],
-                            i
-                        )
-                    }*/
+                    val user = i.child("profile").getValue(UserProfile::class.java)
+                    user ?: return@addOnCompleteListener
+                    list.add(user.avatar)
                 }
+                setBestPlayers(list)
             }
-
-//            Log.e("qqq", "6  -  list-${list.size}")
-
-
+        }
     }
 
     private fun setBestPlayers(list: List<String>) {
         CoroutineScope(Dispatchers.Main).launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 localSudokuResource.sudokuDao.updateClassicCardPlayersData(
                     list[0],
                     list[1],

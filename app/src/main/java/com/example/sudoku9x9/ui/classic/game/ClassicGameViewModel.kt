@@ -141,7 +141,6 @@ class ClassicGameViewModel(private val repository: SudokuRepository, private val
     }
 
     fun insertUserGameData(mistakes: Int) {
-        Log.e("nnnn", "2  mistakes-$mistakes")
         this.mistakes = mistakes
         downTimer.onFinish()
     }

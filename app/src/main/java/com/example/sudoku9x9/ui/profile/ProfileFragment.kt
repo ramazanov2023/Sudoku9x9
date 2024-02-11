@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import com.example.sudoku9x9.R
 import com.example.sudoku9x9.SudokuApplication
 import com.example.sudoku9x9.data.remote.UserProfile
+import com.example.sudoku9x9.data.remote.toProfile
 import com.example.sudoku9x9.databinding.FragmentProfileBinding
 import com.example.sudoku9x9.ui.profile.UserRegistrationDialogFragment.Companion.REG_EMAIL
 import com.example.sudoku9x9.ui.profile.UserRegistrationDialogFragment.Companion.REG
@@ -50,20 +51,12 @@ class ProfileFragment : Fragment() {
         val binding = FragmentProfileBinding.inflate(inflater)
         auth = FirebaseAuth.getInstance()
         storage = FirebaseStorage.getInstance()
-//        https://sudoku9x9-276cf-default-rtdb.europe-west1.firebasedatabase.app/
         val database =
             FirebaseDatabase.getInstance("https://sudoku9x9-276cf-default-rtdb.europe-west1.firebasedatabase.app/")
         myRef = database.reference.child("sudoku")
         auth.currentUser?.let{
             userRef = myRef.child("players").child(it.uid)
         }
-
-//        myRef.setValue("Hello, World!")
-//        myRef.child("sudoku").child("players")
-//            .child("player_2").child("profile")
-//            .child("nickname").setValue("DarkDessert")
-//        myRef.child("players").child("player_3").child("profile")
-//            .setValue(UserProfile(nickname = "BlueMars_69", gender = "female"))
 
         binding.profileCardAvatar.setOnClickListener {
             val picture = Intent().apply {
@@ -134,6 +127,7 @@ class ProfileFragment : Fragment() {
                             nickname = nickname,
                             email = email,
                             password = password,
+                            signIn = true,
                             signUp = true,
                             signUpTime = time,
                             country = "USA"
@@ -146,15 +140,7 @@ class ProfileFragment : Fragment() {
                                         "search_null",
                                         "2  -  nickname-$nickname  email-$email  password-$password  user.uid-${user.uid}"
                                     )
-                                    viewModel.saveRegistration(
-                                        uid = user.uid,
-                                        nickname = nickname,
-                                        email = email,
-                                        password = password,
-                                        signUp = true,
-                                        signUpTime = time,
-                                        country = "USA"
-                                    )
+                                    viewModel.saveRegistration(userProfile.toProfile())
                                 }
                             }
                         Log.e(
