@@ -20,6 +20,9 @@
             app:destination="@id/classicGameFragment"
             app:enterAnim="@anim/move_right_scale_down"
             app:exitAnim="@anim/move_right_scale_down_out" />
+        <action
+            android:id="@+id/action_gameFragment_to_battleGameFragment"
+            app:destination="@id/battleGameFragment" />
     </fragment>
     <fragment
         android:id="@+id/statisticsFragment"
@@ -94,4 +97,18 @@
         tools:layout="@layout/fragment_classic_start"
         android:name="com.example.sudoku9x9.ui.classic.start.ClassicStartFragment"
         android:label="ClassicStartFragment" />
+    <fragment
+        android:id="@+id/battleStartFragment"
+        tools:layout="@layout/fragment_battle_start"
+        android:name="com.example.sudoku9x9.ui.battle.BattleStartFragment"
+        android:label="BattleStartFragment" />
+    <fragment
+        tools:layout="@layout/fragment_battle_game"
+        android:id="@+id/battleGameFragment"
+        android:name="com.example.sudoku9x9.ui.battle.game.BattleGameFragment"
+        android:label="BattleGameFragment" >
+        <argument
+            android:name="gameLevelId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

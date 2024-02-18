@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
-import android.os.Vibrator
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -13,34 +12,32 @@ import android.view.View
 import com.example.sudoku9x9.R
 import java.util.*
 
-const val INACTIVE_NUMBER = 1
-const val USER_MISTAKES = 2
-const val REMAIN_NUMBERS_DECREASE = 4
-const val REMAIN_NUMBERS_INCREASE = 5
-const val GAME_END = 3
-const val SELECT_NUMBER_BUTTON = 6
-const val NO_NUMBER_BUTTON = 10
-const val MISTAKE_VIBRATE = 11
+class SudokuBoard(val level: Int = 1) {
+    var selectCellsByButton: Int? = null
+    var indexSelectedCell: Int = -1
+    var lastSavedNumber: Int? = null
+    var cellVertical: Int = -1
+    var cellHorizontal: Int = -1
+    val boardWidth = 9
+    val cellGroupWidth = 3
+    var cellSize = 0F
+    var sudokuNumbers: List<Cell>? = null
+    var remainNumbers: List<Int>? = null
+    var userMistakes = 0
+    var userOpenedNumbers = 0
+    val lastFilledCells = Stack<Int>()
+    var speedGameMode = false
+}
 
-class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
-    private var selectCellsByButton: Int? = null
-    private var indexSelectedCell: Int = -1
-    private var lastSavedNumber: Int? = null
-    private var cellVertical: Int = -1
-    private var cellHorizontal: Int = -1
-    private val boardWidth = 9
-    private val cellGroupWidth = 3
-    private var cellSize = 0F
-    private var sudokuNumbers: List<Cell>? = null
-    private var remainNumbers: List<Int>? = null
+class SudokuBoardView2(context: Context, attrs: AttributeSet) : View(context, attrs) {
+
+    private var board: SudokuBoard = SudokuBoard(1)
+
+    private val boardWidth = board.boardWidth
+    private val cellGroupWidth = board.cellGroupWidth
+    private var cellSize = board.cellSize
     private var listener: SudokuListener? = null
-    private var level = 1
-    private var userMistakes = 0
-    private var userOpenedNumbers = 0
-    private val lastFilledCells = Stack<Int>()
-    private var speedGameMode = false
-
     private var animSelectCells: ValueAnimator = ValueAnimator()
     private var newAnim: ValueAnimator = ValueAnimator()
 
@@ -79,22 +76,14 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
 
-    fun setListener(listener: SudokuListener) {
+    fun setSudokuBoard(board: SudokuBoard, listener: SudokuListener) {
+        this.board = board
         this.listener = listener
     }
 
-    fun setLevel(gameLevelId: Int) {
-        level = when (gameLevelId) {
-            1 -> FAST_LEVEL
-            2 -> LIGHT_LEVEL
-            3 -> HARD_LEVEL
-            4 -> MASTER_LEVEL
-            else -> FAST_LEVEL
-        }
-    }
 
     fun setSpeedMode(mode: Boolean) {
-        speedGameMode = mode
+        board.speedGameMode = mode
 //        selectLinkCells()
     }
 
@@ -125,41 +114,35 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
 
     }
 
-    private fun runVibrator() {
-        listener?.action(MISTAKE_VIBRATE,0)
-    }
 
-    fun insertSudokuNumbers(numbers: List<Cell>) {
-        sudokuNumbers = numbers
-    }
-
-    fun insertRemainNumbers(remainNumbers: List<Int>?) {
-        this.remainNumbers = remainNumbers
-    }
+//    fun insertSudokuNumbers(numbers: List<Cell>) {
+//        sudokuNumbers = numbers
+//    }
 
     fun checkInputNumber(number: Int?) {
+        board.sudokuNumbers ?: return
         number?.let {
             // Если индекс меньше нуля, значит ниодна клетка не выделена нажатием на клетку
             // Если индекс равен или больше нуля, значит клетка была нажата на доске
-            if(indexSelectedCell<0) {
-                indexSelectedCell = -2
-                selectCellsByButton = it
-                lastSavedNumber = it
-                Log.e("nnnn", "1.5  selectCellsByButton-$selectCellsByButton")
+            if (board.indexSelectedCell < 0) {
+                board.indexSelectedCell = -2
+                board.selectCellsByButton = it
+                board.lastSavedNumber = it
+                Log.e("nnnn", "1.5  selectCellsByButton-${board.selectCellsByButton}")
                 newAnim.start()
                 return
             }
-            val selectedCell = sudokuNumbers!![indexSelectedCell]
+            val selectedCell = board.sudokuNumbers!![board.indexSelectedCell]
             if (selectedCell.wrong) {
                 insertNumber(selectedCell, it)
             } else {
                 if (selectedCell.hide) {
                     insertNumber(selectedCell, it)
                 } else {
-                    selectCellsByButton = it
-                    lastSavedNumber = it
-                    listener?.action(SELECT_NUMBER_BUTTON, it)
-                    Log.e("nnnn", "1.4  selectCellsByButton-$selectCellsByButton")
+                    board.selectCellsByButton = it
+                    board.lastSavedNumber = it
+                    listener?.onSelectNumberCell(it)
+                    Log.e("nnnn", "1.4  selectCellsByButton-${board.selectCellsByButton}")
                     newAnim.start()
                 }
             }
@@ -167,52 +150,74 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
     private fun insertNumber(selectedCell: Cell, number: Int) {
-        sudokuNumbers!![indexSelectedCell].hide = false
+        board.sudokuNumbers!![board.indexSelectedCell].hide = false
         if (selectedCell.value == number) {
-            sudokuNumbers!![indexSelectedCell].wrong = false
-            if(speedGameMode) lastSavedNumber = number
-            makeNumberInactive(REMAIN_NUMBERS_DECREASE, number)
-            listener?.action(SELECT_NUMBER_BUTTON, number)
-            userOpenedNumbers++
+            board.sudokuNumbers!![board.indexSelectedCell].wrong = false
+            if (board.speedGameMode) board.lastSavedNumber = number
+            changeRemainedNumbers(REMAIN_NUMBERS_DECREASE, number)
+            listener?.onInputRightNumber(board.remainNumbers!!, number)
+            listener?.onSelectNumberCell(number)
+            board.userOpenedNumbers++
         } else {
             addUserMistake()
-            sudokuNumbers!![indexSelectedCell].wrong = true
-            sudokuNumbers!![indexSelectedCell].wrong_number = number
-            listener?.action(SELECT_NUMBER_BUTTON, NO_NUMBER_BUTTON)
-            runVibrator()
+            board.sudokuNumbers!![board.indexSelectedCell].wrong = true
+            board.sudokuNumbers!![board.indexSelectedCell].wrong_number = number
+            listener?.onInputWrongNumber(board.userMistakes)
+//            runVibrator()
         }
 //        sudokuNumbers!![indexSelectedCell].hide = false
-        lastFilledCells.push(indexSelectedCell)
+        board.lastFilledCells.push(board.indexSelectedCell)
         invalidate()
 //        selectLinkCells()
     }
 
     fun undo() {
-        if (lastFilledCells.empty()) return
-        sudokuNumbers?.let {
-            val cellIndex = lastFilledCells.pop()
-            if (sudokuNumbers!![cellIndex].wrong) {
-
-            } else {
-                userOpenedNumbers--
-                makeNumberInactive(REMAIN_NUMBERS_INCREASE, sudokuNumbers!![cellIndex].value)
-            }
-            sudokuNumbers!![cellIndex].wrong = false
-            sudokuNumbers!![cellIndex].wrong_number = 0
-            sudokuNumbers!![cellIndex].hide = true
-            if (it[indexSelectedCell].hide) lastSavedNumber = null
+        board.sudokuNumbers ?: return
+        if (board.lastFilledCells.empty()) return
+        val cellIndex = board.lastFilledCells.pop()
+        if (board.sudokuNumbers!![cellIndex].wrong) {
+            board.sudokuNumbers!![cellIndex].wrong = false
+            board.sudokuNumbers!![cellIndex].wrong_number = 0
+            board.sudokuNumbers!![cellIndex].hide = true
+        } else {
+//            board.userOpenedNumbers--
+//            changeRemainedNumbers(REMAIN_NUMBERS_INCREASE, board.sudokuNumbers!![cellIndex].value)
         }
+        if (board.sudokuNumbers!![board.indexSelectedCell].hide) board.lastSavedNumber = null
+
         invalidate()
     }
 
     private fun addUserMistake() {
-        userMistakes++
-        listener?.action(USER_MISTAKES, userMistakes)
+        board.userMistakes++
+        listener?.onInputWrongNumber(board.userMistakes)
     }
 
-    private fun makeNumberInactive(action: Int, number: Int) {
+    private fun changeRemainedNumbers(action: Int, number: Int) {
+        val list = board.remainNumbers!!.toMutableList()
+        val newValue = when (action) {
+            REMAIN_NUMBERS_DECREASE -> list[number - 1] - 1
+            REMAIN_NUMBERS_INCREASE -> list[number - 1] + 1
+            else -> list[number - 1]
+        }
+        list[number - 1] = newValue
+        board.remainNumbers = list.toList()
+
+        if (newValue == 9) board.lastSavedNumber = null
+
+
+        listener?.onInputRightNumber(board.remainNumbers!!, number)
+
+
+        // 9 - count и передаем значение слушателю
+//        listener?.action(action, number - 1)
+//        listener?.onCancelUserStep(9 - newValue, number - 1)
+
+    }
+
+    private fun changeRemainedNumbers2(action: Int, number: Int) {
         var count = 0
-        sudokuNumbers?.forEach {
+        board.sudokuNumbers!!.forEach {
             if (it.value == number && !it.hide) {
                 Log.e("yyyy", "2 count-$count")
                 count++
@@ -220,10 +225,10 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         }
         Log.e("yyyy", "1 number-$number")
 
-        if (count == 9) lastSavedNumber = null
+        if (count == 9) board.lastSavedNumber = null
 
         // 9 - count и передаем значение слушателю
-        listener?.action(action, number - 1)
+        listener?.onCancelUserStep(9 - count, number - 1)
 
     }
 
@@ -241,26 +246,26 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         drawAllCells(canvas)
         drawGrid(canvas)
 
-        Log.e("vvvv","0  -  ")
+        Log.e("vvvv", "0  -  ")
 
-        if (userMistakes > 2) {
-            listener?.action(GAME_END, userMistakes)
+        if (board.userMistakes > 2) {
+            listener?.onGameEnd(board.userMistakes)
         }
-        if (userOpenedNumbers == level) {
-            listener?.action(GAME_END, userMistakes)
+        if (board.userOpenedNumbers == board.level) {
+            listener?.onGameEnd(board.userMistakes)
         }
     }
 
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        return if (event?.action == MotionEvent.ACTION_DOWN) {
-            cellVertical = (event.y / cellSize).toInt()
-            cellHorizontal = (event.x / cellSize).toInt()
-            indexSelectedCell = ((cellVertical + 1) * 9) - (9 - cellHorizontal)
+        return if (event?.action == MotionEvent.ACTION_DOWN && board.sudokuNumbers != null) {
+            board.cellVertical = (event.y / cellSize).toInt()
+            board.cellHorizontal = (event.x / cellSize).toInt()
+            board.indexSelectedCell = ((board.cellVertical + 1) * 9) - (9 - board.cellHorizontal)
 
             // Сообщаем методу drawAllCells(canvas), что была нажата клетка на доске, а не кнопка снаружи
-            selectCellsByButton = null
+            board.selectCellsByButton = null
 
             selectLinkCells()
 //            invalidate()
@@ -269,72 +274,70 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
     private fun selectLinkCells() {
-        sudokuNumbers?.let {
-            val cell = it[indexSelectedCell]
-            if (!cell.wrong && !cell.hide && remainNumbers!![cell.value - 1] != 0) {
-                lastSavedNumber = cell.value
-                listener?.action(SELECT_NUMBER_BUTTON, lastSavedNumber ?: 1)
-                Log.e("nnnn", "1.1  lastSavedNumber-$lastSavedNumber")
-                newAnim.start()
-            } else if (remainNumbers!![cell.value - 1] == 0) {
-                lastSavedNumber = null
-                listener?.action(SELECT_NUMBER_BUTTON, NO_NUMBER_BUTTON)
-                Log.e("nnnn", "1.2  lastSavedNumber-$lastSavedNumber")
-                newAnim.start()
-            } else {
-                Log.e("nnnn", "1.3  lastSavedNumber-$lastSavedNumber")
-                listener?.action(SELECT_NUMBER_BUTTON, NO_NUMBER_BUTTON)
-                if (speedGameMode) {
-                    lastSavedNumber?.let { checkInputNumber(lastSavedNumber) }
-                }
-                invalidate()
+        val cell = board.sudokuNumbers!![board.indexSelectedCell]
+        if (!cell.wrong && !cell.hide && board.remainNumbers!![cell.value - 1] != 0) {
+            board.lastSavedNumber = cell.value
+            listener?.onSelectNumberCell(board.lastSavedNumber ?: 1)
+            Log.e("nnnn", "1.1  lastSavedNumber-${board.lastSavedNumber}")
+            newAnim.start()
+        } else if (board.remainNumbers!![cell.value - 1] == 0) {
+            board.lastSavedNumber = null
+            listener?.onSelectCompleteValueCells(board.remainNumbers!!, cell.value)
+            Log.e("nnnn", "1.2  lastSavedNumber-${board.lastSavedNumber}")
+            newAnim.start()
+        } else {
+            Log.e("nnnn", "1.3  lastSavedNumber-${board.lastSavedNumber}")
+            listener?.onSelectEmptyCell(cell.id)
+            if (board.speedGameMode) {
+                board.lastSavedNumber?.let { checkInputNumber(board.lastSavedNumber) }
             }
+            invalidate()
         }
+
     }
 
 
-
-
     private fun drawAllCells(canvas: Canvas?) {
+        board.sudokuNumbers ?: return
+
         // Пробегаемся по всему спику цифр
         // Но сперва проверяем была ли нажата клетка на доске или кнопка с цифрой снаружи
         // Какие клетки выделены, какие нет
         // Какие цифры видны, какие спрятаны
-        sudokuNumbers?.let { numbers ->
 
-            // Если indexSelectedCell == -1, значит ни одна клетка не была нажата пользователем внутри доски
-            // Поэтому мы рисуем тлько цифры
-            if (indexSelectedCell == -1){
-                numbers.forEach {
-                    drawNumber(it, canvas)
-                }
-                return
-            }
-            // Если selectCellsByButton не равен null значит цифра пришла снаружи через кнопку
-            selectCellsByButton?.let { number ->
-                sudokuNumbers?.forEach {
-                    // Здесь мы не проверяем выделенную клетку, нам достаточно одного значения, которое мы получаем снаружи это view
-                    if (it.value == number && !it.hide && !it.wrong) {
-                        drawCell(canvas, it, boardSelectCell)
-                    }
-                    drawNumber(it, canvas)
-                }
-                // И здесь мы выходим из метода drawAllCells, он нам больше не нужен
-                return
-            }
-
-            // Если selectCellsByButton равен null, значит была нажата клетка на доске
-            val cell = numbers[indexSelectedCell]
-            numbers.forEach {
-                drawSelectedCell(cell, it, canvas)
+        // Если indexSelectedCell == -1, значит ни одна клетка не была нажата пользователем внутри доски
+        // Поэтому мы рисуем тлько цифры
+        if (board.indexSelectedCell == -1) {
+            board.sudokuNumbers!!.forEach {
                 drawNumber(it, canvas)
             }
+            return
         }
+        // Если selectCellsByButton не равен null значит цифра пришла снаружи через кнопку
+        board.selectCellsByButton?.let { number ->
+            board.sudokuNumbers!!.forEach {
+                // Здесь мы не проверяем выделенную клетку, нам достаточно одного значения, которое мы получаем снаружи это view
+                if (it.value == number && !it.hide && !it.wrong) {
+                    drawCell(canvas, it, boardSelectCell)
+                }
+                drawNumber(it, canvas)
+            }
+            // И здесь мы выходим из метода drawAllCells, он нам больше не нужен
+            return
+        }
+
+        // Если selectCellsByButton равен null, значит была нажата клетка на доске
+        val cell = board.sudokuNumbers!![board.indexSelectedCell]
+        board.sudokuNumbers!!.forEach {
+            drawSelectedCell(cell, it, canvas)
+            drawNumber(it, canvas)
+        }
+
     }
 
-    private fun drawSelectedCell(cell:Cell,it:Cell,canvas: Canvas?) {
+    private fun drawSelectedCell(cell: Cell, it: Cell, canvas: Canvas?) {
         // Если id клетки равен индексу выделенной клетки
-        if (it.id == indexSelectedCell) {
+        if (it.id == board.indexSelectedCell) {
             drawCell(canvas, it, boardSelectCell)
         }
         // Если значение клетки равно значению выделенной клетки
@@ -342,9 +345,9 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
         // Клетка и выделенная клетка не имеют ошибок
         else if (it.value == cell.value && !it.hide && !cell.hide && !cell.wrong && !it.wrong) {
             drawCell(canvas, it, boardSelectCell)
-        } else if (it.ver == cellVertical || it.hor == cellHorizontal) {
+        } else if (it.ver == board.cellVertical || it.hor == board.cellHorizontal) {
             drawCell(canvas, it, boardLinkedCells)
-        } else if (cellVertical / 3 == it.ver / 3 && cellHorizontal / 3 == it.hor / 3) {
+        } else if (board.cellVertical / 3 == it.ver / 3 && board.cellHorizontal / 3 == it.hor / 3) {
             drawCell(canvas, it, boardLinkedCells)
         }
     }
@@ -423,10 +426,14 @@ class SudokuBoardView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
 
-
-
     interface SudokuListener {
-        fun action(id: Int, value: Int)
+        fun onInputWrongNumber(mistakes: Int)
+        fun onGameEnd(mistakes: Int)
+        fun onSelectNumberCell(number: Int)
+        fun onInputRightNumber(remained: List<Int>, value: Int)
+        fun onCancelUserStep(remained: Int, i: Int)
+        fun onSelectEmptyCell(id: Int)
+        fun onSelectCompleteValueCells(remained: List<Int>, id: Int)
     }
 
 

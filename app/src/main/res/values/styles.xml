@@ -77,6 +77,18 @@
         <item name="android:textColor">@color/white_1</item>
         <item name="android:textSize">18sp</item>
     </style>
+    <style name="TextCategoryBold">
+        <!--        <item name="android:fontFamily">sans-serif-medium</item>-->
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white_1</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="TextCategoryLight">
+                <item name="android:fontFamily">sans-serif-light</item>
+<!--        <item name="android:textStyle">bold</item>-->
+        <item name="android:textColor">@color/white_3</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
     <style name="TextSmallBlack">
         <item name="android:fontFamily">sans-serif-black</item>

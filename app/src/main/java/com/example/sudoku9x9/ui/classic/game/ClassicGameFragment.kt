@@ -1,8 +1,10 @@
 package com.example.sudoku9x9.ui.classic.game
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Vibrator
 import android.text.SpannableString
 import android.text.style.TextAppearanceSpan
 import android.util.Log
@@ -120,6 +122,12 @@ class ClassicGameFragment: Fragment(),SudokuBoardView.SudokuListener {
             REMAIN_NUMBERS_INCREASE -> {
                 Log.e("bbbb","4  value-$value")
                 viewModel.calculateRemainNumbers(id,value)
+            }
+            MISTAKE_VIBRATE -> {
+                Log.e("bbbb","5  value-$value")
+                val vibrator:Vibrator = (requireActivity().getSystemService(Context.VIBRATOR_SERVICE)) as Vibrator
+                vibrator.vibrate(70)
+
             }
 //            GAME_END -> findNavController().navigate(R.id.classicFinishFragment)
         }
