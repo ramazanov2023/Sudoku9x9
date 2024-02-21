@@ -22,8 +22,8 @@ class DefaultSudokuRepository(
     private var database: FirebaseDatabase =
         FirebaseDatabase.getInstance("https://sudoku9x9-276cf-default-rtdb.europe-west1.firebasedatabase.app/")
 
-    override fun getRemoteDatabase():FirebaseDatabase{
-        return database
+    override fun getRemoteSudokuResource():RemoteSudokuResource{
+        return remoteSudokuResource
     }
 
     override fun getClassicCardsData(): LiveData<List<ClassicCard>> {

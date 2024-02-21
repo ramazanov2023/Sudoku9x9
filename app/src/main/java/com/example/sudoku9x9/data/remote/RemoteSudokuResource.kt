@@ -45,42 +45,44 @@ class RemoteSudokuResource(
 
 
     // Проверка, есть в категории запросы запрос
-    fun startRandomPlayerGame(gameLevelId:Int, onGameStart:()->Any){
+    fun startRandomPlayerGame(
+        gameLevelId: Int,
+        onGamePlay: (firstUserMistakes:Int,
+                     secondUserMistakes:Int,
+                     firstUserScore:Int,
+                     secondUserScore:Int,
+                     gameEnd:Boolean) -> Any,
+        onReceivedGameData:(BattleGame) -> Any
+    ) {
+        val userId = firebaseAuth.uid ?:return
         val battleRequest = database.reference.child("sudoku").child("battle_request_$gameLevelId")
         val battleGame = database.reference.child("sudoku").child("battle_games")
 
         battleRequest.get().addOnSuccessListener {
-            if(it.hasChildren()){
-                acceptGameRequest(it,battleRequest,battleGame,onGameStart)
-            }else{
-                createGameRequest(battleRequest,battleGame,onGameStart)
-            }
-        }
-    }
-
-    private fun acceptGameRequest(
-        dataSnapshot: DataSnapshot,
-        battleRequest: DatabaseReference,
-        battleGame: DatabaseReference,
-        onGameStart: () -> Any,
-    ) {
-        for(i in dataSnapshot.children){
-            val r = i.getValue(BattleRequest::class.java) ?:return
-            if (!r.accept){
-                createGame(r,i.key!!,battleGame,battleRequest,onGameStart)
+            if (it.hasChildren()) {
+                acceptGameRequest(userId,battleGame, battleRequest, it,onReceivedGameData,onGamePlay)
+            } else {
+                createGame(userId,battleGame, battleRequest, onGamePlay)
             }
         }
     }
 
     private fun createGame(
-        requestData: BattleRequest,
-        requestKey: String,
+        userId: String,
         battleGame: DatabaseReference,
         battleRequest: DatabaseReference,
-        onGameStart: () -> Any
+        onGamePlay: (firstUserMistakes:Int,
+                     secondUserMistakes:Int,
+                     firstUserScore:Int,
+                     secondUserScore:Int,
+                     gameEnd:Boolean) -> Any
     ) {
         val gameRef = battleGame.push()
-        gameRef.setValue(BattleGame()).addOnSuccessListener {
+        val game = BattleGame(
+            sudokuNumbers = "1_9h_3_5_6h_2_3_4_5h_8h_1_3_5_6h_9_4h_5_7_6",
+            firstUserId = userId
+        )
+        gameRef.setValue(game).addOnSuccessListener {
             Log.e("xxxx", "8  -  battleGame-$battleGame")
 
             gameRef.addValueEventListener(object : ValueEventListener {
@@ -88,7 +90,14 @@ class RemoteSudokuResource(
                     val result = snapshot.getValue(BattleGame::class.java) ?: return
                     if (result.gameStart) {
                         Log.e("xxxx", "11  -  result-$result")
-                        onGameStart.invoke()
+                        onGamePlay(
+                            result.firstUserMistakes,
+                            result.secondUserMistakes,
+                            result.firstUserScore,
+                            result.secondUserScore,
+                            result.gameEnd
+                        )
+                        Log.e("kkkk","3  - result-$result")
                     }
                 }
 
@@ -96,37 +105,82 @@ class RemoteSudokuResource(
                 }
             })
 
-            battleRequest.child(requestKey).child("accept").setValue(true)
-            battleRequest.child(requestKey).child("gameId").setValue(gameRef.key)
-
+            gameRef.key?.let { gameId -> createGameRequest(battleRequest, gameId) }
         }
     }
 
-    private fun createGameRequest(
-        battleRequest: DatabaseReference,
+    private fun createGameRequest(battleRequest: DatabaseReference, gameId: String) {
+        val requestRef = battleRequest.push()
+        requestRef.child("gameId").setValue(gameId).addOnSuccessListener {
+        }
+    }
+
+    private fun acceptGameRequest(
+        userId: String,
         battleGame: DatabaseReference,
-        onGameStart: () -> Any
+        battleRequest: DatabaseReference,
+        requests: DataSnapshot,
+        onReceivedGameData: (BattleGame) -> Any,
+        onGamePlay: (firstUserMistakes:Int,
+                     secondUserMistakes:Int,
+                     firstUserScore:Int,
+                     secondUserScore:Int,
+                     gameEnd:Boolean) -> Any
     ) {
-        val request = BattleRequest(sudokuNumbers = "1_9h_3_5_6h_2_3_4_5h_8h_1_3_5_6h_9_4h_5_7_6")
-        val requestRef = database.reference.child("sudoku").child("battle_request").push()
-        requestRef.setValue(request).addOnSuccessListener {
-            requestRef.addValueEventListener(object:ValueEventListener{
+        val req = requests.children.first()
+        val gameId = req.child("gameId").value as String
+        req.key?.let { requestId -> deleteGameRequest(battleRequest, requestId) }
+        runGame(userId,battleGame, gameId,onReceivedGameData,onGamePlay)
+    }
+
+    private fun runGame(
+        userId: String,
+        battleGame: DatabaseReference,
+        gameId: String,
+        onReceivedGameData: (BattleGame) -> Any,
+        onGamePlay: (firstUserMistakes:Int,
+                     secondUserMistakes:Int,
+                     firstUserScore:Int,
+                     secondUserScore:Int,
+                     gameEnd:Boolean) -> Any
+    ) {
+        val gameDataRef = battleGame.child(gameId)
+        gameDataRef.get().addOnSuccessListener {
+            val gameData = it.getValue(BattleGame::class.java)
+            gameData ?: return@addOnSuccessListener
+            onReceivedGameData(gameData)
+            gameData.apply {
+                gameStart = true
+                secondUserId = userId
+            }
+            gameDataRef.setValue(gameData).addOnSuccessListener {
+
+            }
+            gameDataRef.addValueEventListener(object :ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val result = snapshot.getValue(BattleRequest::class.java) ?:return
-                    if(result.accept){
-                        val gameId = result.gameId ?:return
-                        battleGame.child(gameId).child("gameStart").setValue(true).addOnSuccessListener {
-                            onGameStart.invoke()
-                        }
-                    }
+                    val result = snapshot.getValue(BattleGame::class.java) ?: return
+                    /*onGamePlay(
+                        result.firstUserMistakes,
+                        result.secondUserMistakes,
+                        result.firstUserScore,
+                        result.secondUserScore,
+                        result.gameEnd
+                    )*/
+                    Log.e("kkkk","2  - result-$result")
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
                 }
 
             })
         }
     }
+
+    private fun deleteGameRequest(battleRequest: DatabaseReference, requestId: String) {
+        battleRequest.child(requestId).removeValue().addOnSuccessListener { }
+    }
+
 
 
 }

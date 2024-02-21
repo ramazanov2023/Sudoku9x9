@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.sudoku9x9.data.local.ClassicCard
 import com.example.sudoku9x9.data.local.ClassicGame
 import com.example.sudoku9x9.data.local.Profile
+import com.example.sudoku9x9.data.remote.RemoteSudokuResource
 import com.google.firebase.database.FirebaseDatabase
 
 interface SudokuRepository {
@@ -16,7 +17,7 @@ interface SudokuRepository {
 
     fun setUserSignIn()
 
-    fun getRemoteDatabase(): FirebaseDatabase
+    fun getRemoteSudokuResource(): RemoteSudokuResource
 
     fun getClassicGameUserData(gameLevelId:Int): LiveData<ClassicCard>
 
