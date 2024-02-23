@@ -2,15 +2,14 @@ package com.example.sudoku9x9.ui.battle.game
 
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.sudoku9x9.data.SudokuRepository
-import com.example.sudoku9x9.data.local.ClassicCard
-import com.example.sudoku9x9.data.local.ClassicGame
 import com.example.sudoku9x9.ui.board.SudokuBoard
 import com.example.sudoku9x9.ui.board.SudokuNumbersGenerator
-import com.example.sudoku9x9.ui.classic.game.EndOfGame
+import com.example.sudoku9x9.ui.board.convertToX
 
 class BattleGameViewModel(private val repository: SudokuRepository, private val gameLevelId: Int) : ViewModel() {
 //    lateinit var downTimer: CountDownTimer
@@ -56,12 +55,46 @@ class BattleGameViewModel(private val repository: SudokuRepository, private val 
     val selectNumberButtons: LiveData<Boolean>
         get() = _selectNumberButtons
 
+    private val _mistakes1 = MutableLiveData<String>()
+    val mistakes1: LiveData<String>
+        get() = _mistakes1
+
+    private val _mistakes2 = MutableLiveData<String>()
+    val mistakes2: LiveData<String>
+        get() = _mistakes2
+
+    private val _showBoard = MutableLiveData<Int>()
+    val showBoard: LiveData<Int>
+        get() = _showBoard
+
 
     init {
+        startRandomPlayerGame(gameLevelId)
         sudokuNumbers.getShuffleNumbersList()
-        turnOnTimer()
+        _mistakes1.value = "---"
+        _mistakes2.value = "---"
         _speedGameMode.value = false
         _selectInputNumber.value = 10
+        _showBoard.value = View.VISIBLE
+    }
+
+    private fun startRandomPlayerGame(level: Int) {
+        repository.getRemoteSudokuResource().startRandomPlayerGame(
+            gameLevelId = level,
+            onReceivedGameData = {},
+            onGamePlay = { m1, m2, score1, score2, end ->
+                Log.e("kkkk","1  - onGamePlay")
+                _mistakes1.setValue(m1.convertToX())
+                _mistakes2.setValue(m2.convertToX())
+            },
+            onGameStart = {
+                _showBoard.setValue(View.GONE)
+                turnOnTimer()
+            })
+    }
+
+    fun setUserMistakes(mistakes:Int){
+        repository.getRemoteSudokuResource().setUserMistakes(mistakes)
     }
 
     private fun turnOnTimer() {

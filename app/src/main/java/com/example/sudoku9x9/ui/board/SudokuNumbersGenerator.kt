@@ -132,7 +132,9 @@ class SudokuNumbersGenerator(private val gameLevelId: Int) {
 
         }
 
-        _numbersLiveData.value = numbers
+        val stringList = numbers.convertToString()
+//        _numbersLiveData.value = numbers
+        _numbersLiveData.value = stringList.convertToCellList()
 
         numbers.forEach {
             if (it.hide) {

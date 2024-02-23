@@ -14,10 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.sudoku9x9.R
 import com.example.sudoku9x9.SudokuApplication
 import com.example.sudoku9x9.databinding.FragmentBattleGameBinding
+import com.example.sudoku9x9.ui.GameFragmentDirections
 import com.example.sudoku9x9.ui.board.*
 
 class BattleGameFragment : Fragment() {
@@ -91,6 +93,7 @@ class BattleGameFragment : Fragment() {
 
         setSudokuBoard()
 
+
         return binding.root
     }
 
@@ -118,7 +121,8 @@ class BattleGameFragment : Fragment() {
                     val vibrator: Vibrator =
                         (requireActivity().getSystemService(Context.VIBRATOR_SERVICE)) as Vibrator
                     vibrator.vibrate(70)
-                    binding.battleGameUserMistakes.text = mistakes.convertToX()
+//                    binding.battleGameUserMistakes.text = mistakes.convertToX()
+                    viewModel.setUserMistakes(mistakes)
                     viewModel.makeInputNumberSelected(NO_NUMBER_BUTTON)
                 }
 

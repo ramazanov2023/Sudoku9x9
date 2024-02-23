@@ -30,7 +30,6 @@
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/gray_4"
             android:clickable="false"
-            android:elevation="10dp"
             android:fontFamily="sans-serif"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
@@ -75,7 +74,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="28dp"
-            android:elevation="@dimen/elevation_text"
             android:text="Current time"
             app:layout_constraintEnd_toStartOf="@id/battle_game_mistakes"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -86,7 +84,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
-            android:elevation="@dimen/elevation_text"
             android:text="@{viewModel.timer}"
             style="@style/TextScoreThin"
             app:layout_constraintBottom_toTopOf="@id/battle_game_current_time"
@@ -99,8 +96,7 @@
             style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/elevation_text"
-            android:text="Mistakes"
+            android:text="Mistakes1"
             app:layout_constraintBottom_toBottomOf="@id/battle_game_current_time"
             app:layout_constraintEnd_toStartOf="@id/battle_game_mean_time"
             app:layout_constraintStart_toEndOf="@id/battle_game_current_time" />
@@ -110,9 +106,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
-            android:elevation="@dimen/elevation_text"
             style="@style/TextScoreThin"
-            android:text="---"
+            android:text="@{viewModel.mistakes1}"
             app:layout_constraintBottom_toTopOf="@id/battle_game_mistakes"
             app:layout_constraintStart_toStartOf="@id/battle_game_mistakes"
             tools:text="X--" />
@@ -122,8 +117,7 @@
             style="@style/TextSmallLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/elevation_text"
-            android:text="Mean time"
+            android:text="Mistakes2"
             app:layout_constraintBottom_toBottomOf="@id/battle_game_current_time"
             app:layout_constraintEnd_toStartOf="@id/battle_game_best_time"
             app:layout_constraintStart_toEndOf="@id/battle_game_mistakes" />
@@ -132,12 +126,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
-            android:elevation="@dimen/elevation_text"
             style="@style/TextScoreThin"
-            app:setTime="@{viewModel.userRecords.lastMeanTime}"
+            android:text="@{viewModel.mistakes2}"
             app:layout_constraintBottom_toTopOf="@id/battle_game_mean_time"
             app:layout_constraintStart_toStartOf="@id/battle_game_mean_time"
-            tools:text="51:63" />
+            tools:text="X--" />
 
         <TextView
             android:id="@+id/battle_game_best_time"
@@ -145,7 +138,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
-            android:elevation="@dimen/elevation_text"
             android:text="Best time"
             app:layout_constraintBottom_toBottomOf="@id/battle_game_current_time"
             app:layout_constraintEnd_toEndOf="parent"
@@ -155,7 +147,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="-4dp"
-            android:elevation="@dimen/elevation_text"
             app:setTime="@{viewModel.userRecords.bestTime}"
             style="@style/TextScoreThin"
             app:layout_constraintBottom_toTopOf="@id/battle_game_best_time"
@@ -349,10 +340,20 @@
                 tools:text="7"
                 style="@style/RemainNumbersStyle" />
 
-
-
-
         </GridLayout>
+
+        <FrameLayout
+            android:visibility="@{viewModel.showBoard}"
+            android:background="@color/gray_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:layout_gravity="center"
+                android:background="@color/gray_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

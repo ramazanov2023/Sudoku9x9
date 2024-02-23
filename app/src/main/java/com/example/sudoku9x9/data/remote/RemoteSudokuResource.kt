@@ -10,6 +10,17 @@ class RemoteSudokuResource(
     private val firebaseStorage: FirebaseStorage,
     private val firebaseAuth: FirebaseAuth
 ) {
+    private var first: Boolean = false
+    private var userId:String? = null
+    private lateinit var battleRequest:DatabaseReference
+    private lateinit var battleGame:DatabaseReference
+    private var gameKey:String? = null
+
+    init {
+        userId = firebaseAuth.uid
+        battleRequest = database.reference.child("sudoku").child("battle_request_1")
+        battleGame = database.reference.child("sudoku").child("battle_games")
+    }
 
     fun setUserSignIn(userEmail: String?, userPassword: String?, signIn: () -> Any) {
         if (userEmail == null || userPassword == null) return
@@ -43,26 +54,39 @@ class RemoteSudokuResource(
         }
     }
 
+    fun setUserMistakes(mistakes:Int){
+        Log.e("xxxx", "12  -  mistakes-$mistakes")
+        gameKey?.let {
+            Log.e("xxxx", "13  -  mistakes-$mistakes")
+            val user:String = if (first){
+                "firstUserMistakes"
+            }else {
+                "secondUserMistakes"
+            }
+            Log.e("xxxx", "14  -  mistakes-$mistakes")
+            battleGame.child(it).child(user).setValue(mistakes).addOnSuccessListener {
+                Log.e("xxxx", "15  -  mistakes-$mistakes")
+            }
+        }
+    }
 
     // Проверка, есть в категории запросы запрос
     fun startRandomPlayerGame(
         gameLevelId: Int,
-        onGamePlay: (firstUserMistakes:Int,
-                     secondUserMistakes:Int,
-                     firstUserScore:Int,
-                     secondUserScore:Int,
-                     gameEnd:Boolean) -> Any,
-        onReceivedGameData:(BattleGame) -> Any
+        onGamePlay: (firstUserMistakes: Int, secondUserMistakes: Int, firstUserScore: Int, secondUserScore: Int, gameEnd: Boolean) -> Any,
+        onReceivedGameData:(BattleGame) -> Any,onGameStart:()->Any
     ) {
-        val userId = firebaseAuth.uid ?:return
-        val battleRequest = database.reference.child("sudoku").child("battle_request_$gameLevelId")
-        val battleGame = database.reference.child("sudoku").child("battle_games")
+        userId  ?:return
+//        val battleRequest = database.reference.child("sudoku").child("battle_request_1")
+//        val battleGame = database.reference.child("sudoku").child("battle_games")
 
         battleRequest.get().addOnSuccessListener {
             if (it.hasChildren()) {
-                acceptGameRequest(userId,battleGame, battleRequest, it,onReceivedGameData,onGamePlay)
+                first = false
+                acceptGameRequest(userId!!,battleGame, battleRequest, it,onReceivedGameData,onGamePlay,onGameStart)
             } else {
-                createGame(userId,battleGame, battleRequest, onGamePlay)
+                first = true
+                createGame(userId!!,battleGame, battleRequest, onGamePlay,onGameStart)
             }
         }
     }
@@ -75,15 +99,30 @@ class RemoteSudokuResource(
                      secondUserMistakes:Int,
                      firstUserScore:Int,
                      secondUserScore:Int,
-                     gameEnd:Boolean) -> Any
+                     gameEnd:Boolean) -> Any,
+        onGameStart:()->Any
     ) {
         val gameRef = battleGame.push()
+        gameKey = gameRef.key
         val game = BattleGame(
             sudokuNumbers = "1_9h_3_5_6h_2_3_4_5h_8h_1_3_5_6h_9_4h_5_7_6",
             firstUserId = userId
         )
         gameRef.setValue(game).addOnSuccessListener {
             Log.e("xxxx", "8  -  battleGame-$battleGame")
+            gameRef.child("gameStart").addValueEventListener(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val result = snapshot.value as Boolean
+                    if (result){
+                        onGameStart.invoke()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
 
             gameRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -125,12 +164,13 @@ class RemoteSudokuResource(
                      secondUserMistakes:Int,
                      firstUserScore:Int,
                      secondUserScore:Int,
-                     gameEnd:Boolean) -> Any
+                     gameEnd:Boolean) -> Any,
+        onGameStart:()->Any
     ) {
         val req = requests.children.first()
         val gameId = req.child("gameId").value as String
         req.key?.let { requestId -> deleteGameRequest(battleRequest, requestId) }
-        runGame(userId,battleGame, gameId,onReceivedGameData,onGamePlay)
+        runGame(userId,battleGame, gameId,onReceivedGameData,onGamePlay,onGameStart)
     }
 
     private fun runGame(
@@ -142,7 +182,8 @@ class RemoteSudokuResource(
                      secondUserMistakes:Int,
                      firstUserScore:Int,
                      secondUserScore:Int,
-                     gameEnd:Boolean) -> Any
+                     gameEnd:Boolean) -> Any,
+        onGameStart:()->Any
     ) {
         val gameDataRef = battleGame.child(gameId)
         gameDataRef.get().addOnSuccessListener {
@@ -154,18 +195,18 @@ class RemoteSudokuResource(
                 secondUserId = userId
             }
             gameDataRef.setValue(gameData).addOnSuccessListener {
-
+                onGameStart.invoke()
             }
             gameDataRef.addValueEventListener(object :ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val result = snapshot.getValue(BattleGame::class.java) ?: return
-                    /*onGamePlay(
+                    onGamePlay(
                         result.firstUserMistakes,
                         result.secondUserMistakes,
                         result.firstUserScore,
                         result.secondUserScore,
                         result.gameEnd
-                    )*/
+                    )
                     Log.e("kkkk","2  - result-$result")
                 }
 
